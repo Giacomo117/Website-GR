@@ -5,6 +5,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
     "./public/index.html"
   ],
+  safelist: [
+    {
+      pattern: /(bg|text|border)-(cyan|blue|purple|orange|red|pink)-(400|500|600)/,
+    },
+  ],
   theme: {
   	extend: {
   		borderRadius: {
