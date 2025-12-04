@@ -20,7 +20,7 @@ const Hero = () => {
           fill="#00D9FF"
         />
         
-        {/* 3D Spline Background - Full Screen */}
+        {/* 3D Spline Background - Full Screen with Interaction */}
         <div className="absolute inset-0 z-0">
           <SplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
@@ -28,8 +28,8 @@ const Hero = () => {
           />
         </div>
 
-        {/* Content Overlay */}
-        <div className="relative z-10 min-h-screen flex items-center">
+        {/* Content Overlay - pointer-events-none to allow interaction with 3D */}
+        <div className="relative z-10 min-h-screen flex items-center pointer-events-none">
           <div className="w-full p-8 lg:p-16">
             <div className="max-w-3xl">
               <div className="mb-6">
@@ -48,7 +48,7 @@ const Hero = () => {
               </p>
               <button
                 onClick={scrollToProjects}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/50"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/50 pointer-events-auto"
               >
                 View My Work
                 <ArrowDown size={20} />
