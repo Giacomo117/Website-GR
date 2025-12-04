@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from './ui/card';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Projects = () => {
@@ -31,6 +31,15 @@ const Projects = () => {
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop',
       github: 'https://github.com/Giacomo117/Drowsiness-State-Detector',
     },
+    {
+      id: 4,
+      title: 'And Many More!',
+      description: 'Explore my other projects including mobile applications, web services, and research work in AI and distributed systems. Always working on something new and exciting!',
+      technologies: ['Innovation', 'Creativity', 'Problem Solving'],
+      gradient: 'from-green-500 to-teal-600',
+      image: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=800&auto=format&fit=crop',
+      isMore: true,
+    },
   ];
 
   const containerVariants = {
@@ -56,7 +65,7 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="py-24 px-6 lg:px-8 bg-black">
+    <section id="projects" className="py-24 px-6 lg:px-8 bg-black relative z-20">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -91,6 +100,11 @@ const Projects = () => {
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
+                  {project.isMore && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Plus className="text-white" size={64} strokeWidth={1.5} />
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}

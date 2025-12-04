@@ -13,15 +13,15 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      <Card className="w-full min-h-screen bg-black relative overflow-hidden border-0 rounded-none">
+    <section id="hero" className="min-h-screen relative flex items-center justify-center">
+      <Card className="w-full min-h-screen bg-black relative border-0 rounded-none overflow-visible">
         <Spotlight
           className="-top-40 left-0 md:left-60 md:-top-20"
           fill="#00D9FF"
         />
         
-        {/* 3D Spline Background - Full Screen with Interaction */}
-        <div className="absolute inset-0 z-0">
+        {/* 3D Spline Background - Full Screen with Interaction - Allow overflow */}
+        <div className="absolute inset-0 z-0" style={{ height: '120vh' }}>
           <SplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"

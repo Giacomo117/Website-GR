@@ -32,7 +32,7 @@ const Navbar = () => {
           {/* Logo */}
           <button
             onClick={() => scrollToSection('hero')}
-            className="text-2xl font-bold text-white hover:text-cyan-400 transition-colors font-['Space_Grotesk']"
+            className="text-2xl font-bold text-white hover:text-cyan-400 transition-colors font-['Space_Grotesk'] z-10"
           >
             GR
           </button>
@@ -67,7 +67,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white hover:text-cyan-400 transition-colors p-2"
+            className="md:hidden text-white hover:text-cyan-400 transition-colors p-2 z-10"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -77,22 +77,22 @@ const Navbar = () => {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-white/5">
-          <div className="px-6 py-4 space-y-3">
+          <div className="px-6 py-4 space-y-3 flex flex-col items-center">
             <button
               onClick={() => scrollToSection('projects')}
-              className="block w-full text-left px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+              className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
               Projects
             </button>
             <button
               onClick={() => scrollToSection('formation')}
-              className="block w-full text-left px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+              className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
               Formation
             </button>
             <button
               onClick={() => scrollToSection('contact')}
-              className="block w-full text-left px-6 py-3 bg-cyan-500 text-black font-semibold rounded-lg hover:bg-cyan-400 transition-all"
+              className="w-full max-w-xs text-center px-6 py-3 bg-cyan-500 text-black font-semibold rounded-lg hover:bg-cyan-400 transition-all"
             >
               Contact
             </button>
