@@ -3,7 +3,7 @@ import { Card } from './ui/card';
 import { ExternalLink, Github, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Projects = () => {
+const Projects = ({ onProjectClick }) => {
   const projects = [
     {
       id: 1,
@@ -64,6 +64,14 @@ const Projects = () => {
     },
   };
 
+  const handleProjectClick = (project) => {
+    if (project.isMore) {
+      onProjectClick('What other projects has Giacomo worked on?');
+    } else {
+      onProjectClick(`What would you like to know about ${project.title}?`);
+    }
+  };
+
   return (
     <section id="projects" className="py-24 px-6 lg:px-8 bg-black relative z-20">
       <div className="max-w-7xl mx-auto">
@@ -91,7 +99,10 @@ const Projects = () => {
         >
           {projects.map((project) => (
             <motion.div key={project.id} variants={itemVariants}>
-              <Card className="group overflow-hidden bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300 h-full">
+              <Card 
+                onClick={() => handleProjectClick(project)}
+                className="group overflow-hidden bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300 h-full cursor-pointer"
+              >
                 {/* Image */}
                 <div className="relative h-64 overflow-hidden">
                   <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-300`}></div>
@@ -135,6 +146,7 @@ const Projects = () => {
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors"
                       >
                         <Github size={20} />

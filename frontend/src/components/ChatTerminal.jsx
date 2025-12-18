@@ -5,7 +5,7 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const ChatTerminal = ({ isOpen, onClose }) => {
+const ChatTerminal = ({ isOpen, onClose, initialMessage }) => {
   const [history, setHistory] = useState([
     { 
       type: 'system', 
@@ -28,11 +28,26 @@ Type your question and press Enter.`
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
+  const hasProcessedInitialMessage = useRef(false);
 
-  const handleCommand = async () => {
-    if (!currentCommand.trim() || isLoading) return;
+  // Handle initial message from project click
+  useEffect(() => {
+    if (isOpen && initialMessage && !hasProcessedInitialMessage.current) {
+      hasProcessedInitialMessage.current = true;
+      setCurrentCommand(initialMessage);
+      // Auto-send after a brief delay
+      setTimeout(() => {
+        handleCommand(initialMessage);
+      }, 500);
+    } else if (!isOpen) {
+      hasProcessedInitialMessage.current = false;
+    }
+  }, [isOpen, initialMessage]);
 
-    const userMessage = currentCommand.trim();
+  const handleCommand = async (message = currentCommand) => {
+    if (!message.trim() || isLoading) return;
+
+    const userMessage = message.trim();
     setHistory(prev => [...prev, { type: 'user', command: userMessage }]);
     setCurrentCommand('');
     setIsLoading(true);
@@ -100,7 +115,7 @@ Type your question and press Enter.`
         {/* Terminal Output */}
         <div 
           ref={terminalRef} 
-          className="h-[60vh] overflow-y-auto p-4 space-y-3 bg-black cursor-text"
+          className="h-[60vh] max-h-[500px] overflow-y-auto p-4 space-y-3 bg-black cursor-text"
           style={{
             scrollbarWidth: 'thin',
             scrollbarColor: '#00D9FF #1f2937'
@@ -111,14 +126,14 @@ Type your question and press Enter.`
             <div key={i} className="space-y-2">
               {entry.type === 'user' && (
                 <>
-                  <div className="flex gap-2">
-                    <span className="text-cyan-400 font-semibold">visitor@terminal:~$</span>
-                    <span className="text-white">{entry.command}</span>
+                  <div className="flex gap-2 flex-wrap">
+                    <span className="text-cyan-400 font-semibold whitespace-nowrap">visitor@terminal:~$</span>
+                    <span className="text-white break-words">{entry.command}</span>
                   </div>
                 </>
               )}
               {(entry.type === 'assistant' || entry.type === 'system' || entry.type === 'error') && (
-                <div className={`whitespace-pre-wrap leading-relaxed pl-6 ${
+                <div className={`whitespace-pre-wrap leading-relaxed pl-6 break-words ${
                   entry.type === 'system' ? 'text-cyan-400' : 
                   entry.type === 'error' ? 'text-red-400' : 
                   'text-gray-300'
@@ -137,8 +152,8 @@ Type your question and press Enter.`
           )}
 
           {/* Current Command Input */}
-          <div className="flex gap-2 items-center">
-            <span className="text-cyan-400 font-semibold">visitor@terminal:~$</span>
+          <div className="flex gap-2 items-start">
+            <span className="text-cyan-400 font-semibold whitespace-nowrap pt-1">visitor@terminal:~$</span>
             <input
               ref={inputRef}
               type="text"
@@ -146,7 +161,7 @@ Type your question and press Enter.`
               onChange={e => setCurrentCommand(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isLoading}
-              className="flex-1 bg-transparent outline-none text-white caret-cyan-400 disabled:opacity-50"
+              className="flex-1 bg-transparent outline-none text-white caret-cyan-400 disabled:opacity-50 min-w-0"
               placeholder="Ask me anything about Giacomo..."
               spellCheck="false"
             />
@@ -158,8 +173,8 @@ Type your question and press Enter.`
         
         {/* Terminal Footer */}
         <div className="bg-zinc-900 px-4 py-2 text-xs text-gray-500 border-t border-cyan-500/30">
-          <div className="flex justify-between items-center">
-            <span>Press Enter to send • Powered by OpenRouter AI</span>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span className="text-center sm:text-left">Press Enter to send • Powered by OpenRouter AI</span>
             <span className="text-cyan-400">● ONLINE</span>
           </div>
         </div>

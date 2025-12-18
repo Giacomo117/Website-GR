@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -9,15 +9,23 @@ import Footer from "./components/Footer";
 import FloatingChatButton from "./components/FloatingChatButton";
 
 function App() {
+  const openChatWithMessage = useRef(null);
+
+  const handleProjectClick = (message) => {
+    if (openChatWithMessage.current) {
+      openChatWithMessage.current(message);
+    }
+  };
+
   return (
     <div className="App">
       <Navbar />
       <Hero />
-      <Projects />
+      <Projects onProjectClick={handleProjectClick} />
       <Formation />
       <Contact />
       <Footer />
-      <FloatingChatButton />
+      <FloatingChatButton onMessageSet={(fn) => openChatWithMessage.current = fn} />
     </div>
   );
 }
