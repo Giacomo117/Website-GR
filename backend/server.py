@@ -67,6 +67,18 @@ async def get_status_checks():
     
     return status_checks
 
+# Chat endpoint
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    response: str
+
+@api_router.post("/chat", response_model=ChatResponse)
+async def chat_endpoint(request: ChatRequest):
+    ai_response = await get_ai_response(request.message)
+    return ChatResponse(response=ai_response)
+
 # Include the router in the main app
 app.include_router(api_router)
 
