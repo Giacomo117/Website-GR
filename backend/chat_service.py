@@ -1,6 +1,12 @@
 import os
 import httpx
 from fastapi import HTTPException
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
 
 OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY')
 
