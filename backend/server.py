@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 import uuid
 from datetime import datetime, timezone
+from chat_service import get_ai_response
 
 
 ROOT_DIR = Path(__file__).parent
