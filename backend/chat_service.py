@@ -82,7 +82,7 @@ async def get_ai_response(user_message: str) -> str:
                     "Content-Type": "application/json",
                 },
                 json={
-                    "model": "meta-llama/llama-3.1-8b-instruct:free",
+                    "model": "google/gemini-2.0-flash-exp:free",
                     "messages": [
                         {"role": "system", "content": GIACOMO_CONTEXT},
                         {"role": "user", "content": user_message}
