@@ -6,6 +6,7 @@ import Projects from "./components/Projects";
 import Formation from "./components/Formation";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import FloatingChatButton from "./components/FloatingChatButton";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Formation />
       <Contact />
       <Footer />
+      <FloatingChatButton />
     </div>
   );
 }
