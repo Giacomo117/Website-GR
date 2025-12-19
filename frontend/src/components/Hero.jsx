@@ -47,9 +47,10 @@ const Hero = ({ onChatOpen }) => {
                 AI Engineer crafting intelligent solutions
               </p>
               
-              {/* Description - Hidden on Mobile, Shorter on Desktop */}
-              <p className="hidden md:block text-base md:text-lg text-gray-300 mb-8 max-w-2xl leading-relaxed backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-white/10">
-                Specialized in AI, distributed systems, and enterprise architectures.
+              {/* Description - Short on Mobile, Long on Desktop */}
+              <p className="text-sm md:text-lg text-gray-300 mb-6 md:mb-8 max-w-2xl leading-relaxed backdrop-blur-sm bg-black/20 p-3 md:p-4 rounded-lg border border-white/10 text-center md:text-left">
+                <span className="md:hidden">Specialized in AI & distributed systems</span>
+                <span className="hidden md:inline">Computer Engineer specializing in Artificial Intelligence with experience in developing distributed systems and enterprise architectures. Transforming innovative ideas into concrete and scalable solutions.</span>
               </p>
               
               {/* Buttons - Smaller on Mobile */}

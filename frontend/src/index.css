@@ -96,11 +96,11 @@ code {
   }
 }
 
-/* Mobile: Better robot positioning - more zoom out and lower */
+/* Mobile: Much more zoomed out robot */
 @media (max-width: 768px) {
   #hero .absolute.inset-0 {
-    height: 180vh;
-    top: -10vh;
+    height: 220vh;
+    top: -20vh;
   }
 }
 
@@ -165,22 +165,6 @@ code {
   .overflow-x-auto::-webkit-scrollbar {
     display: none;
   }
-}
-
-/* Arrow pulse animation */
-@keyframes arrow-pulse {
-  0%, 100% {
-    opacity: 0.6;
-    transform: translateX(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(4px);
-  }
-}
-
-.arrow-indicator {
-  animation: arrow-pulse 2s ease-in-out infinite;
 }
 
 /* Box Loader Animations */
