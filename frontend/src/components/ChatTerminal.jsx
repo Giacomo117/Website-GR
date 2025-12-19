@@ -5,7 +5,7 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const ChatTerminal = ({ isOpen, onClose, initialMessage }) => {
+const ChatTerminal = ({ isOpen, onClose, projectMessage }) => {
   const [history, setHistory] = useState([
     { 
       type: 'system', 
@@ -28,21 +28,20 @@ Type your question and press Enter.`
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
-  const hasProcessedInitialMessage = useRef(false);
 
-  // Handle initial message from project click
+  // Handle project message - show as system message, don't auto-send
   useEffect(() => {
-    if (isOpen && initialMessage && !hasProcessedInitialMessage.current) {
-      hasProcessedInitialMessage.current = true;
-      setCurrentCommand(initialMessage);
-      // Auto-send after a brief delay
-      setTimeout(() => {
-        handleCommand(initialMessage);
-      }, 500);
-    } else if (!isOpen) {
-      hasProcessedInitialMessage.current = false;
+    if (isOpen && projectMessage) {
+      setHistory(prev => {
+        // Check if this message already exists
+        const lastMessage = prev[prev.length - 1];
+        if (lastMessage?.type === 'project' && lastMessage?.output === projectMessage) {
+          return prev;
+        }
+        return [...prev, { type: 'project', output: projectMessage }];
+      });
     }
-  }, [isOpen, initialMessage]);
+  }, [isOpen, projectMessage]);
 
   const handleCommand = async (message = currentCommand) => {
     if (!message.trim() || isLoading) return;
@@ -125,12 +124,16 @@ Type your question and press Enter.`
           {history.map((entry, i) => (
             <div key={i} className="space-y-2">
               {entry.type === 'user' && (
-                <>
-                  <div className="flex gap-2 flex-wrap">
-                    <span className="text-cyan-400 font-semibold whitespace-nowrap">visitor@terminal:~$</span>
-                    <span className="text-white break-words">{entry.command}</span>
-                  </div>
-                </>
+                <div className="flex gap-2 flex-wrap">
+                  <span className="text-cyan-400 font-semibold whitespace-nowrap">visitor@terminal:~$</span>
+                  <span className="text-white break-words">{entry.command}</span>
+                </div>
+              )}
+              {entry.type === 'project' && (
+                <div className="flex gap-2 items-start">
+                  <span className="text-green-400 font-semibold whitespace-nowrap">system@terminal:~$</span>
+                  <span className="text-green-400 break-words">{entry.output}</span>
+                </div>
               )}
               {(entry.type === 'assistant' || entry.type === 'system' || entry.type === 'error') && (
                 <div className={`whitespace-pre-wrap leading-relaxed pl-6 break-words ${

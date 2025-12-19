@@ -2,28 +2,26 @@ import React, { useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import ChatTerminal from './ChatTerminal';
 
-const FloatingChatButton = ({ initialMessage, onMessageSet }) => {
+const FloatingChatButton = ({ onChatOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pendingMessage, setPendingMessage] = useState(null);
+  const [projectMessage, setProjectMessage] = useState(null);
 
   const handleOpen = (message = null) => {
-    if (message) {
-      setPendingMessage(message);
-    }
+    setProjectMessage(message);
     setIsOpen(true);
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    setPendingMessage(null);
+    setProjectMessage(null);
   };
 
-  // Expose handleOpen to parent via ref or callback
+  // Expose handleOpen to parent
   React.useEffect(() => {
-    if (onMessageSet) {
-      onMessageSet(handleOpen);
+    if (onChatOpen) {
+      onChatOpen(handleOpen);
     }
-  }, [onMessageSet]);
+  }, [onChatOpen]);
 
   return (
     <>
@@ -40,7 +38,7 @@ const FloatingChatButton = ({ initialMessage, onMessageSet }) => {
       <ChatTerminal 
         isOpen={isOpen} 
         onClose={handleClose}
-        initialMessage={pendingMessage}
+        projectMessage={projectMessage}
       />
     </>
   );
