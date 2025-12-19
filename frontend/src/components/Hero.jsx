@@ -2,9 +2,9 @@ import React from 'react';
 import { SplineScene } from './ui/splite';
 import { Spotlight } from './ui/spotlight';
 import { Card } from './ui/card';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, MessageSquare } from 'lucide-react';
 
-const Hero = () => {
+const Hero = ({ onChatOpen }) => {
   const scrollToProjects = () => {
     const element = document.getElementById('projects');
     if (element) {
@@ -46,13 +46,22 @@ const Hero = () => {
               <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl leading-relaxed backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-white/10">
                 Computer Engineer specializing in Artificial Intelligence with experience in developing distributed systems and enterprise architectures. Transforming innovative ideas into concrete and scalable solutions.
               </p>
-              <button
-                onClick={scrollToProjects}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/50 pointer-events-auto"
-              >
-                View My Work
-                <ArrowDown size={20} />
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={scrollToProjects}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/50 pointer-events-auto"
+                >
+                  View My Work
+                  <ArrowDown size={20} />
+                </button>
+                <button
+                  onClick={onChatOpen}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-full hover:bg-white/20 transition-all border border-white/20 hover:border-cyan-400/50 pointer-events-auto"
+                >
+                  <MessageSquare size={20} />
+                  Ask AI About Me
+                </button>
+              </div>
             </div>
           </div>
         </div>

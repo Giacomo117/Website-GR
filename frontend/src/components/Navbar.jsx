@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ onChatOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -47,16 +47,16 @@ const Navbar = () => {
                 Projects
               </button>
               <button
-                onClick={() => scrollToSection('experience')}
-                className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
-              >
-                Experience
-              </button>
-              <button
                 onClick={() => scrollToSection('formation')}
                 className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
               >
                 Formation
+              </button>
+              <button
+                onClick={() => scrollToSection('experience')}
+                className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
+              >
+                Experience
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
@@ -91,16 +91,16 @@ const Navbar = () => {
               Projects
             </button>
             <button
-              onClick={() => scrollToSection('experience')}
-              className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-            >
-              Experience
-            </button>
-            <button
               onClick={() => scrollToSection('formation')}
               className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
               Formation
+            </button>
+            <button
+              onClick={() => scrollToSection('experience')}
+              className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+            >
+              Experience
             </button>
             <button
               onClick={() => scrollToSection('contact')}

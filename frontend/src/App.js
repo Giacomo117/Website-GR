@@ -3,8 +3,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
-import Experience from "./components/Experience";
 import Formation from "./components/Formation";
+import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingChatButton from "./components/FloatingChatButton";
@@ -20,6 +20,12 @@ function App() {
     }
   };
 
+  const handleOpenChat = () => {
+    if (openChatWithMessage.current) {
+      openChatWithMessage.current(null);
+    }
+  };
+
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
@@ -28,12 +34,12 @@ function App() {
     <>
       {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
       <div className="App" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
-        <Navbar />
-        <Hero />
+        <Navbar onChatOpen={handleOpenChat} />
+        <Hero onChatOpen={handleOpenChat} />
         <Projects onProjectClick={handleProjectClick} />
-        <Experience />
         <Formation />
-        <Contact />
+        <Experience />
+        <Contact onChatOpen={handleOpenChat} />
         <Footer />
         <FloatingChatButton onChatOpen={(fn) => openChatWithMessage.current = fn} />
       </div>

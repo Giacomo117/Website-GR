@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card } from './ui/card';
-import { Mail, Linkedin, Github, MapPin, Phone } from 'lucide-react';
+import { Mail, Linkedin, Github, MapPin, Instagram, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Contact = () => {
+const Contact = ({ onChatOpen }) => {
   const contactInfo = [
     {
       icon: Mail,
@@ -13,11 +13,11 @@ const Contact = () => {
       color: 'cyan',
     },
     {
-      icon: Phone,
-      label: 'Phone',
-      value: '(+39) 329 449 4417',
-      href: 'tel:+393294494417',
-      color: 'blue',
+      icon: Instagram,
+      label: 'Instagram',
+      value: '@giacomo.reggianini',
+      href: 'https://instagram.com/giacomo.reggianini',
+      color: 'pink',
     },
     {
       icon: MapPin,
@@ -39,6 +39,12 @@ const Contact = () => {
       label: 'GitHub',
       href: 'https://github.com/Giacomo117',
       color: 'gray',
+    },
+    {
+      icon: Instagram,
+      label: 'Instagram',
+      href: 'https://instagram.com/giacomo.reggianini',
+      color: 'pink',
     },
   ];
 
@@ -85,6 +91,8 @@ const Contact = () => {
                         {item.href ? (
                           <a
                             href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-white hover:text-cyan-400 transition-colors font-medium"
                           >
                             {item.value}
@@ -151,6 +159,13 @@ const Contact = () => {
                 >
                   Connect on LinkedIn
                 </a>
+                <button
+                  onClick={onChatOpen}
+                  className="inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-center font-semibold rounded-full hover:from-cyan-400 hover:to-blue-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/30"
+                >
+                  <MessageSquare size={20} />
+                  Chat with my AI Assistant
+                </button>
               </div>
             </Card>
           </motion.div>
