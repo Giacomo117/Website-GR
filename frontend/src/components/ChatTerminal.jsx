@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
-const API = `${BACKEND_URL}/api`;
+// Use relative URL for Cloudflare Functions (or fallback to localhost for dev)
+const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
 
 // Virtual filesystem structure
 const FILESYSTEM = {
