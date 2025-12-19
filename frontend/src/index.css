@@ -96,11 +96,23 @@ code {
   }
 }
 
-/* Mobile: Smaller robot */
+/* Mobile: Much smaller robot */
 @media (max-width: 768px) {
   #hero .absolute.inset-0 {
-    transform: scale(0.85);
+    transform: scale(0.5);
     transform-origin: center center;
+  }
+}
+
+/* Smooth horizontal scrolling on mobile */
+@media (max-width: 1024px) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
   }
 }
 
