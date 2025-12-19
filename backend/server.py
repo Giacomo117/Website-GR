@@ -76,8 +76,15 @@ class ChatResponse(BaseModel):
     response: str
 
 @api_router.post("/chat", response_model=ChatResponse)
-async def chat_endpoint(request: ChatRequest):
-    ai_response = await get_ai_response(request.message)
+async def chat_endpoint(chat_request: ChatRequest, request: Request):
+    # Get client IP for rate limiting
+    client_ip = request.client.host if request.client else "unknown"
+    
+    # Check rate limit
+    await chat_rate_limiter.check_rate_limit(client_ip)
+    
+    # Process chat request
+    ai_response = await get_ai_response(chat_request.message)
     return ChatResponse(response=ai_response)
 
 # Include the router in the main app
