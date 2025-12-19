@@ -155,7 +155,8 @@ const Experience = () => {
         </motion.div>
 
         {/* Mobile Horizontal Scroll */}
-        <div className="lg:hidden overflow-x-auto pb-4 -mx-6 px-6">
+        <div className="lg:hidden relative">
+          <div className="overflow-x-auto pb-4 px-6 -mx-6">
           <div className="flex gap-4" style={{ width: 'max-content' }}>
             {experiences.map((exp) => (
               <Card 
