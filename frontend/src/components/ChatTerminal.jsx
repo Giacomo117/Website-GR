@@ -10,14 +10,104 @@ const FILESYSTEM = {
   '~': {
     type: 'dir',
     children: {
-      'about.txt': { type: 'file', content: 'Giacomo Raimondi - AI & Software Engineer\nPassionate about building intelligent systems.' },
-      'contact.txt': { type: 'file', content: 'Email: giacomo.raimondi@example.com\nLinkedIn: linkedin.com/in/giacomoraimondi\nGitHub: github.com/Giacomo117' },
+      'about.txt': { type: 'file', content: `Giacomo Reggianini - AI & Software Engineer
+
+Computer Engineer specializing in Artificial Intelligence with experience in developing distributed systems and enterprise architectures. Master's graduate in Artificial Intelligence Engineering (Autumn 2025).
+
+Throughout my academic journey, I have developed cross-functional skills through innovative projects completed both in Modena and during my Erasmus experience in England, ranging from mobile development to IoT, from computer vision to enterprise-grade RAG systems.
+
+These experiences have enabled me to acquire solid competencies in teamwork, complex project management, and adaptation to diverse technological contexts, always with the goal of transforming innovative ideas into concrete and scalable solutions.` },
+      'contact.txt': { type: 'file', content: 'Email: reggianini.giacomo01@gmail.com\nPhone: (+39) 329 449 4417\nLinkedIn: linkedin.com/in/giacomo-reggianini-0667bb300\nGitHub: github.com/Giacomo117' },
       'projects': {
         type: 'dir',
         children: {
-          'civetta.md': { type: 'file', content: '# Civetta - Enterprise RAG Platform\nA distributed RAG system for enterprise environments.\nTechnologies: Python, LangChain, Microservices' },
-          'autoguardian.md': { type: 'file', content: '# AutoGuardian\nIoT platform for vehicle safety monitoring.\nTechnologies: Arduino, Django, MQTT' },
-          'drowsiness-detector.md': { type: 'file', content: '# Drowsiness State Detector\nReal-time driver drowsiness detection using computer vision.\nTechnologies: Python, OpenCV, PyTorch' },
+          'civetta.md': { type: 'file', content: `# Civetta - Enterprise RAG Platform
+Associated with E38
+
+A distributed Retrieval-Augmented Generation (RAG) system serving as an intelligent virtual assistant for enterprise environments, built on scalable microservices architecture with multi-tenant support and no-code document management capabilities.
+
+The system combines advanced document processing, vector search, and LLM orchestration to deliver domain-specific AI assistance across legal, business intelligence, and customer support sectors.
+
+## Core Architecture
+
+1. Microservices Implementation
+   TypeScript-based orchestrator and frontend with Python-based RAG pipeline, ensuring production-level robustness and research-grade flexibility for document processing.
+
+2. Multi-Modal Document Processing
+   Four specialized chunking pipelines:
+   - Mistral OCR for PDFs
+   - Semantic chunking
+   - Section-based analysis
+   - LLaMA 3 70B Z-chunking for optimal content segmentation
+
+3. Advanced RAG Pipeline
+   Redis-based vector database with similarity search, image processing integration using vision models, and contextual caption generation through o1-mini LLM refinement.
+
+## Enterprise Features
+
+- Multi-tenant orchestration with client isolation and dynamic onboarding
+- No-code frontend interface for autonomous document upload, API key management, and pipeline configuration
+- Real-time streaming responses via Server-Sent Events
+- Comprehensive observability and monitoring infrastructure
+- Integration with MinIO object storage and Azure OpenAI for LLM inference
+
+Technologies: Python, TypeScript, Angular, LangChain, Redis, MinIO, Azure OpenAI` },
+          'autoguardian.md': { type: 'file', content: `# AutoGuardian
+IoT Vehicle Safety Platform
+
+A modular IoT platform for vehicle safety monitoring and neighbor-aware emergency alerting, featuring real-time telemetry processing, anomaly detection, and distributed alert dissemination.
+
+The system connects Arduino/MCU devices via serial communication to a Django REST API backend, with MQTT-based alert broadcasting for low-latency emergency response coordination between nearby vehicles.
+
+## Key Features
+
+- Smart anomaly detection with false-positive suppression by comparing sensor readings across neighboring vehicles
+- Geospatial neighbor discovery using distance calculations
+- Web-based dashboard providing real-time vehicle monitoring, alert management, and system overview
+- REST-first design with clean separation of concerns
+- Comprehensive API endpoints for vehicles, alerts, and contact management
+
+Technologies: Arduino, Django, MQTT, Mosquitto, Python, IoT
+GitHub: github.com/Giacomo117/AutoGuardian` },
+          'drowsiness-detector.md': { type: 'file', content: `# Drowsiness State Detector
+Real-time Driver Monitoring System
+
+A multi-model computer vision application for real-time driver drowsiness detection, composed of three standalone deep learning models working in parallel through multi-threaded processing.
+
+Real-time performance achieved through concurrent model inference on webcam input, with OpenCV Haar cascades handling face detection and eye region extraction. A 10-second sliding buffer aggregates detection results for stable drowsiness assessment based on eye closure frequency, yawn rate, and head rotation metrics.
+
+## The Three Models
+
+1. Eye State Classification
+   MobileNetV2 classifier trained to distinguish between open/closed eyes on extracted eye regions
+
+2. Yawn Detection
+   MobileNet trained for binary yawn classification from facial crops
+
+3. Facial Keypoint Estimation
+   PyTorch ResNet50 predicting 68 facial landmarks for head pose analysis
+
+Technologies: Python, OpenCV, PyTorch, TensorFlow, Deep Learning
+GitHub: github.com/Giacomo117/Drowsiness-State-Detector` },
+          'graph-routing.md': { type: 'file', content: `# Routing Algorithm for Graph DBs
+Associated with Universita di Modena e Reggio Emilia
+
+A multi-modal routing system for public transportation networks using Neo4j graph database technology, implementing optimized pathfinding algorithms for real-world transit data.
+
+The system processes GTFS (General Transit Feed Specification) data for Modena, Italy, combining bus routes with pedestrian transfers to provide comprehensive journey planning with time-dependent scheduling and geospatial proximity search.
+
+## Core Components
+
+1. Graph Database Design
+   Neo4j implementation with custom data model representing agencies, routes, trips, stops, and stoptimes with time-dependent relationships
+
+2. Multi-Modal Pathfinding
+   Dijkstra algorithm implementation using Graph Data Science (GDS) library with custom waiting_time weights for optimal route calculation
+
+3. Geospatial Integration
+   Proximity search functionality using Neo4j spatial functions to find nearby stops within configurable radius from arbitrary coordinates
+
+Technologies: Neo4j, Python, Graph Data Science, GTFS, Cypher` },
         }
       },
       'skills': {
@@ -29,7 +119,6 @@ const FILESYSTEM = {
         }
       },
       '.secret': { type: 'file', content: 'Edo sei un dannato gay' },
-            // '.secret': { type: 'file', content: 'You found the secret file. Ask the AI about Giacomo\'s hidden talents.' },
     }
   }
 };

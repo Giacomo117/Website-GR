@@ -15,8 +15,8 @@ const Contact = ({ onChatOpen }) => {
     {
       icon: Instagram,
       label: 'Instagram',
-      value: '@giacomo.reggianini',
-      href: 'https://instagram.com/giacomo.reggianini',
+      value: '@giacomoreggia_',
+      href: 'https://instagram.com/giacomoreggia_',
       color: 'pink',
     },
     {
@@ -43,7 +43,7 @@ const Contact = ({ onChatOpen }) => {
     {
       icon: Instagram,
       label: 'Instagram',
-      href: 'https://instagram.com/giacomo.reggianini',
+      href: 'https://instagram.com/giacomoreggia_',
       color: 'pink',
     },
   ];
