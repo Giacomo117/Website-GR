@@ -154,62 +154,69 @@ const Experience = () => {
           ))}
         </motion.div>
 
-        {/* Mobile Horizontal Scroll */}
+        {/* Mobile Horizontal Scroll with Arrow */}
         <div className="lg:hidden relative">
           <div className="overflow-x-auto pb-4 px-6 -mx-6">
-          <div className="flex gap-4" style={{ width: 'max-content' }}>
-            {experiences.map((exp) => (
-              <Card 
-                key={exp.id}
-                className="bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300"
-                style={{ width: '280px', flexShrink: 0 }}
-              >
-                <div className="p-4">
-                  <div className={`w-12 h-12 rounded-xl bg-${exp.color}-500/10 border border-${exp.color}-500/30 flex items-center justify-center mb-3`}>
-                    <Briefcase className={`text-${exp.color}-400`} size={24} />
-                  </div>
-
-                  <div className="mb-2">
-                    <span className="inline-block px-2 py-1 text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full mb-2">
-                      {exp.type}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-white mb-1 font-['Space_Grotesk']">
-                    {exp.role}
-                  </h3>
-                  <p className="text-sm text-gray-300 font-medium mb-3">
-                    {exp.company}
-                  </p>
-                  
-                  <div className="space-y-1 mb-3 text-xs text-gray-400">
-                    <div className="flex items-center gap-1">
-                      <MapPin size={14} />
-                      <span>{exp.location}</span>
+            <div className="flex gap-4 pl-6" style={{ width: 'max-content' }}>
+              {experiences.map((exp) => (
+                <Card 
+                  key={exp.id}
+                  className="bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300"
+                  style={{ width: '280px', flexShrink: 0 }}
+                >
+                  <div className="p-4">
+                    <div className={`w-12 h-12 rounded-xl bg-${exp.color}-500/10 border border-${exp.color}-500/30 flex items-center justify-center mb-3`}>
+                      <Briefcase className={`text-${exp.color}-400`} size={24} />
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar size={14} />
-                      <span>{exp.period}</span>
-                    </div>
-                  </div>
 
-                  <p className="text-gray-400 text-sm mb-3 line-clamp-3">
-                    {exp.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1">
-                    {exp.technologies.slice(0, 3).map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 text-xs bg-zinc-800 text-gray-300 rounded-full"
-                      >
-                        {tech}
+                    <div className="mb-2">
+                      <span className="inline-block px-2 py-1 text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full mb-2">
+                        {exp.type}
                       </span>
-                    ))}
+                    </div>
+
+                    <h3 className="text-lg font-bold text-white mb-1 font-['Space_Grotesk']">
+                      {exp.role}
+                    </h3>
+                    <p className="text-sm text-gray-300 font-medium mb-3">
+                      {exp.company}
+                    </p>
+                    
+                    <div className="space-y-1 mb-3 text-xs text-gray-400">
+                      <div className="flex items-center gap-1">
+                        <MapPin size={14} />
+                        <span>{exp.location}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar size={14} />
+                        <span>{exp.period}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-400 text-sm mb-3 line-clamp-3">
+                      {exp.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1">
+                      {exp.technologies.slice(0, 3).map((tech, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 text-xs bg-zinc-800 text-gray-300 rounded-full"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
+          </div>
+          {/* Arrow Indicator */}
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
+            <div className="w-10 h-10 rounded-full bg-cyan-500/20 backdrop-blur-sm border border-cyan-500/40 flex items-center justify-center arrow-indicator">
+              <ChevronRight className="text-cyan-400" size={24} />
+            </div>
           </div>
         </div>
       </div>
