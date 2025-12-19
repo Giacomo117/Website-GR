@@ -28,7 +28,8 @@ const FILESYSTEM = {
           'tools.txt': { type: 'file', content: 'Git, Docker, Kubernetes, AWS, Azure, Linux' },
         }
       },
-      '.secret': { type: 'file', content: 'You found the secret file. Ask the AI about Giacomo\'s hidden talents.' },
+      '.secret': { type: 'file', content: 'Edo sei un dannato gay' },
+            // '.secret': { type: 'file', content: 'You found the secret file. Ask the AI about Giacomo\'s hidden talents.' },
     }
   }
 };
