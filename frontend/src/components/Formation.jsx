@@ -211,12 +211,6 @@ const Formation = () => {
             })}
             </div>
           </div>
-          {/* Arrow Indicator */}
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
-            <div className="w-10 h-10 rounded-full bg-cyan-500/20 backdrop-blur-sm border border-cyan-500/40 flex items-center justify-center arrow-indicator">
-              <ChevronRight className="text-cyan-400" size={24} />
-            </div>
-          </div>
         </div>
 
         {/* Skills Section */}
