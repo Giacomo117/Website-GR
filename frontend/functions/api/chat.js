@@ -54,7 +54,7 @@ RESPONSE GUIDELINES:
 `;
 
 // Rate limiting configuration
-const RATE_LIMIT = 2; // requests per minute (testing)
+const RATE_LIMIT = 10; // requests per minute
 const RATE_WINDOW = 60; // seconds
 
 export async function onRequestPost(context) {
