@@ -439,7 +439,7 @@ Or just type any question to ask the AI about Giacomo.`,
               onChange={e => setCurrentCommand(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isLoading}
-              className="flex-1 bg-transparent outline-none text-white caret-white disabled:opacity-50 min-w-0 text-[10px] md:text-xs lg:text-sm leading-none font-mono"
+              className="flex-1 bg-transparent outline-none text-white caret-white disabled:opacity-50 min-w-0 text-[16px] md:text-xs lg:text-sm leading-none font-mono scale-[0.625] md:scale-100 origin-left -mr-[37.5%] md:mr-0"
               spellCheck="false"
               autoComplete="off"
             />
