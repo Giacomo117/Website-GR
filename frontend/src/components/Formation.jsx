@@ -148,9 +148,10 @@ const Formation = () => {
           })}
         </motion.div>
 
-        {/* Mobile Horizontal Scroll */}
-        <div className="lg:hidden overflow-x-auto pb-4 -mx-6 px-6 mb-16">
-          <div className="flex gap-4" style={{ width: 'max-content' }}>
+        {/* Mobile Horizontal Scroll with Arrow */}
+        <div className="lg:hidden relative mb-16">
+          <div className="overflow-x-auto pb-4 px-6 -mx-6">
+            <div className="flex gap-4 pl-6" style={{ width: 'max-content' }}>
             {education.map((item) => {
               const Icon = item.icon;
               return (
