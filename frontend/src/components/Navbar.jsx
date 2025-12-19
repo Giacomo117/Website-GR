@@ -91,6 +91,12 @@ const Navbar = () => {
               Projects
             </button>
             <button
+              onClick={() => scrollToSection('experience')}
+              className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+            >
+              Experience
+            </button>
+            <button
               onClick={() => scrollToSection('formation')}
               className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
