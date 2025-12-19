@@ -62,9 +62,19 @@ Type your question and press Enter.`
       }]);
     } catch (error) {
       console.error('Chat error:', error);
+      
+      let errorMessage = 'Oops! Connection error. Try again!';
+      
+      // Check if it's a rate limit error
+      if (error.response?.status === 429) {
+        errorMessage = error.response?.data?.detail || 'Rate limit exceeded. Please wait a moment before trying again.';
+      } else if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      }
+      
       setHistory(prev => [...prev, { 
         type: 'error', 
-        output: 'Oops! Connection error. Try again!' 
+        output: errorMessage
       }]);
     } finally {
       setIsLoading(false);
