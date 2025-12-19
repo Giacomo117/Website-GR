@@ -349,30 +349,30 @@ Or just type any question to ask the AI about Giacomo.`,
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-2 md:p-4">
-      <div className="w-full max-w-4xl bg-black rounded-lg overflow-hidden shadow-2xl border border-cyan-500 animate-in fade-in slide-in-from-bottom-5 duration-300">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-2 md:p-4 lg:p-6">
+      <div className="w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl bg-black rounded-lg overflow-hidden shadow-2xl border border-cyan-500 animate-in fade-in slide-in-from-bottom-5 duration-300">
         {/* Terminal Header - Smaller on Mobile */}
-        <div className="flex items-center justify-between gap-2 p-2 md:p-3 bg-zinc-900 text-xs text-gray-400 border-b border-cyan-500/30">
+        <div className="flex items-center justify-between gap-2 p-2 md:p-3 lg:p-4 bg-zinc-900 text-xs text-gray-400 border-b border-cyan-500/30">
           <div className="flex gap-1 md:gap-1.5">
-            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer" onClick={onClose} />
-            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer" />
-            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-pointer" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer" onClick={onClose} />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-pointer" />
           </div>
-          <div className="flex-1 text-center font-semibold font-['Space_Grotesk'] text-cyan-400 text-[10px] md:text-xs truncate">
+          <div className="flex-1 text-center font-semibold font-['Space_Grotesk'] text-cyan-400 text-[10px] md:text-xs lg:text-sm truncate">
             giacomo@ai-assistant:~$
           </div>
           <button 
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <X size={14} className="md:w-4 md:h-4" />
+            <X size={14} className="md:w-4 md:h-4 lg:w-5 lg:h-5" />
           </button>
         </div>
 
-        {/* Terminal Output - Smaller on Mobile, No ASCII Art */}
+        {/* Terminal Output - Responsive sizing for different screen sizes */}
         <div 
           ref={terminalRef} 
-          className="h-[70vh] md:h-[60vh] max-h-[500px] overflow-y-auto p-2 md:p-4 space-y-1 md:space-y-2 bg-black cursor-text text-xs md:text-sm font-mono"
+          className="h-[70vh] md:h-[60vh] lg:h-[65vh] xl:h-[70vh] max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] 2xl:max-h-[800px] overflow-y-auto p-2 md:p-4 lg:p-5 xl:p-6 space-y-1 md:space-y-2 bg-black cursor-text text-xs md:text-sm lg:text-base font-mono"
           style={{
             scrollbarWidth: 'thin',
             scrollbarColor: '#00D9FF #1f2937'
@@ -382,37 +382,37 @@ Or just type any question to ask the AI about Giacomo.`,
           {history.map((entry, i) => (
             <div key={i}>
               {entry.type === 'user' && (
-                <div className="flex gap-1 md:gap-2 flex-wrap">
-                  <span className="text-green-400 font-semibold whitespace-nowrap text-[10px] md:text-xs">visitor@giacomo</span>
-                  <span className="text-white font-semibold text-[10px] md:text-xs">:</span>
-                  <span className="text-blue-400 font-semibold text-[10px] md:text-xs">{entry.path || '~'}</span>
-                  <span className="text-white font-semibold text-[10px] md:text-xs">$</span>
-                  <span className="text-white break-words text-[10px] md:text-xs">{entry.command}</span>
+                <div className="flex gap-1 md:gap-2 lg:gap-3 flex-wrap">
+                  <span className="text-green-400 font-semibold whitespace-nowrap text-[10px] md:text-xs lg:text-sm">visitor@giacomo</span>
+                  <span className="text-white font-semibold text-[10px] md:text-xs lg:text-sm">:</span>
+                  <span className="text-blue-400 font-semibold text-[10px] md:text-xs lg:text-sm">{entry.path || '~'}</span>
+                  <span className="text-white font-semibold text-[10px] md:text-xs lg:text-sm">$</span>
+                  <span className="text-white break-words text-[10px] md:text-xs lg:text-sm">{entry.command}</span>
                 </div>
               )}
               {entry.type === 'project' && (
-                <div className="flex gap-1 md:gap-2 items-start">
-                  <span className="text-yellow-400 font-semibold whitespace-nowrap text-[10px] md:text-xs">[hint]</span>
-                  <span className="text-yellow-400 break-words text-[10px] md:text-xs">{entry.output}</span>
+                <div className="flex gap-1 md:gap-2 lg:gap-3 items-start">
+                  <span className="text-yellow-400 font-semibold whitespace-nowrap text-[10px] md:text-xs lg:text-sm">[hint]</span>
+                  <span className="text-yellow-400 break-words text-[10px] md:text-xs lg:text-sm">{entry.output}</span>
                 </div>
               )}
               {entry.type === 'output' && (
-                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs text-white">
+                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs lg:text-sm text-white">
                   {entry.output}
                 </div>
               )}
               {entry.type === 'system' && (
-                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs text-cyan-400">
+                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs lg:text-sm text-cyan-400">
                   {entry.output}
                 </div>
               )}
               {entry.type === 'assistant' && (
-                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs text-gray-300 pl-0">
+                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs lg:text-sm text-gray-300 pl-0">
                   {entry.output}
                 </div>
               )}
               {entry.type === 'error' && (
-                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs text-red-400">
+                <div className="whitespace-pre-wrap leading-relaxed break-words text-[10px] md:text-xs lg:text-sm text-red-400">
                   {entry.output}
                 </div>
               )}
@@ -420,18 +420,18 @@ Or just type any question to ask the AI about Giacomo.`,
           ))}
 
           {isLoading && (
-            <div className="flex gap-1 md:gap-2 items-center text-cyan-400">
-              <Loader2 size={12} className="md:w-4 md:h-4 animate-spin" />
-              <span className="text-[10px] md:text-xs">Processing...</span>
+            <div className="flex gap-1 md:gap-2 lg:gap-3 items-center text-cyan-400">
+              <Loader2 size={12} className="md:w-4 md:h-4 lg:w-5 lg:h-5 animate-spin" />
+              <span className="text-[10px] md:text-xs lg:text-sm">Processing...</span>
             </div>
           )}
 
           {/* Current Command Input */}
-          <div className="flex gap-1 md:gap-2 items-center">
-            <span className="text-green-400 font-semibold whitespace-nowrap text-[10px] md:text-xs">visitor@giacomo</span>
-            <span className="text-white font-semibold text-[10px] md:text-xs">:</span>
-            <span className="text-blue-400 font-semibold text-[10px] md:text-xs">{currentPath}</span>
-            <span className="text-white font-semibold text-[10px] md:text-xs">$</span>
+          <div className="flex gap-1 md:gap-2 lg:gap-3 items-center">
+            <span className="text-green-400 font-semibold whitespace-nowrap text-[10px] md:text-xs lg:text-sm">visitor@giacomo</span>
+            <span className="text-white font-semibold text-[10px] md:text-xs lg:text-sm">:</span>
+            <span className="text-blue-400 font-semibold text-[10px] md:text-xs lg:text-sm">{currentPath}</span>
+            <span className="text-white font-semibold text-[10px] md:text-xs lg:text-sm">$</span>
             <input
               ref={inputRef}
               type="text"
@@ -439,18 +439,18 @@ Or just type any question to ask the AI about Giacomo.`,
               onChange={e => setCurrentCommand(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isLoading}
-              className="flex-1 bg-transparent outline-none text-white caret-white disabled:opacity-50 min-w-0 text-[10px] md:text-xs leading-none font-mono"
+              className="flex-1 bg-transparent outline-none text-white caret-white disabled:opacity-50 min-w-0 text-[10px] md:text-xs lg:text-sm leading-none font-mono"
               spellCheck="false"
               autoComplete="off"
             />
-            <span className="text-white animate-pulse text-[10px] md:text-xs">█</span>
+            <span className="text-white animate-pulse text-[10px] md:text-xs lg:text-sm">█</span>
           </div>
 
           <div ref={bottomRef} />
         </div>
         
-        {/* Terminal Footer - Smaller on Mobile */}
-        <div className="bg-zinc-900 px-2 md:px-4 py-1.5 md:py-2 text-[9px] md:text-xs text-gray-500 border-t border-cyan-500/30">
+        {/* Terminal Footer */}
+        <div className="bg-zinc-900 px-2 md:px-4 lg:px-5 py-1.5 md:py-2 lg:py-3 text-[9px] md:text-xs lg:text-sm text-gray-500 border-t border-cyan-500/30">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-1 md:gap-2">
             <span className="text-center sm:text-left">Ctrl+C: cancel • Ctrl+L: clear • ↑↓: history • Tab: autocomplete</span>
             <span className="text-cyan-400">● ONLINE</span>
