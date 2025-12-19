@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from './ui/card';
-import { Briefcase, Calendar, MapPin } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Experience = () => {

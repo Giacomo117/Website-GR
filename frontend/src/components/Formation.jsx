@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from './ui/card';
-import { GraduationCap, Award, MapPin, Calendar } from 'lucide-react';
+import { GraduationCap, Award, MapPin, Calendar, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Formation = () => {
