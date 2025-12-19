@@ -42,19 +42,25 @@ const Navbar = () => {
             <div className="flex items-center gap-2 bg-zinc-900/50 backdrop-blur-md border border-white/10 rounded-full px-2 py-2">
               <button
                 onClick={() => scrollToSection('projects')}
-                className="px-6 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium"
+                className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
               >
                 Projects
               </button>
               <button
+                onClick={() => scrollToSection('experience')}
+                className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
+              >
+                Experience
+              </button>
+              <button
                 onClick={() => scrollToSection('formation')}
-                className="px-6 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium"
+                className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
               >
                 Formation
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="px-6 py-2 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all"
+                className="px-4 py-2 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all text-sm"
               >
                 Contact
               </button>
