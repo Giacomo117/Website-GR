@@ -31,6 +31,7 @@ function App() {
         <Navbar />
         <Hero />
         <Projects onProjectClick={handleProjectClick} />
+        <Experience />
         <Formation />
         <Contact />
         <Footer />
