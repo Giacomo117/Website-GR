@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -10,6 +10,7 @@ from typing import List
 import uuid
 from datetime import datetime, timezone
 from chat_service import get_ai_response
+from rate_limiter import chat_rate_limiter
 
 
 ROOT_DIR = Path(__file__).parent
