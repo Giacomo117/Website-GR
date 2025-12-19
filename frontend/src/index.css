@@ -96,23 +96,11 @@ code {
   }
 }
 
-/* Mobile: Much smaller robot */
+/* Mobile: Better robot positioning - zoom out instead of scale down */
 @media (max-width: 768px) {
   #hero .absolute.inset-0 {
-    transform: scale(0.5);
-    transform-origin: center center;
-  }
-}
-
-/* Smooth horizontal scrolling on mobile */
-@media (max-width: 1024px) {
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  
-  .overflow-x-auto::-webkit-scrollbar {
-    display: none;
+    height: 150vh;
+    top: -25vh;
   }
 }
 
@@ -164,6 +152,18 @@ code {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+}
+
+/* Smooth horizontal scrolling on mobile */
+@media (max-width: 1024px) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
   }
 }
 

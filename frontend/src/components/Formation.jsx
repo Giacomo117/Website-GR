@@ -82,12 +82,13 @@ const Formation = () => {
           </p>
         </motion.div>
 
+        {/* Desktop Stacked */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="space-y-6"
+          className="hidden lg:block space-y-6 mb-16"
         >
           {education.map((item) => {
             const Icon = item.icon;
@@ -95,12 +96,10 @@ const Formation = () => {
               <motion.div key={item.id} variants={itemVariants}>
                 <Card className="bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300 overflow-hidden group">
                   <div className="flex flex-col md:flex-row gap-6 p-6">
-                    {/* Icon */}
                     <div className={`flex-shrink-0 w-16 h-16 rounded-xl bg-${item.color}-500/10 border border-${item.color}-500/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className={`text-${item.color}-400`} size={32} />
                     </div>
 
-                    {/* Content */}
                     <div className="flex-grow">
                       <div className="mb-2">
                         <span className="inline-block px-3 py-1 text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full mb-2">
@@ -149,13 +148,75 @@ const Formation = () => {
           })}
         </motion.div>
 
+        {/* Mobile Horizontal Scroll */}
+        <div className="lg:hidden overflow-x-auto pb-4 -mx-6 px-6 mb-16">
+          <div className="flex gap-4" style={{ width: 'max-content' }}>
+            {education.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Card 
+                  key={item.id}
+                  className="bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300"
+                  style={{ width: '280px', flexShrink: 0 }}
+                >
+                  <div className="p-4">
+                    <div className={`w-12 h-12 rounded-xl bg-${item.color}-500/10 border border-${item.color}-500/30 flex items-center justify-center mb-3`}>
+                      <Icon className={`text-${item.color}-400`} size={24} />
+                    </div>
+
+                    <div className="mb-2">
+                      <span className="inline-block px-2 py-1 text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full mb-2">
+                        {item.type}
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-white mb-1 font-['Space_Grotesk']">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-300 font-medium mb-3">
+                      {item.institution}
+                    </p>
+                    
+                    <div className="space-y-1 mb-3 text-xs text-gray-400">
+                      <div className="flex items-center gap-1">
+                        <MapPin size={14} />
+                        <span>{item.location}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar size={14} />
+                        <span>{item.period}</span>
+                      </div>
+                      {item.grade && (
+                        <div className="flex items-center gap-1">
+                          <Award size={14} />
+                          <span>Grade: {item.grade}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {item.thesis && (
+                      <p className="text-gray-400 text-xs italic line-clamp-3">
+                        <strong className="text-gray-300">Thesis:</strong> {item.thesis}
+                      </p>
+                    )}
+                    {item.description && (
+                      <p className="text-gray-400 text-xs line-clamp-3">
+                        {item.description}
+                      </p>
+                    )}
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Skills Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16"
         >
           <h3 className="text-3xl font-bold mb-8 font-['Space_Grotesk'] text-white">
             Technical <span className="text-cyan-400">Skills</span>
