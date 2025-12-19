@@ -48,13 +48,6 @@ const Footer = () => {
             </a>
           </div>
         </div>
-
-        {/* Made with love */}
-        <div className="mt-8 pt-8 border-t border-zinc-800 text-center">
-          <p className="text-gray-500 text-sm flex items-center justify-center gap-2">
-            Made with <Heart size={16} className="text-cyan-400" fill="currentColor" /> by Giacomo Reggianini
-          </p>
-        </div>
       </div>
     </footer>
   );
