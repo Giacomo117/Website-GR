@@ -21,7 +21,7 @@ const Hero = ({ onChatOpen }) => {
         />
         
         {/* 3D Spline Background - Full Screen with Interaction - Allow overflow */}
-        <div className="absolute inset-0 z-0 top-16 md:top-0 scale-90 md:scale-100 origin-top" style={{ height: '120vh', willChange: 'transform' }}>
+        <div className="absolute inset-0 z-0 top-8 md:top-0" style={{ height: '120vh', willChange: 'transform' }}>
           <SplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
