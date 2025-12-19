@@ -86,19 +86,19 @@ const Contact = ({ onChatOpen }) => {
                       <div className={`flex-shrink-0 w-12 h-12 rounded-lg bg-${item.color}-500/10 border border-${item.color}-500/30 flex items-center justify-center`}>
                         <Icon className={`text-${item.color}-400`} size={24} />
                       </div>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="text-sm text-gray-400 mb-1">{item.label}</p>
                         {item.href ? (
                           <a
                             href={item.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white hover:text-cyan-400 transition-colors font-medium"
+                            className="text-white hover:text-cyan-400 transition-colors font-medium break-all text-sm md:text-base"
                           >
                             {item.value}
                           </a>
                         ) : (
-                          <p className="text-white font-medium">{item.value}</p>
+                          <p className="text-white font-medium break-all text-sm md:text-base">{item.value}</p>
                         )}
                       </div>
                     </div>
@@ -159,9 +159,10 @@ const Contact = ({ onChatOpen }) => {
                 >
                   Connect on LinkedIn
                 </a>
+                {/* Chat Button - Hidden on Mobile */}
                 <button
                   onClick={onChatOpen}
-                  className="inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-center font-semibold rounded-full hover:from-cyan-400 hover:to-blue-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/30"
+                  className="hidden md:inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-center font-semibold rounded-full hover:from-cyan-400 hover:to-blue-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/30"
                 >
                   <MessageSquare size={20} />
                   Chat with my AI Assistant

@@ -90,12 +90,13 @@ const Projects = ({ onProjectClick }) => {
           </p>
         </motion.div>
 
+        {/* Desktop Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+          className="hidden lg:grid grid-cols-1 lg:grid-cols-2 gap-8"
         >
           {projects.map((project) => (
             <motion.div key={project.id} variants={itemVariants}>
@@ -103,7 +104,6 @@ const Projects = ({ onProjectClick }) => {
                 onClick={() => handleProjectClick(project)}
                 className="group overflow-hidden bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300 h-full cursor-pointer"
               >
-                {/* Image */}
                 <div className="relative h-64 overflow-hidden">
                   <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-300`}></div>
                   <img
@@ -119,7 +119,6 @@ const Projects = ({ onProjectClick }) => {
                   )}
                 </div>
 
-                {/* Content */}
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors font-['Space_Grotesk']">
                     {project.title}
@@ -128,7 +127,6 @@ const Projects = ({ onProjectClick }) => {
                     {project.description}
                   </p>
 
-                  {/* Technologies */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies.map((tech, index) => (
                       <span
@@ -140,7 +138,6 @@ const Projects = ({ onProjectClick }) => {
                     ))}
                   </div>
 
-                  {/* Links */}
                   <div className="flex gap-4">
                     {project.github && (
                       <a
@@ -160,6 +157,68 @@ const Projects = ({ onProjectClick }) => {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Mobile Horizontal Scroll */}
+        <div className="lg:hidden overflow-x-auto pb-4 -mx-6 px-6">
+          <div className="flex gap-4" style={{ width: 'max-content' }}>
+            {projects.map((project) => (
+              <Card 
+                key={project.id}
+                onClick={() => handleProjectClick(project)}
+                className="group overflow-hidden bg-zinc-900 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300 cursor-pointer"
+                style={{ width: '280px', flexShrink: 0 }}
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-300`}></div>
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                  {project.isMore && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Plus className="text-white" size={48} strokeWidth={1.5} />
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-4">
+                  <h3 className="text-lg font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors font-['Space_Grotesk']">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-400 mb-3 text-sm line-clamp-2">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {project.technologies.slice(0, 3).map((tech, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                    >
+                      <Github size={16} />
+                      <span className="text-xs font-medium">View Code</span>
+                    </a>
+                  )}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
