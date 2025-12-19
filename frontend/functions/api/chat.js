@@ -53,9 +53,63 @@ RESPONSE GUIDELINES:
 7. Do NOT use emojis
 `;
 
+// Rate limiting configuration
+const RATE_LIMIT = 15; // requests per minute
+const RATE_WINDOW = 60; // seconds
+
 export async function onRequestPost(context) {
   try {
     const { request, env } = context;
+    
+    // Get client IP for rate limiting
+    const clientIP = request.headers.get('CF-Connecting-IP') || 
+                     request.headers.get('X-Forwarded-For')?.split(',')[0] || 
+                     'unknown';
+    
+    // Rate limiting using KV
+    if (env.RATE_LIMIT_KV) {
+      const rateLimitKey = `ratelimit:${clientIP}`;
+      const currentData = await env.RATE_LIMIT_KV.get(rateLimitKey, { type: 'json' });
+      
+      const now = Math.floor(Date.now() / 1000);
+      
+      if (currentData) {
+        const { count, windowStart } = currentData;
+        
+        // Check if we're still in the same window
+        if (now - windowStart < RATE_WINDOW) {
+          if (count >= RATE_LIMIT) {
+            const retryAfter = RATE_WINDOW - (now - windowStart);
+            return new Response(JSON.stringify({ 
+              error: `Rate limit exceeded. Try again in ${retryAfter} seconds.` 
+            }), {
+              status: 429,
+              headers: { 
+                'Content-Type': 'application/json',
+                'Retry-After': String(retryAfter)
+              }
+            });
+          }
+          // Increment count
+          await env.RATE_LIMIT_KV.put(rateLimitKey, JSON.stringify({
+            count: count + 1,
+            windowStart
+          }), { expirationTtl: RATE_WINDOW });
+        } else {
+          // Start new window
+          await env.RATE_LIMIT_KV.put(rateLimitKey, JSON.stringify({
+            count: 1,
+            windowStart: now
+          }), { expirationTtl: RATE_WINDOW });
+        }
+      } else {
+        // First request from this IP
+        await env.RATE_LIMIT_KV.put(rateLimitKey, JSON.stringify({
+          count: 1,
+          windowStart: now
+        }), { expirationTtl: RATE_WINDOW });
+      }
+    }
     
     // Get the API key from environment variables
     const apiKey = env.OPENROUTER_API_KEY;
