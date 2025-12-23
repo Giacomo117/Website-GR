@@ -118,7 +118,7 @@ Technologies: Neo4j, Python, Graph Data Science, GTFS, Cypher` },
           'tools.txt': { type: 'file', content: 'Git, Docker, Kubernetes, AWS, Azure, Linux' },
         }
       },
-      '.secret': { type: 'file', content: 'Edo sei un dannato gay' },
+      '.secret': { type: 'file', content: 'Congrats! You found the secret file.' },
     }
   }
 };
