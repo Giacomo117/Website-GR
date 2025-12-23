@@ -118,24 +118,17 @@ export function SpaceBackground({
     if (!ctx) return
     if (!resolvedColor) return
 
-    const isMobile = window.innerWidth < 768
     let ratio = window.innerHeight < 400 ? 0.6 : 1
-    // On mobile, use a more square-ish ratio to prevent elongation
-    if (isMobile) {
-      ratio = Math.min(window.innerWidth, window.innerHeight) / Math.max(window.innerWidth, window.innerHeight)
-    }
     const state = {
       particles: [],
-      r: isMobile ? 80 : 120,
+      r: 120,
       counter: 0,
     }
 
     const setupCanvas = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
-      // On mobile, center the animation more towards the middle
-      const centerY = isMobile ? canvas.height * 0.45 : canvas.height / 2
-      ctx.setTransform(ratio, 0, 0, -ratio, canvas.width / 2, centerY)
+      ctx.setTransform(ratio, 0, 0, -ratio, canvas.width / 2, canvas.height / 2)
     }
     setupCanvas()
 
