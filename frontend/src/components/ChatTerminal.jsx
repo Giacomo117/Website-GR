@@ -124,7 +124,7 @@ Technologies: Neo4j, Python, Graph Data Science, GTFS, Cypher` },
 };
 
 // Command history for arrow navigation
-const ChatTerminal = ({ isOpen, onClose, projectMessage, projectContext }) => {
+const ChatTerminal = ({ isOpen, onClose, projectMessage, projectContext, autoSendMessage, onAutoSendProcessed }) => {
   const [history, setHistory] = useState([
     { 
       type: 'system', 
@@ -140,6 +140,7 @@ Ask me what you want! Or type 'help' for available commands.
   const [commandHistory, setCommandHistory] = useState([]);
   const [activeContext, setActiveContext] = useState(null);
   const [historyIndex, setHistoryIndex] = useState(-1);
+  const [autoSendProcessed, setAutoSendProcessed] = useState(false);
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
@@ -279,6 +280,32 @@ Or just type any question to ask the AI about Giacomo.`,
       }
     }
   }, [isOpen, projectMessage, projectContext]);
+
+  // Handle auto-send message (from voice assistant)
+  useEffect(() => {
+    if (isOpen && autoSendMessage && !autoSendProcessed && !isLoading) {
+      setAutoSendProcessed(true);
+      // Set the context first
+      if (projectContext) {
+        setActiveContext(projectContext);
+      }
+      // Auto-send the message after a brief delay to allow terminal to render
+      const timer = setTimeout(() => {
+        handleCommand(autoSendMessage);
+        if (onAutoSendProcessed) {
+          onAutoSendProcessed();
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, autoSendMessage, autoSendProcessed, isLoading, projectContext]);
+
+  // Reset autoSendProcessed when terminal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setAutoSendProcessed(false);
+    }
+  }, [isOpen]);
 
   const handleCommand = async (message = currentCommand) => {
     if (isLoading) return;

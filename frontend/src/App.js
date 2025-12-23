@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import VoiceAssistant from "./components/VoiceAssistant";
 import Projects from "./components/Projects";
 import Formation from "./components/Formation";
 import Experience from "./components/Experience";
@@ -36,6 +37,7 @@ function App() {
       <div className="App" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
         <Navbar onChatOpen={handleOpenChat} />
         <Hero onChatOpen={handleOpenChat} />
+        <VoiceAssistant onOpenChatWithMessage={handleProjectClick} />
         <Projects onProjectClick={handleProjectClick} />
         <Formation />
         <Experience />

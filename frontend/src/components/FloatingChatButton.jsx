@@ -6,14 +6,22 @@ const FloatingChatButton = ({ onChatOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [projectMessage, setProjectMessage] = useState(null);
   const [projectContext, setProjectContext] = useState(null);
+  const [autoSendMessage, setAutoSendMessage] = useState(null);
 
   const handleOpen = (data = null) => {
     if (data && typeof data === 'object') {
       setProjectMessage(data.message);
       setProjectContext(data.context);
+      // If autoSend is true, we'll send this message automatically
+      if (data.autoSend) {
+        setAutoSendMessage(data.message);
+      } else {
+        setAutoSendMessage(null);
+      }
     } else {
       setProjectMessage(data);
       setProjectContext(null);
+      setAutoSendMessage(null);
     }
     setIsOpen(true);
   };
@@ -22,6 +30,12 @@ const FloatingChatButton = ({ onChatOpen }) => {
     setIsOpen(false);
     setProjectMessage(null);
     setProjectContext(null);
+    setAutoSendMessage(null);
+  };
+
+  // Clear autoSend after it's been processed
+  const handleAutoSendProcessed = () => {
+    setAutoSendMessage(null);
   };
 
   // Expose handleOpen to parent
@@ -54,6 +68,8 @@ const FloatingChatButton = ({ onChatOpen }) => {
         onClose={handleClose}
         projectMessage={projectMessage}
         projectContext={projectContext}
+        autoSendMessage={autoSendMessage}
+        onAutoSendProcessed={handleAutoSendProcessed}
       />
     </>
   );
