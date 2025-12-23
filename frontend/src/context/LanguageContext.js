@@ -54,8 +54,9 @@ const translations = {
       chat: 'Chat with AI',
     },
     hero: {
-      greeting: 'Welcome to my portfolio',
-      name: '',  // Not used anymore
+      welcome: 'Welcome to my portfolio',
+      greeting: "Hi, I'm",
+      name: 'Giacomo',
       role: 'AI Engineer',
       description: 'I build intelligent systems that solve real-world problems. Specialized in RAG systems, computer vision, and enterprise AI solutions.',
       cta: 'Explore My Work',
@@ -201,8 +202,9 @@ const translations = {
       chat: 'Chatta con AI',
     },
     hero: {
-      greeting: 'Benvenuto nel mio portfolio',
-      name: '',  // Non utilizzato
+      welcome: 'Benvenuto nel mio portfolio',
+      greeting: 'Ciao, sono',
+      name: 'Giacomo',
       role: 'AI Engineer',
       description: 'Costruisco sistemi intelligenti che risolvono problemi reali. Specializzato in sistemi RAG, computer vision e soluzioni AI enterprise.',
       cta: 'Esplora i Miei Lavori',
@@ -348,8 +350,9 @@ const translations = {
       chat: "Discuter avec l'IA",
     },
     hero: {
-      greeting: 'Bienvenue sur mon portfolio',
-      name: '',  // Non utilisé
+      welcome: 'Bienvenue sur mon portfolio',
+      greeting: 'Bonjour, je suis',
+      name: 'Giacomo',
       role: 'Ingénieur IA',
       description: 'Je construis des systèmes intelligents qui résolvent des problèmes réels. Spécialisé dans les systèmes RAG, la vision par ordinateur et les solutions IA entreprise.',
       cta: 'Découvrir Mon Travail',
@@ -495,8 +498,9 @@ const translations = {
       chat: 'Chatear con IA',
     },
     hero: {
-      greeting: 'Bienvenido a mi portfolio',
-      name: '',  // No utilizado
+      welcome: 'Bienvenido a mi portfolio',
+      greeting: 'Hola, soy',
+      name: 'Giacomo',
       role: 'Ingeniero de IA',
       description: 'Construyo sistemas inteligentes que resuelven problemas reales. Especializado en sistemas RAG, visión por computadora y soluciones de IA empresarial.',
       cta: 'Explorar Mi Trabajo',

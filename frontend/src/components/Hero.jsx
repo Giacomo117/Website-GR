@@ -38,12 +38,12 @@ const Hero = ({ onChatOpen }) => {
               {/* Welcome Badge */}
               <div className="mb-6 flex justify-center">
                 <span className="inline-block px-3 md:px-4 py-1.5 md:py-2 bg-cyan-500/20 backdrop-blur-sm border border-cyan-500/40 rounded-full text-cyan-400 text-xs md:text-sm font-medium">
-                  {t('hero.greeting')}
+                  {t('hero.welcome')}
                 </span>
               </div>
               
               <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400 font-['Space_Grotesk'] drop-shadow-lg">
-                {t('hero.greeting')}
+                {t('hero.greeting')} <span className="text-cyan-400">{t('hero.name')}</span>
               </h1>
               
               <p className="text-lg md:text-2xl lg:text-3xl text-gray-200 mb-6 md:mb-8 font-['Space_Grotesk'] font-medium drop-shadow-md">
