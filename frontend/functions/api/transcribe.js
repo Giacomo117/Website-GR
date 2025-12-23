@@ -73,61 +73,21 @@ export async function onRequestPost(context) {
       });
     }
     
-    // Convert audio file to base64
-    const audioBuffer = await audioFile.arrayBuffer();
-    const base64Audio = btoa(
-      new Uint8Array(audioBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
+    // Create FormData for OpenRouter Whisper API
+    const whisperFormData = new FormData();
+    whisperFormData.append('file', audioFile, audioFile.name || 'audio.webm');
+    whisperFormData.append('model', 'openai/whisper-1');
+    whisperFormData.append('response_format', 'json');
     
-    // Determine audio format from mime type
-    const mimeType = audioFile.type || 'audio/webm';
-    let audioFormat = 'wav';
-    if (mimeType.includes('webm')) {
-      audioFormat = 'webm';
-    } else if (mimeType.includes('mp4') || mimeType.includes('m4a')) {
-      audioFormat = 'mp4';
-    } else if (mimeType.includes('mp3') || mimeType.includes('mpeg')) {
-      audioFormat = 'mp3';
-    } else if (mimeType.includes('ogg')) {
-      audioFormat = 'ogg';
-    }
-    
-    // Call OpenRouter's chat API with Gemini model for audio transcription
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Call OpenRouter's Whisper transcription endpoint
+    const response = await fetch('https://openrouter.ai/api/v1/audio/transcriptions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openRouterKey}`,
-        'Content-Type': 'application/json',
         'HTTP-Referer': 'https://giacomoreggianini.com',
         'X-Title': 'Giacomo Portfolio Voice Assistant'
       },
-      body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-001',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a speech-to-text transcription service. Your ONLY job is to listen to the audio and output EXACTLY what was said, word for word. Do not respond to the content. Do not add any commentary. Do not say "Okay" or acknowledge anything. Just transcribe the spoken words verbatim. If no speech is detected, output only: [NO_SPEECH]'
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Transcribe the following audio verbatim:'
-              },
-              {
-                type: 'input_audio',
-                input_audio: {
-                  data: base64Audio,
-                  format: audioFormat
-                }
-              }
-            ]
-          }
-        ],
-        max_tokens: 1000,
-        temperature: 0
-      })
+      body: whisperFormData
     });
     
     if (response.status === 429) {
@@ -142,7 +102,7 @@ export async function onRequestPost(context) {
     
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenRouter error:', response.status, errorText);
+      console.error('OpenRouter Whisper error:', response.status, errorText);
       return new Response(JSON.stringify({ error: 'Transcription service error', details: errorText }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
@@ -151,20 +111,8 @@ export async function onRequestPost(context) {
     
     const result = await response.json();
     
-    // Extract the transcribed text from the response
-    let transcribedText = result.choices?.[0]?.message?.content?.trim() || '';
-    
-    // Filter out non-transcription responses
-    const invalidResponses = [
-      'okay', 'ok', 'sure', 'yes', 'no', 'hello', 'hi',
-      '[no_speech]', '[no speech]', '[silence]', '[empty]',
-      'i cannot', 'i can\'t', 'there is no', 'no audio', 'no speech'
-    ];
-    
-    const lowerText = transcribedText.toLowerCase();
-    if (invalidResponses.some(invalid => lowerText === invalid || lowerText.startsWith(invalid + '.'))) {
-      transcribedText = '';
-    }
+    // Whisper returns { text: "transcribed text" }
+    const transcribedText = result.text?.trim() || '';
     
     return new Response(JSON.stringify({ text: transcribedText }), {
       status: 200,
