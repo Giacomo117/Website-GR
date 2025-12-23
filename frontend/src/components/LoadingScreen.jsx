@@ -4,8 +4,11 @@ import { SpaceBackground } from './ui/space-background';
 
 const LoadingScreen = ({ onLoadingComplete }) => {
   const [isComplete, setIsComplete] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    
     // Set loading complete after 3 seconds
     const timer = setTimeout(() => {
       setIsComplete(true);
@@ -24,8 +27,12 @@ const LoadingScreen = ({ onLoadingComplete }) => {
           transition={{ duration: 0.5 }}
           className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center gap-8"
         >
-          {/* Space Background Animation */}
-          <SpaceBackground particleCount={450} particleColor="#00D9FF" backgroundColor="transparent" />
+          {/* Space Background Animation - fewer particles on mobile */}
+          <SpaceBackground 
+            particleCount={isMobile ? 200 : 450} 
+            particleColor="#00D9FF" 
+            backgroundColor="transparent" 
+          />
           
           {/* Logo/Name */}
           <motion.div
@@ -34,10 +41,10 @@ const LoadingScreen = ({ onLoadingComplete }) => {
             transition={{ duration: 0.5 }}
             className="text-center mb-4 relative z-10"
           >
-            <h1 className="text-6xl md:text-8xl font-bold text-white font-['Space_Grotesk'] mb-2">
+            <h1 className="text-5xl md:text-8xl font-bold text-white font-['Space_Grotesk'] mb-2">
               <span className="text-cyan-400">GR</span>
             </h1>
-            <p className="text-gray-400 text-lg">Loading Portfolio...</p>
+            <p className="text-gray-400 text-sm md:text-lg">Loading Portfolio...</p>
           </motion.div>
         </motion.div>
       )}
