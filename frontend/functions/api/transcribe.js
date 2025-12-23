@@ -73,20 +73,57 @@ export async function onRequestPost(context) {
       });
     }
     
-    // Create new FormData for OpenRouter
-    const openRouterFormData = new FormData();
-    openRouterFormData.append('file', audioFile, audioFile.name || 'audio.webm');
-    openRouterFormData.append('model', 'openai/whisper-large-v3');
+    // Convert audio file to base64
+    const audioBuffer = await audioFile.arrayBuffer();
+    const base64Audio = btoa(
+      new Uint8Array(audioBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+    );
     
-    // Call OpenRouter's Whisper API
-    const response = await fetch('https://openrouter.ai/api/v1/audio/transcriptions', {
+    // Determine audio format from mime type
+    const mimeType = audioFile.type || 'audio/webm';
+    let audioFormat = 'wav';
+    if (mimeType.includes('webm')) {
+      audioFormat = 'webm';
+    } else if (mimeType.includes('mp4') || mimeType.includes('m4a')) {
+      audioFormat = 'mp4';
+    } else if (mimeType.includes('mp3') || mimeType.includes('mpeg')) {
+      audioFormat = 'mp3';
+    } else if (mimeType.includes('ogg')) {
+      audioFormat = 'ogg';
+    }
+    
+    // Call OpenRouter's chat API with Gemini model for audio transcription
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openRouterKey}`,
+        'Content-Type': 'application/json',
         'HTTP-Referer': 'https://giacomoreggianini.com',
         'X-Title': 'Giacomo Portfolio Voice Assistant'
       },
-      body: openRouterFormData
+      body: JSON.stringify({
+        model: 'google/gemini-2.0-flash-lite-001',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: 'Transcribe this audio exactly as spoken. Return ONLY the transcribed text, nothing else. No quotes, no explanations, just the exact words spoken. If the audio is empty or unclear, return an empty string.'
+              },
+              {
+                type: 'input_audio',
+                input_audio: {
+                  data: base64Audio,
+                  format: audioFormat
+                }
+              }
+            ]
+          }
+        ],
+        max_tokens: 1000,
+        temperature: 0
+      })
     });
     
     if (response.status === 429) {
@@ -102,7 +139,7 @@ export async function onRequestPost(context) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('OpenRouter error:', response.status, errorText);
-      return new Response(JSON.stringify({ error: 'Transcription service error' }), {
+      return new Response(JSON.stringify({ error: 'Transcription service error', details: errorText }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -110,14 +147,17 @@ export async function onRequestPost(context) {
     
     const result = await response.json();
     
-    return new Response(JSON.stringify({ text: result.text || '' }), {
+    // Extract the transcribed text from the response
+    const transcribedText = result.choices?.[0]?.message?.content?.trim() || '';
+    
+    return new Response(JSON.stringify({ text: transcribedText }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
     
   } catch (error) {
     console.error('Transcription error:', error);
-    return new Response(JSON.stringify({ error: 'Failed to transcribe audio' }), {
+    return new Response(JSON.stringify({ error: 'Failed to transcribe audio', details: error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

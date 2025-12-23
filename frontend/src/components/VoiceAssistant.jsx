@@ -182,7 +182,7 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
     setIsRecording(false);
   }, []);
 
-  // Transcribe audio using OpenRouter's Whisper
+  // Transcribe audio using OpenRouter's Gemini model
   const transcribeWithOpenRouter = async () => {
     if (audioChunksRef.current.length === 0) return;
     
@@ -194,12 +194,17 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
       const mimeType = audioChunksRef.current[0]?.type || 'audio/webm';
       const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
       
+      // Check if audio is too short (less than 0.5 seconds of data)
+      if (audioBlob.size < 5000) {
+        setError('Recording too short. Please speak longer.');
+        return;
+      }
+      
       // Create FormData for the API call
       const formData = new FormData();
       formData.append('file', audioBlob, 'recording.webm');
-      formData.append('model', 'openai/whisper-large-v3');
       
-      // Call the backend transcribe endpoint
+      // Call the Cloudflare Function transcribe endpoint
       const response = await fetch(`${API}/transcribe`, {
         method: 'POST',
         body: formData,
@@ -211,15 +216,20 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
         return;
       }
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error(`Transcription failed: ${response.status}`);
+        console.error('Transcription API error:', data);
+        setError(data.error || 'Transcription failed. Please try again.');
+        return;
       }
       
-      const data = await response.json();
-      if (data.text) {
-        setTranscription(data.text);
+      if (data.text && data.text.trim()) {
+        setTranscription(data.text.trim());
       } else if (data.error) {
         setError(data.error);
+      } else {
+        setError('No speech detected. Please try again.');
       }
     } catch (err) {
       console.error('Transcription error:', err);
