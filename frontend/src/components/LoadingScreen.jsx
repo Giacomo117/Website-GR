@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import BoxLoader from './ui/box-loader';
+import { SpaceBackground } from './ui/space-background';
 
 const LoadingScreen = ({ onLoadingComplete }) => {
   const [isComplete, setIsComplete] = useState(false);
@@ -24,26 +24,20 @@ const LoadingScreen = ({ onLoadingComplete }) => {
           transition={{ duration: 0.5 }}
           className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center gap-8"
         >
+          {/* Space Background Animation */}
+          <SpaceBackground particleCount={450} particleColor="#00D9FF" backgroundColor="transparent" />
+          
           {/* Logo/Name */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-4"
+            className="text-center mb-4 relative z-10"
           >
             <h1 className="text-6xl md:text-8xl font-bold text-white font-['Space_Grotesk'] mb-2">
               <span className="text-cyan-400">GR</span>
             </h1>
             <p className="text-gray-400 text-lg">Loading Portfolio...</p>
-          </motion.div>
-
-          {/* Box Loader */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <BoxLoader />
           </motion.div>
         </motion.div>
       )}

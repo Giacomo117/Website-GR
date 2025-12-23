@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { VoicePoweredOrb } from './ui/voice-powered-orb';
 import ChatTerminal from './ChatTerminal';
 
 const FloatingChatButton = ({ onChatOpen }) => {
@@ -28,10 +28,14 @@ const FloatingChatButton = ({ onChatOpen }) => {
       {!isOpen && (
         <button
           onClick={() => handleOpen()}
-          className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-cyan-500 hover:bg-cyan-400 text-black rounded-full shadow-lg shadow-cyan-500/50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 group"
+          className="fixed bottom-6 right-6 z-50 w-20 h-20 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 group overflow-hidden"
           aria-label="Open AI Chat"
         >
-          <MessageSquare size={28} className="group-hover:rotate-12 transition-transform" />
+          <VoicePoweredOrb 
+            hue={180}
+            enableVoiceControl={false}
+            className="w-full h-full"
+          />
         </button>
       )}
 
