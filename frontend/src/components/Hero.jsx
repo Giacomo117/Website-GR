@@ -21,7 +21,7 @@ const Hero = ({ onChatOpen }) => {
         />
         
         {/* Shader Lines Background - Full Screen */}
-        <div className="absolute inset-0 z-0 -top-32 md:top-0">
+        <div className="absolute inset-0 z-0 -top-64 md:top-0">
           <ShaderAnimation />
         </div>
 
