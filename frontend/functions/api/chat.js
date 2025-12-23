@@ -124,12 +124,19 @@ export async function onRequestPost(context) {
     // Parse the request body
     const body = await request.json();
     const userMessage = body.message;
+    const projectContext = body.context;
 
     if (!userMessage) {
       return new Response(JSON.stringify({ error: 'Message is required' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
+    }
+
+    // Build system message with optional project context
+    let systemMessage = GIACOMO_CONTEXT;
+    if (projectContext) {
+      systemMessage += `\n\nCURRENT PROJECT CONTEXT (user is asking about this specific project):\n${projectContext}\n\nWhen answering questions, assume the user is asking about this project unless they explicitly mention something else.`;
     }
 
     // Call OpenRouter API
@@ -142,7 +149,7 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         model: 'openai/gpt-4o-mini',
         messages: [
-          { role: 'system', content: GIACOMO_CONTEXT },
+          { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
         max_tokens: 150,

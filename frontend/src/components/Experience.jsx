@@ -29,17 +29,6 @@ const Experience = () => {
     },
     {
       id: 3,
-      role: 'Scout Leader',
-      company: 'AGESCI Modena 9',
-      location: 'Modena, Italy',
-      period: '2020 - Present',
-      type: 'Volunteer',
-      description: 'Leading and mentoring young scouts, organizing educational activities and outdoor adventures.',
-      technologies: ['Leadership', 'Education', 'Team Management'],
-      color: 'green',
-    },
-    {
-      id: 4,
       role: 'Private Tutor',
       company: 'Self-employed',
       location: 'Modena, Italy',

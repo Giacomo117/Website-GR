@@ -64,11 +64,69 @@ const Projects = ({ onProjectClick }) => {
     },
   };
 
+  // Project context for AI chat
+  const projectContexts = {
+    'Civetta - Enterprise RAG Platform': `Civetta - Enterprise RAG Platform
+Associated with E38
+
+A distributed Retrieval-Augmented Generation (RAG) system serving as an intelligent virtual assistant for enterprise environments, built on scalable microservices architecture with multi-tenant support and no-code document management capabilities.
+
+The system combines advanced document processing, vector search, and LLM orchestration to deliver domain-specific AI assistance across legal, business intelligence, and customer support sectors.
+
+Core Architecture:
+- Microservices Implementation: TypeScript-based orchestrator and frontend with Python-based RAG pipeline
+- Multi-Modal Document Processing: Four specialized chunking pipelines (Mistral OCR for PDFs, Semantic chunking, Section-based analysis, LLaMA 3 70B Z-chunking)
+- Advanced RAG Pipeline: Redis-based vector database with similarity search, image processing with vision models, contextual caption generation through o1-mini LLM refinement
+
+Enterprise Features:
+- Multi-tenant orchestration with client isolation and dynamic onboarding
+- No-code frontend interface for autonomous document upload, API key management, and pipeline configuration
+- Real-time streaming responses via Server-Sent Events
+- Comprehensive observability and monitoring infrastructure
+- Integration with MinIO object storage and Azure OpenAI for LLM inference
+
+Technologies: Python, TypeScript, Angular, LangChain, Redis, MinIO, Azure OpenAI`,
+    
+    'AutoGuardian': `AutoGuardian - IoT Vehicle Safety Platform
+
+A modular IoT platform for vehicle safety monitoring and neighbor-aware emergency alerting, featuring real-time telemetry processing, anomaly detection, and distributed alert dissemination.
+
+The system connects Arduino/MCU devices via serial communication to a Django REST API backend, with MQTT-based alert broadcasting for low-latency emergency response coordination between nearby vehicles.
+
+Key Features:
+- Smart anomaly detection with false-positive suppression by comparing sensor readings across neighboring vehicles
+- Geospatial neighbor discovery using distance calculations
+- Web-based dashboard providing real-time vehicle monitoring, alert management, and system overview
+- REST-first design with clean separation of concerns
+- Comprehensive API endpoints for vehicles, alerts, and contact management
+
+Technologies: Arduino, Django, MQTT, Mosquitto, Python, IoT
+GitHub: github.com/Giacomo117/AutoGuardian`,
+    
+    'Drowsiness State Detector': `Drowsiness State Detector - Real-time Driver Monitoring System
+
+A multi-model computer vision application for real-time driver drowsiness detection, composed of three standalone deep learning models working in parallel through multi-threaded processing.
+
+Real-time performance achieved through concurrent model inference on webcam input, with OpenCV Haar cascades handling face detection and eye region extraction. A 10-second sliding buffer aggregates detection results for stable drowsiness assessment based on eye closure frequency, yawn rate, and head rotation metrics.
+
+The Three Models:
+1. Eye State Classification: MobileNetV2 classifier trained to distinguish between open/closed eyes on extracted eye regions
+2. Yawn Detection: MobileNet trained for binary yawn classification from facial crops
+3. Facial Keypoint Estimation: PyTorch ResNet50 predicting 68 facial landmarks for head pose analysis
+
+Technologies: Python, OpenCV, PyTorch, TensorFlow, Deep Learning
+GitHub: github.com/Giacomo117/Drowsiness-State-Detector`,
+  };
+
   const handleProjectClick = (project) => {
     if (project.isMore) {
-      onProjectClick('What other projects has Giacomo worked on?');
+      onProjectClick({ message: 'What other projects has Giacomo worked on?', context: null });
     } else {
-      onProjectClick(`What would you like to know about ${project.title}?`);
+      const context = projectContexts[project.title] || null;
+      onProjectClick({ 
+        message: `What would you like to know about ${project.title}?`, 
+        context: context 
+      });
     }
   };
 

@@ -5,15 +5,23 @@ import ChatTerminal from './ChatTerminal';
 const FloatingChatButton = ({ onChatOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [projectMessage, setProjectMessage] = useState(null);
+  const [projectContext, setProjectContext] = useState(null);
 
-  const handleOpen = (message = null) => {
-    setProjectMessage(message);
+  const handleOpen = (data = null) => {
+    if (data && typeof data === 'object') {
+      setProjectMessage(data.message);
+      setProjectContext(data.context);
+    } else {
+      setProjectMessage(data);
+      setProjectContext(null);
+    }
     setIsOpen(true);
   };
 
   const handleClose = () => {
     setIsOpen(false);
     setProjectMessage(null);
+    setProjectContext(null);
   };
 
   // Expose handleOpen to parent
@@ -45,6 +53,7 @@ const FloatingChatButton = ({ onChatOpen }) => {
         isOpen={isOpen} 
         onClose={handleClose}
         projectMessage={projectMessage}
+        projectContext={projectContext}
       />
     </>
   );

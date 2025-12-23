@@ -14,9 +14,9 @@ function App() {
   const openChatWithMessage = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleProjectClick = (message) => {
+  const handleProjectClick = (projectData) => {
     if (openChatWithMessage.current) {
-      openChatWithMessage.current(message);
+      openChatWithMessage.current(projectData);
     }
   };
 

@@ -124,7 +124,7 @@ Technologies: Neo4j, Python, Graph Data Science, GTFS, Cypher` },
 };
 
 // Command history for arrow navigation
-const ChatTerminal = ({ isOpen, onClose, projectMessage }) => {
+const ChatTerminal = ({ isOpen, onClose, projectMessage, projectContext }) => {
   const [history, setHistory] = useState([
     { 
       type: 'system', 
@@ -138,6 +138,7 @@ Ask me what you want! Or type 'help' for available commands.
   const [isLoading, setIsLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState('~');
   const [commandHistory, setCommandHistory] = useState([]);
+  const [activeContext, setActiveContext] = useState(null);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
@@ -262,7 +263,7 @@ Or just type any question to ask the AI about Giacomo.`,
     },
   };
 
-  // Handle project message
+  // Handle project message and context
   useEffect(() => {
     if (isOpen && projectMessage) {
       setHistory(prev => {
@@ -272,8 +273,12 @@ Or just type any question to ask the AI about Giacomo.`,
         }
         return [...prev, { type: 'project', output: projectMessage }];
       });
+      // Set the active context for AI queries
+      if (projectContext) {
+        setActiveContext(projectContext);
+      }
     }
-  }, [isOpen, projectMessage]);
+  }, [isOpen, projectMessage, projectContext]);
 
   const handleCommand = async (message = currentCommand) => {
     if (isLoading) return;
@@ -328,7 +333,8 @@ Or just type any question to ask the AI about Giacomo.`,
     setIsLoading(true);
     try {
       const response = await axios.post(`${API}/chat`, {
-        message: userMessage
+        message: userMessage,
+        context: activeContext
       });
       setHistory(prev => [...prev, { type: 'assistant', output: response.data.response }]);
     } catch (error) {
