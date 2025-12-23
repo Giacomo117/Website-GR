@@ -47,7 +47,7 @@ const Hero = ({ onChatOpen }) => {
               </h1>
               
               <p className="text-lg md:text-2xl lg:text-3xl text-gray-200 mb-6 md:mb-8 font-['Space_Grotesk'] font-medium drop-shadow-md">
-                {t('hero.role')}
+                {t('hero.roleShort')}
               </p>
               
               {/* Description - Hidden on Mobile, Visible on Desktop */}
