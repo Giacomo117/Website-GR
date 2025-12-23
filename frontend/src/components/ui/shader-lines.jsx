@@ -58,9 +58,13 @@ export function ShaderAnimation() {
     const geometry = new THREE.PlaneBufferGeometry(2, 2)
 
     // Define uniforms
+    const isMobile = window.innerWidth < 768
     const uniforms = {
       time: { type: "f", value: 1.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
+      yOffset: { type: "f", value: isMobile ? -1.0 : 0.0 },
+      brightness: { type: "f", value: isMobile ? 1.0 : 1.0 },
+      scale: { type: "f", value: isMobile ? 0.6 : 1.0 },
     }
 
     // Vertex shader
@@ -81,6 +85,9 @@ export function ShaderAnimation() {
       #endif
       uniform vec2 resolution;
       uniform float time;
+      uniform float yOffset;
+      uniform float brightness;
+      uniform float scale;
 
       float random (in float x) {
         return fract(sin(x)*1e4);
@@ -93,6 +100,8 @@ export function ShaderAnimation() {
 
       void main(void) {
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+        uv *= scale;
+        uv.y += yOffset;
 
         vec2 fMosaicScal = vec2(4.0, 2.0);
         vec2 vScreenSize = vec2(256.0, 256.0);
@@ -107,6 +116,7 @@ export function ShaderAnimation() {
             color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*1.0 - length(uv));
           }
         }
+        color *= brightness;
         gl_FragColor = vec4(color[2],color[1],color[0],1.0);
       }
     `
