@@ -3,6 +3,13 @@ import { VoicePoweredOrb } from './ui/voice-powered-orb';
 import { Button } from './ui/button';
 import { Mic, MicOff, Send, X, Loader2 } from 'lucide-react';
 
+// API endpoint (same as chat)
+const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
+
+// Rate limiting configuration (client-side)
+const RATE_LIMIT = 5; // requests per minute
+const RATE_WINDOW = 60000; // 60 seconds in milliseconds
+
 // Context about Giacomo for the AI
 const GIACOMO_CONTEXT = `
 ABOUT GIACOMO REGGIANINI:
@@ -69,148 +76,167 @@ Master's in Artificial Intelligence Engineering (Autumn 2025) - Università di M
 Erasmus experience in England for international exposure
 `;
 
-// Check if SpeechRecognition is available
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+// Rate limiter class
+class ClientRateLimiter {
+  constructor() {
+    this.requests = [];
+  }
+
+  checkLimit() {
+    const now = Date.now();
+    // Remove old requests outside the window
+    this.requests = this.requests.filter(time => now - time < RATE_WINDOW);
+    
+    if (this.requests.length >= RATE_LIMIT) {
+      const oldestRequest = this.requests[0];
+      const retryAfter = Math.ceil((RATE_WINDOW - (now - oldestRequest)) / 1000);
+      return { allowed: false, retryAfter };
+    }
+    
+    this.requests.push(now);
+    return { allowed: true };
+  }
+}
+
+const rateLimiter = new ClientRateLimiter();
 
 const VoiceAssistant = ({ onOpenChatWithMessage }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [voiceDetected, setVoiceDetected] = useState(false);
   const [transcription, setTranscription] = useState('');
-  const [interimTranscription, setInterimTranscription] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [error, setError] = useState(null);
-  const [isSpeechSupported, setIsSpeechSupported] = useState(!!SpeechRecognition);
+  const [rateLimitError, setRateLimitError] = useState(null);
   
-  const recognitionRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
   const streamRef = useRef(null);
 
-  // Initialize speech recognition
-  useEffect(() => {
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-      recognition.maxAlternatives = 1;
-
-      recognition.onstart = () => {
-        setIsRecording(true);
-        setError(null);
-      };
-
-      recognition.onresult = (event) => {
-        let interim = '';
-        let final = '';
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            final += transcript + ' ';
-          } else {
-            interim += transcript;
-          }
-        }
-
-        if (final) {
-          setTranscription(prev => prev + final);
-        }
-        setInterimTranscription(interim);
-      };
-
-      recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-        if (event.error === 'not-allowed') {
-          setError('Microphone access denied. Please allow microphone access and try again.');
-        } else if (event.error === 'no-speech') {
-          // Don't show error for no-speech, just continue listening
-        } else {
-          setError(`Speech recognition error: ${event.error}`);
-        }
-        setIsRecording(false);
-      };
-
-      recognition.onend = () => {
-        setIsRecording(false);
-        setInterimTranscription('');
-      };
-
-      recognitionRef.current = recognition;
+  // Start recording with MediaRecorder for OpenRouter
+  const startRecording = useCallback(async () => {
+    // Check rate limit first
+    const rateCheck = rateLimiter.checkLimit();
+    if (!rateCheck.allowed) {
+      setRateLimitError(`Rate limit exceeded. Try again in ${rateCheck.retryAfter} seconds.`);
+      setTimeout(() => setRateLimitError(null), 5000);
+      return;
     }
 
-    return () => {
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {
-          // Ignore errors on cleanup
-        }
-      }
-    };
-  }, []);
-
-  // Start recording
-  const startRecording = useCallback(async () => {
     try {
       setError(null);
+      setRateLimitError(null);
       setTranscription('');
-      setInterimTranscription('');
-
-      if (!SpeechRecognition) {
-        setError('Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.');
-        return;
-      }
-
-      // Request microphone access first (for the orb visualization)
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-          },
-        });
-        streamRef.current = stream;
-      } catch (err) {
-        console.warn('Could not access microphone for visualization:', err);
-      }
-
-      // Start speech recognition
-      if (recognitionRef.current) {
-        recognitionRef.current.start();
-      }
+      
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 16000,
+        },
+      });
+      
+      streamRef.current = stream;
+      audioChunksRef.current = [];
+      
+      // Use webm if supported, otherwise mp4
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
+        ? 'audio/webm;codecs=opus' 
+        : MediaRecorder.isTypeSupported('audio/webm') 
+          ? 'audio/webm' 
+          : 'audio/mp4';
+      
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+      mediaRecorderRef.current = mediaRecorder;
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+      
+      mediaRecorder.onstop = async () => {
+        if (audioChunksRef.current.length > 0) {
+          await transcribeWithOpenRouter();
+        }
+      };
+      
+      mediaRecorder.start(1000); // Collect data every second
+      setIsRecording(true);
     } catch (err) {
       console.error('Error starting recording:', err);
-      setError('Could not start recording. Please try again.');
+      setError('Could not access microphone. Please allow microphone access.');
     }
   }, []);
 
   // Stop recording
   const stopRecording = useCallback(() => {
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.stop();
-      } catch (e) {
-        // Ignore errors
-      }
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
     }
-
+    
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
-
+    
     setIsRecording(false);
-    setInterimTranscription('');
   }, []);
+
+  // Transcribe audio using OpenRouter's Whisper
+  const transcribeWithOpenRouter = async () => {
+    if (audioChunksRef.current.length === 0) return;
+    
+    setIsTranscribing(true);
+    setError(null);
+    
+    try {
+      // Create audio blob
+      const mimeType = audioChunksRef.current[0]?.type || 'audio/webm';
+      const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+      
+      // Create FormData for the API call
+      const formData = new FormData();
+      formData.append('file', audioBlob, 'recording.webm');
+      formData.append('model', 'openai/whisper-large-v3');
+      
+      // Call the backend transcribe endpoint
+      const response = await fetch(`${API}/transcribe`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.status === 429) {
+        const data = await response.json();
+        setRateLimitError(data.detail || 'Rate limit exceeded. Please wait.');
+        return;
+      }
+      
+      if (!response.ok) {
+        throw new Error(`Transcription failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (data.text) {
+        setTranscription(data.text);
+      } else if (data.error) {
+        setError(data.error);
+      }
+    } catch (err) {
+      console.error('Transcription error:', err);
+      setError('Could not transcribe audio. Please try again or type your question.');
+    } finally {
+      setIsTranscribing(false);
+    }
+  };
 
   // Handle sending the message to chat
   const handleSendMessage = useCallback(() => {
-    const messageToSend = (transcription + interimTranscription).trim();
-    if (!messageToSend) return;
+    if (!transcription.trim()) return;
     
     // Open chat with the transcription and context
     if (onOpenChatWithMessage) {
       onOpenChatWithMessage({
-        message: messageToSend,
+        message: transcription,
         context: GIACOMO_CONTEXT,
         autoSend: true
       });
@@ -218,9 +244,7 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
     
     // Reset state
     setTranscription('');
-    setInterimTranscription('');
-    stopRecording();
-  }, [transcription, interimTranscription, onOpenChatWithMessage, stopRecording]);
+  }, [transcription, onOpenChatWithMessage]);
 
   // Handle key press in input
   const handleKeyDown = (e) => {
@@ -233,37 +257,41 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
   // Clear transcription
   const handleClear = () => {
     setTranscription('');
-    setInterimTranscription('');
     setError(null);
+    setRateLimitError(null);
   };
 
-  const displayText = transcription + interimTranscription;
-
   return (
-    <section id="voice-assistant" className="relative py-16 md:py-24 bg-black overflow-hidden">
+    <section id="voice-assistant" className="relative py-24 md:py-32 lg:py-40 bg-black overflow-hidden min-h-[80vh] flex items-center">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-cyan-950/10 to-black pointer-events-none" />
       
-      <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8">
+      {/* Animated background particles effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
+      
+      <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 w-full">
         {/* Title */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 font-['Space_Grotesk'] mb-4 animate-pulse">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 font-['Space_Grotesk'] mb-6">
             Ask Me Anything
           </h2>
-          <p className="text-lg md:text-xl text-gray-400 font-['Space_Grotesk']">
+          <p className="text-xl md:text-2xl text-gray-400 font-['Space_Grotesk'] max-w-2xl mx-auto">
             Curious about my projects, skills, or experience? Just ask!
           </p>
         </div>
 
         {/* Orb Container */}
-        <div className="flex flex-col items-center space-y-6 md:space-y-8">
-          {/* Voice Powered Orb */}
-          <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+        <div className="flex flex-col items-center space-y-8 md:space-y-12">
+          {/* Voice Powered Orb - Larger */}
+          <div className="relative w-72 h-72 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
             {/* Glow effect behind orb */}
             <div className={`absolute inset-0 rounded-full transition-all duration-500 ${
               isRecording 
-                ? 'bg-cyan-500/20 blur-3xl scale-110' 
-                : 'bg-purple-500/10 blur-2xl'
+                ? 'bg-cyan-500/30 blur-3xl scale-125' 
+                : 'bg-purple-500/15 blur-3xl'
             }`} />
             
             <VoicePoweredOrb
@@ -278,9 +306,17 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
 
             {/* Recording indicator */}
             {isRecording && (
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-red-500/90 px-3 py-1.5 rounded-full animate-pulse">
-                <span className="w-2 h-2 bg-white rounded-full animate-ping" />
-                <span className="text-white text-sm font-medium">Listening...</span>
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-red-500/90 px-4 py-2 rounded-full animate-pulse shadow-lg shadow-red-500/50">
+                <span className="w-2.5 h-2.5 bg-white rounded-full animate-ping" />
+                <span className="text-white text-sm font-semibold">Recording...</span>
+              </div>
+            )}
+            
+            {/* Transcribing indicator */}
+            {isTranscribing && (
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-cyan-500/90 px-4 py-2 rounded-full shadow-lg shadow-cyan-500/50">
+                <Loader2 className="w-4 h-4 text-black animate-spin" />
+                <span className="text-black text-sm font-semibold">Transcribing...</span>
               </div>
             )}
           </div>
@@ -290,70 +326,61 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
             onClick={isRecording ? stopRecording : startRecording}
             variant={isRecording ? "destructive" : "default"}
             size="lg"
-            disabled={isTranscribing || !isSpeechSupported}
-            className={`px-8 py-4 text-base md:text-lg rounded-full transition-all duration-300 ${
+            disabled={isTranscribing}
+            className={`px-10 py-5 text-lg md:text-xl rounded-full transition-all duration-300 font-semibold ${
               isRecording 
-                ? 'bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/50' 
-                : 'bg-cyan-500 hover:bg-cyan-400 text-black shadow-lg shadow-cyan-500/50'
+                ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/50' 
+                : 'bg-cyan-500 hover:bg-cyan-400 text-black shadow-xl shadow-cyan-500/50'
             }`}
           >
             {isTranscribing ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                <Loader2 className="w-6 h-6 mr-3 animate-spin" />
                 Processing...
               </>
             ) : isRecording ? (
               <>
-                <MicOff className="w-5 h-5 mr-2" />
+                <MicOff className="w-6 h-6 mr-3" />
                 Stop Recording
               </>
             ) : (
               <>
-                <Mic className="w-5 h-5 mr-2" />
+                <Mic className="w-6 h-6 mr-3" />
                 Start Recording
               </>
             )}
           </Button>
 
-          {/* Browser not supported message */}
-          {!isSpeechSupported && (
-            <div className="bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 px-4 py-2 rounded-lg text-center max-w-md">
-              Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.
+          {/* Rate limit error */}
+          {rateLimitError && (
+            <div className="bg-orange-500/20 border border-orange-500/50 text-orange-400 px-6 py-3 rounded-lg text-center max-w-md animate-in fade-in duration-300">
+              {rateLimitError}
             </div>
           )}
 
           {/* Error message */}
           {error && (
-            <div className="bg-red-500/20 border border-red-500/50 text-red-400 px-4 py-2 rounded-lg text-center max-w-md">
+            <div className="bg-red-500/20 border border-red-500/50 text-red-400 px-6 py-3 rounded-lg text-center max-w-md animate-in fade-in duration-300">
               {error}
             </div>
           )}
 
-          {/* Live transcription display */}
-          {(isRecording || displayText) && (
-            <div className="w-full max-w-xl bg-zinc-900/80 backdrop-blur-sm border border-cyan-500/30 rounded-xl p-4 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          {/* Transcription display and send */}
+          {transcription && (
+            <div className="w-full max-w-2xl bg-zinc-900/80 backdrop-blur-sm border border-cyan-500/30 rounded-xl p-6 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
               <div className="flex items-start gap-3">
                 <div className="flex-1">
-                  <label className="text-cyan-400 text-sm font-medium mb-2 block flex items-center gap-2">
-                    {isRecording && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />}
-                    {isRecording ? 'Live transcription:' : 'Your question:'}
+                  <label className="text-cyan-400 text-sm font-medium mb-2 block">
+                    Your question:
                   </label>
                   <textarea
-                    value={displayText}
-                    onChange={(e) => {
-                      setTranscription(e.target.value);
-                      setInterimTranscription('');
-                    }}
+                    value={transcription}
+                    onChange={(e) => setTranscription(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-full bg-black/50 border border-cyan-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 resize-none"
+                    className="w-full bg-black/50 border border-cyan-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 resize-none text-base"
                     rows={3}
-                    placeholder={isRecording ? "Speak now..." : "Edit your question if needed..."}
+                    placeholder="Edit your question if needed..."
                   />
-                  {interimTranscription && (
-                    <p className="text-gray-500 text-xs mt-1 italic">
-                      Still listening...
-                    </p>
-                  )}
                 </div>
               </div>
               
@@ -361,19 +388,19 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
                 <Button
                   onClick={handleClear}
                   variant="outline"
-                  size="sm"
+                  size="default"
                   className="border-gray-600 text-gray-400 hover:text-white hover:border-gray-500"
                 >
-                  <X className="w-4 h-4 mr-1" />
+                  <X className="w-4 h-4 mr-2" />
                   Clear
                 </Button>
                 <Button
                   onClick={handleSendMessage}
-                  size="sm"
-                  disabled={!displayText.trim()}
-                  className="bg-cyan-500 hover:bg-cyan-400 text-black disabled:opacity-50"
+                  size="default"
+                  disabled={!transcription.trim()}
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black disabled:opacity-50 font-semibold"
                 >
-                  <Send className="w-4 h-4 mr-1" />
+                  <Send className="w-4 h-4 mr-2" />
                   Ask AI
                 </Button>
               </div>
@@ -381,10 +408,12 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
           )}
 
           {/* Instructions */}
-          <p className="text-gray-500 text-center text-sm md:text-base max-w-md">
+          <p className="text-gray-500 text-center text-base md:text-lg max-w-lg">
             {isRecording 
-              ? "Speak clearly — your words will appear in real-time"
-              : "Click the button and ask me anything about my projects, skills, or experience!"}
+              ? "Speak clearly, then click 'Stop Recording' when done"
+              : isTranscribing
+                ? "Converting your speech to text..."
+                : "Click the button and ask me anything about my projects, skills, or experience!"}
           </p>
         </div>
       </div>
