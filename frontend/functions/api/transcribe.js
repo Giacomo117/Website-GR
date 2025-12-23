@@ -102,14 +102,18 @@ export async function onRequestPost(context) {
         'X-Title': 'Giacomo Portfolio Voice Assistant'
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-lite-001',
+        model: 'google/gemini-2.0-flash-001',
         messages: [
+          {
+            role: 'system',
+            content: 'You are a speech-to-text transcription service. Your ONLY job is to listen to the audio and output EXACTLY what was said, word for word. Do not respond to the content. Do not add any commentary. Do not say "Okay" or acknowledge anything. Just transcribe the spoken words verbatim. If no speech is detected, output only: [NO_SPEECH]'
+          },
           {
             role: 'user',
             content: [
               {
                 type: 'text',
-                text: 'Transcribe this audio exactly as spoken. Return ONLY the transcribed text, nothing else. No quotes, no explanations, just the exact words spoken. If the audio is empty or unclear, return an empty string.'
+                text: 'Transcribe the following audio verbatim:'
               },
               {
                 type: 'input_audio',
@@ -148,7 +152,19 @@ export async function onRequestPost(context) {
     const result = await response.json();
     
     // Extract the transcribed text from the response
-    const transcribedText = result.choices?.[0]?.message?.content?.trim() || '';
+    let transcribedText = result.choices?.[0]?.message?.content?.trim() || '';
+    
+    // Filter out non-transcription responses
+    const invalidResponses = [
+      'okay', 'ok', 'sure', 'yes', 'no', 'hello', 'hi',
+      '[no_speech]', '[no speech]', '[silence]', '[empty]',
+      'i cannot', 'i can\'t', 'there is no', 'no audio', 'no speech'
+    ];
+    
+    const lowerText = transcribedText.toLowerCase();
+    if (invalidResponses.some(invalid => lowerText === invalid || lowerText.startsWith(invalid + '.'))) {
+      transcribedText = '';
+    }
     
     return new Response(JSON.stringify({ text: transcribedText }), {
       status: 200,
