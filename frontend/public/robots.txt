@@ -1,0 +1,34 @@
+# Robots.txt for Giacomo Reggianini Portfolio
+# https://giacomoreggianini.com
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://reggianini.eu/sitemap.xml
+
+# Googlebot specific rules
+User-agent: Googlebot
+Allow: /
+
+# Bingbot specific rules
+User-agent: Bingbot
+Allow: /
+
+# Block access to build artifacts and source maps (if any)
+User-agent: *
+Disallow: /static/js/*.map
+Disallow: /static/css/*.map
+
+# Allow important assets
+Allow: /static/
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.svg$
+Allow: /*.webp$
+
+# Crawl-delay suggestion (optional, some bots respect this)
+# Crawl-delay: 1
