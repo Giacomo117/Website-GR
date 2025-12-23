@@ -32,9 +32,9 @@ const Navbar = ({ onChatOpen }) => {
           {/* Logo */}
           <button
             onClick={() => scrollToSection('hero')}
-            className="text-2xl font-bold text-white hover:text-cyan-400 transition-colors font-['Space_Grotesk'] z-10"
+            className="hover:opacity-80 transition-opacity z-10"
           >
-            GR
+            <img src="/Logo-2.png" alt="GR Logo" className="h-10 w-10" />
           </button>
 
           {/* Desktop Navigation - Centered */}

@@ -34,9 +34,11 @@ const LoadingScreen = ({ onLoadingComplete }) => {
             transition={{ duration: 0.5 }}
             className="text-center mb-4 relative z-10"
           >
-            <h1 className="text-6xl md:text-8xl font-bold text-white font-['Space_Grotesk'] mb-2">
-              <span className="text-cyan-400">GR</span>
-            </h1>
+            <img 
+              src="/Logo-2.png" 
+              alt="GR Logo" 
+              className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-4"
+            />
             <p className="text-gray-400 text-lg">Loading Portfolio...</p>
           </motion.div>
         </motion.div>
