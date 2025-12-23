@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/utils";
 
 // Dynamic imports for OGL
@@ -23,9 +23,10 @@ export const VoicePoweredOrb = ({
   const animationFrameRef = useRef();
   const mediaStreamRef = useRef(null);
   const oglLoadedRef = useRef(false);
+  const [webglFailed, setWebglFailed] = useState(false);
 
   const vert = /* glsl */ `
-    precision highp float;
+    precision mediump float;
     attribute vec2 position;
     attribute vec2 uv;
     varying vec2 vUv;
@@ -36,7 +37,9 @@ export const VoicePoweredOrb = ({
   `;
 
   const frag = /* glsl */ `
-    precision highp float;
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
 
     uniform float iTime;
     uniform vec3 iResolution;
@@ -83,8 +86,8 @@ export const VoicePoweredOrb = ({
     }
 
     float snoise3(vec3 p) {
-      const float K1 = 0.333333333;
-      const float K2 = 0.166666667;
+      float K1 = 0.333333333;
+      float K2 = 0.166666667;
       vec3 i = floor(p + (p.x + p.y + p.z) * K1);
       vec3 d0 = p - (i - (i.x + i.y + i.z) * K2);
       vec3 e = step(vec3(0.0), d0 - d0.yzx);
@@ -110,14 +113,14 @@ export const VoicePoweredOrb = ({
 
     vec4 extractAlpha(vec3 colorIn) {
       float a = max(max(colorIn.r, colorIn.g), colorIn.b);
-      return vec4(colorIn.rgb / (a + 1e-5), a);
+      return vec4(colorIn.rgb / (a + 0.00001), a);
     }
 
-    const vec3 baseColor1 = vec3(0.8, 0.4, 1.0);
-    const vec3 baseColor2 = vec3(0.4, 0.9, 1.0);
-    const vec3 baseColor3 = vec3(0.2, 0.3, 0.9);
-    const float innerRadius = 0.3;
-    const float noiseScale = 0.65;
+    vec3 baseColor1 = vec3(0.8, 0.4, 1.0);
+    vec3 baseColor2 = vec3(0.4, 0.9, 1.0);
+    vec3 baseColor3 = vec3(0.2, 0.3, 0.9);
+    float innerRadius = 0.3;
+    float noiseScale = 0.65;
 
     float light1(float intensity, float attenuation, float dist) {
       return intensity / (1.0 + dist * attenuation);
@@ -134,7 +137,10 @@ export const VoicePoweredOrb = ({
 
       float ang = atan(uv.y, uv.x);
       float len = length(uv);
-      float invLen = len > 0.0 ? 1.0 / len : 0.0;
+      float invLen = 0.0;
+      if (len > 0.0) {
+        invLen = 1.0 / len;
+      }
 
       float n0 = snoise3(vec3(uv * noiseScale, iTime * 0.5)) * 0.5 + 0.5;
       float r0 = mix(mix(innerRadius, 1.0, 0.4), mix(innerRadius, 1.0, 0.6), n0);
@@ -290,9 +296,19 @@ export const VoicePoweredOrb = ({
     let glContext = null;
     let rafId;
     let program = null;
+    let cleanupFn = null;
 
     const initOGL = async () => {
       try {
+        // Check WebGL support first
+        const testCanvas = document.createElement('canvas');
+        const testGl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+        if (!testGl) {
+          console.warn('WebGL not supported, using CSS fallback');
+          setWebglFailed(true);
+          return null;
+        }
+
         // Dynamic import of OGL
         const ogl = await import('ogl');
         Renderer = ogl.Renderer;
@@ -302,13 +318,25 @@ export const VoicePoweredOrb = ({
         Vec3 = ogl.Vec3;
         oglLoadedRef.current = true;
 
+        // Limit DPR on mobile for performance
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const dpr = isMobile ? Math.min(window.devicePixelRatio || 1, 2) : (window.devicePixelRatio || 1);
+
         rendererInstance = new Renderer({
           alpha: true,
           premultipliedAlpha: false,
-          antialias: true,
-          dpr: window.devicePixelRatio || 1
+          antialias: !isMobile,
+          dpr: dpr,
+          powerPreference: 'low-power'
         });
         glContext = rendererInstance.gl;
+        
+        if (!glContext) {
+          console.warn('Could not get WebGL context');
+          setWebglFailed(true);
+          return null;
+        }
+        
         glContext.clearColor(0, 0, 0, 0);
         glContext.enable(glContext.BLEND);
         glContext.blendFunc(glContext.SRC_ALPHA, glContext.ONE_MINUS_SRC_ALPHA);
@@ -320,30 +348,38 @@ export const VoicePoweredOrb = ({
         container.appendChild(glContext.canvas);
 
         const geometry = new Triangle(glContext);
-        program = new Program(glContext, {
-          vertex: vert,
-          fragment: frag,
-          uniforms: {
-            iTime: { value: 0 },
-            iResolution: {
-              value: new Vec3(
-                glContext.canvas.width,
-                glContext.canvas.height,
-                glContext.canvas.width / glContext.canvas.height
-              ),
+        
+        let programCreated = false;
+        try {
+          program = new Program(glContext, {
+            vertex: vert,
+            fragment: frag,
+            uniforms: {
+              iTime: { value: 0 },
+              iResolution: {
+                value: new Vec3(
+                  glContext.canvas.width,
+                  glContext.canvas.height,
+                  glContext.canvas.width / glContext.canvas.height
+                ),
+              },
+              hue: { value: hue },
+              hover: { value: 0 },
+              rot: { value: 0 },
+              hoverIntensity: { value: 0 },
             },
-            hue: { value: hue },
-            hover: { value: 0 },
-            rot: { value: 0 },
-            hoverIntensity: { value: 0 },
-          },
-        });
+          });
+          programCreated = true;
+        } catch (shaderError) {
+          console.warn('Shader compilation failed:', shaderError);
+          setWebglFailed(true);
+          return null;
+        }
 
         const mesh = new Mesh(glContext, { geometry, program });
 
         const resize = () => {
           if (!container || !rendererInstance || !glContext) return;
-          const dpr = window.devicePixelRatio || 1;
           const width = container.clientWidth;
           const height = container.clientHeight;
 
@@ -362,6 +398,7 @@ export const VoicePoweredOrb = ({
           }
         };
         window.addEventListener("resize", resize);
+        setTimeout(resize, 100);
         resize();
 
         let lastTime = 0;
@@ -448,18 +485,21 @@ export const VoicePoweredOrb = ({
 
       } catch (error) {
         console.error("Error initializing Voice Powered Orb:", error);
+        setWebglFailed(true);
         if (container && container.firstChild) {
           container.removeChild(container.firstChild);
         }
+        return null;
       }
     };
 
-    const cleanup = initOGL();
+    let cleanup = null;
+    initOGL().then(fn => {
+      cleanup = fn;
+    });
 
     return () => {
-      if (cleanup && typeof cleanup.then === 'function') {
-        cleanup.then(cleanupFn => cleanupFn && cleanupFn());
-      }
+      if (cleanup) cleanup();
       stopMicrophone();
     };
   }, [
@@ -471,6 +511,24 @@ export const VoicePoweredOrb = ({
     vert,
     frag
   ]);
+
+  // CSS fallback animation for when WebGL fails
+  if (webglFailed) {
+    return (
+      <div
+        className={cn(
+          "w-full h-full relative flex items-center justify-center",
+          className
+        )}
+      >
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 via-purple-500 to-blue-600 animate-spin opacity-80" 
+             style={{ animationDuration: '3s' }} />
+        <div className="absolute inset-2 rounded-full bg-gradient-to-tr from-purple-600 via-cyan-400 to-blue-500 animate-pulse opacity-90" />
+        <div className="absolute inset-4 rounded-full bg-gradient-to-bl from-blue-500 via-purple-500 to-cyan-400 animate-spin opacity-80"
+             style={{ animationDuration: '4s', animationDirection: 'reverse' }} />
+      </div>
+    );
+  }
 
   return (
     <div
