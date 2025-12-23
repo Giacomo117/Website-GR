@@ -2,12 +2,15 @@ import React from 'react';
 import { Card } from './ui/card';
 import { Mail, Linkedin, Github, MapPin, Instagram, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Contact = ({ onChatOpen }) => {
+  const { t } = useLanguage();
+  
   const contactInfo = [
     {
       icon: Mail,
-      label: 'Email',
+      label: t('contact.email'),
       value: 'reggianini.giacomo01@gmail.com',
       href: 'mailto:reggianini.giacomo01@gmail.com',
       color: 'cyan',
@@ -21,8 +24,8 @@ const Contact = ({ onChatOpen }) => {
     },
     {
       icon: MapPin,
-      label: 'Location',
-      value: 'Modena, Italy',
+      label: t('contact.location'),
+      value: t('contact.locationValue'),
       color: 'purple',
     },
   ];
@@ -59,10 +62,10 @@ const Contact = ({ onChatOpen }) => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 font-['Space_Grotesk'] text-white">
-            Get In <span className="text-cyan-400">Touch</span>
+            {t('contact.title')} <span className="text-cyan-400">{t('contact.titleHighlight')}</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Let's discuss how we can work together on innovative AI solutions
+            {t('contact.subtitle')}
           </p>
         </motion.div>
 
@@ -76,7 +79,7 @@ const Contact = ({ onChatOpen }) => {
           >
             <Card className="bg-zinc-900 border-zinc-800 p-8 h-full">
               <h3 className="text-2xl font-bold mb-6 font-['Space_Grotesk'] text-white">
-                Contact Information
+                {t('contact.contactInfo')}
               </h3>
               <div className="space-y-6">
                 {contactInfo.map((item, index) => {
@@ -108,7 +111,7 @@ const Contact = ({ onChatOpen }) => {
 
               {/* Social Links */}
               <div className="mt-8 pt-8 border-t border-zinc-800">
-                <h4 className="text-lg font-semibold mb-4 text-white">Connect with me</h4>
+                <h4 className="text-lg font-semibold mb-4 text-white">{t('contact.connectWith')}</h4>
                 <div className="flex gap-4">
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
@@ -139,17 +142,17 @@ const Contact = ({ onChatOpen }) => {
           >
             <Card className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border-cyan-500/30 p-8 h-full flex flex-col justify-center">
               <h3 className="text-3xl font-bold mb-4 font-['Space_Grotesk'] text-white">
-                Let's Build Something Amazing
+                {t('contact.ctaTitle')}
               </h3>
               <p className="text-gray-300 mb-6 text-lg leading-relaxed">
-                I'm currently available for freelance work and open to discussing new opportunities in AI engineering, distributed systems, and enterprise solutions.
+                {t('contact.ctaDescription')}
               </p>
               <div className="space-y-4">
                 <a
                   href="mailto:reggianini.giacomo01@gmail.com"
                   className="inline-block w-full px-8 py-4 bg-cyan-500 text-black text-center font-semibold rounded-full hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95"
                 >
-                  Send me an Email
+                  {t('contact.sendEmail')}
                 </a>
                 <a
                   href="https://www.linkedin.com/in/giacomo-reggianini-0667bb300/"
@@ -157,16 +160,8 @@ const Contact = ({ onChatOpen }) => {
                   rel="noopener noreferrer"
                   className="inline-block w-full px-8 py-4 bg-zinc-800 text-white text-center font-semibold rounded-full hover:bg-zinc-700 transition-all border border-zinc-700 hover:border-cyan-500/50"
                 >
-                  Connect on LinkedIn
+                  {t('contact.connectLinkedIn')}
                 </a>
-                {/* Chat Button - Hidden on Mobile */}
-                <button
-                  onClick={onChatOpen}
-                  className="hidden md:inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-center font-semibold rounded-full hover:from-cyan-400 hover:to-blue-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/30"
-                >
-                  <MessageSquare size={20} />
-                  Chat with my AI Assistant
-                </button>
               </div>
             </Card>
           </motion.div>

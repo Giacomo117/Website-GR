@@ -2,39 +2,42 @@ import React from 'react';
 import { Card } from './ui/card';
 import { Briefcase, Calendar, MapPin, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Experience = () => {
+  const { t } = useLanguage();
+  
   const experiences = [
     {
       id: 1,
-      role: 'AI Software Engineer',
-      company: 'E38',
+      role: t('experience.e38.role'),
+      company: t('experience.e38.company'),
       location: 'Remote',
-      period: 'Feb 2025 - Present',
+      period: `Feb 2025 - ${t('experience.current')}`,
       type: 'Full-time',
-      description: 'Developing cutting-edge AI solutions and intelligent systems for enterprise clients.',
+      description: t('experience.e38.description'),
       technologies: ['Python', 'AI/ML', 'LangChain', 'Microservices'],
       color: 'cyan',
     },
     {
       id: 2,
-      role: 'Freelance Software Developer',
-      company: 'Self-employed',
+      role: t('experience.freelance.role'),
+      company: t('experience.freelance.company'),
       location: 'Remote',
       period: 'Oct 2024 - Feb 2025',
       type: 'Freelance',
-      description: 'Specialized in backend development and LLM-based RAG systems. Built distributed AI solutions for various clients.',
+      description: t('experience.freelance.description'),
       technologies: ['Backend', 'LLM', 'RAG Systems', 'Python', 'Django'],
       color: 'blue',
     },
     {
       id: 3,
-      role: 'Private Tutor',
-      company: 'Self-employed',
-      location: 'Modena, Italy',
-      period: '2020 - Present',
-      type: 'Part-time',
-      description: 'Teaching mathematics, physics, English, and computer science to high school and university students.',
+      role: t('experience.tutor.role'),
+      company: t('experience.tutor.company'),
+      location: t('experience.tutor.location'),
+      period: `2020 - ${t('experience.current')}`,
+      type: t('experience.tutor.type'),
+      description: t('experience.tutor.description'),
       technologies: ['Mathematics', 'Physics', 'Programming', 'English'],
       color: 'purple',
     },
@@ -73,10 +76,10 @@ const Experience = () => {
           className="mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 font-['Space_Grotesk'] text-white">
-            Work <span className="text-cyan-400">Experience</span>
+            {t('experience.title')} <span className="text-cyan-400">{t('experience.titleHighlight')}</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl">
-            Professional journey and roles that shaped my expertise
+            {t('experience.subtitle')}
           </p>
         </motion.div>
 

@@ -3,8 +3,11 @@ import { ShaderAnimation } from './ui/shader-lines';
 import { Spotlight } from './ui/spotlight';
 import { Card } from './ui/card';
 import { ArrowDown, MessageSquare } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Hero = ({ onChatOpen }) => {
+  const { t } = useLanguage();
+  
   const scrollToProjects = () => {
     const element = document.getElementById('projects');
     if (element) {
@@ -35,21 +38,21 @@ const Hero = ({ onChatOpen }) => {
               {/* Welcome Badge */}
               <div className="mb-6 flex justify-center">
                 <span className="inline-block px-3 md:px-4 py-1.5 md:py-2 bg-cyan-500/20 backdrop-blur-sm border border-cyan-500/40 rounded-full text-cyan-400 text-xs md:text-sm font-medium">
-                  Welcome to my portfolio
+                  {t('hero.greeting')}
                 </span>
               </div>
               
               <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400 font-['Space_Grotesk'] drop-shadow-lg">
-                Hello, I'm <span className="text-cyan-400">Giacomo</span>
+                {t('hero.greeting')}
               </h1>
               
               <p className="text-lg md:text-2xl lg:text-3xl text-gray-200 mb-6 md:mb-8 font-['Space_Grotesk'] font-medium drop-shadow-md">
-                AI Engineer crafting intelligent solutions
+                {t('hero.role')}
               </p>
               
               {/* Description - Hidden on Mobile, Visible on Desktop */}
               <p className="hidden md:block text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-white/10">
-                Computer Engineer specializing in Artificial Intelligence with experience in developing distributed systems and enterprise architectures. Transforming innovative ideas into concrete and scalable solutions.
+                {t('hero.description')}
               </p>
               
               {/* Buttons - Smaller on Mobile */}
@@ -58,7 +61,7 @@ const Hero = ({ onChatOpen }) => {
                   onClick={scrollToProjects}
                   className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-8 py-2.5 md:py-4 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/50 pointer-events-auto text-xs md:text-base w-full sm:w-auto"
                 >
-                  View My Work
+                  {t('hero.cta')}
                   <ArrowDown size={14} className="md:w-5 md:h-5" />
                 </button>
                 <button
@@ -66,7 +69,7 @@ const Hero = ({ onChatOpen }) => {
                   className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-8 py-2.5 md:py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-full hover:bg-white/20 transition-all border border-white/20 hover:border-cyan-400/50 pointer-events-auto text-xs md:text-base w-full sm:w-auto"
                 >
                   <MessageSquare size={14} className="md:w-5 md:h-5" />
-                  Ask AI About Me
+                  {t('hero.chatCta')}
                 </button>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import "./App.css";
+import { LanguageProvider } from "./context/LanguageContext";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import VoiceAssistant from "./components/VoiceAssistant";
@@ -32,7 +33,7 @@ function App() {
   };
 
   return (
-    <>
+    <LanguageProvider>
       {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
       <div className="App" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
         <Navbar onChatOpen={handleOpenChat} />
@@ -45,7 +46,7 @@ function App() {
         <Footer />
         <FloatingChatButton onChatOpen={(fn) => openChatWithMessage.current = fn} />
       </div>
-    </>
+    </LanguageProvider>
   );
 }
 

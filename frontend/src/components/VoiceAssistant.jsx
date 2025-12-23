@@ -1,14 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { VoicePoweredOrb } from './ui/voice-powered-orb';
 import { Button } from './ui/button';
-import { Mic, MicOff, Send, X, Loader2 } from 'lucide-react';
-
-// API endpoint (same as chat)
-const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
-
-// Rate limiting configuration (client-side)
-const RATE_LIMIT = 5; // requests per minute
-const RATE_WINDOW = 60000; // 60 seconds in milliseconds
+import { Mic, MicOff } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 // Context about Giacomo for the AI
 const GIACOMO_CONTEXT = `
@@ -76,167 +70,142 @@ Master's in Artificial Intelligence Engineering (Autumn 2025) - Università di M
 Erasmus experience in England for international exposure
 `;
 
-// Rate limiter class
-class ClientRateLimiter {
-  constructor() {
-    this.requests = [];
-  }
-
-  checkLimit() {
-    const now = Date.now();
-    // Remove old requests outside the window
-    this.requests = this.requests.filter(time => now - time < RATE_WINDOW);
-    
-    if (this.requests.length >= RATE_LIMIT) {
-      const oldestRequest = this.requests[0];
-      const retryAfter = Math.ceil((RATE_WINDOW - (now - oldestRequest)) / 1000);
-      return { allowed: false, retryAfter };
-    }
-    
-    this.requests.push(now);
-    return { allowed: true };
-  }
-}
-
-const rateLimiter = new ClientRateLimiter();
+// Check for Web Speech API support
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const VoiceAssistant = ({ onOpenChatWithMessage }) => {
+  const { t, language } = useLanguage();
   const [isRecording, setIsRecording] = useState(false);
   const [voiceDetected, setVoiceDetected] = useState(false);
   const [transcription, setTranscription] = useState('');
-  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [interimTranscript, setInterimTranscript] = useState('');
+  const [isSupported, setIsSupported] = useState(true);
   const [error, setError] = useState(null);
-  const [rateLimitError, setRateLimitError] = useState(null);
   
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
-  const streamRef = useRef(null);
+  const recognitionRef = useRef(null);
 
-  // Start recording with MediaRecorder for OpenRouter
-  const startRecording = useCallback(async () => {
-    // Check rate limit first
-    const rateCheck = rateLimiter.checkLimit();
-    if (!rateCheck.allowed) {
-      setRateLimitError(`Rate limit exceeded. Try again in ${rateCheck.retryAfter} seconds.`);
-      setTimeout(() => setRateLimitError(null), 5000);
+  // Initialize speech recognition
+  useEffect(() => {
+    if (!SpeechRecognition) {
+      setIsSupported(false);
+      setError('Speech recognition is not supported in this browser. Try Chrome or Edge.');
       return;
     }
 
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'it-IT'; // Italian by default
+    recognition.maxAlternatives = 1;
+    
+    recognition.onstart = () => {
+      console.log('Speech recognition started');
+      setVoiceDetected(false);
+    };
+    
+    recognition.onaudiostart = () => {
+      console.log('Audio capturing started');
+    };
+    
+    recognition.onspeechstart = () => {
+      console.log('Speech detected');
+      setVoiceDetected(true);
+    };
+    
+    recognition.onspeechend = () => {
+      console.log('Speech ended');
+      setVoiceDetected(false);
+    };
+    
+    recognition.onresult = (event) => {
+      console.log('Recognition result:', event);
+      let interim = '';
+      let final = '';
+      
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        console.log('Transcript:', transcript, 'isFinal:', event.results[i].isFinal);
+        if (event.results[i].isFinal) {
+          final += transcript + ' ';
+        } else {
+          interim += transcript;
+        }
+      }
+      
+      if (final) {
+        setTranscription(prev => (prev + final).trim());
+      }
+      setInterimTranscript(interim);
+    };
+    
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      if (event.error === 'not-allowed') {
+        setError('Microphone access denied. Please allow microphone access in your browser settings.');
+      } else if (event.error === 'no-speech') {
+        setError('No speech detected. Please try again.');
+      } else {
+        setError(`Speech recognition error: ${event.error}`);
+      }
+      setIsRecording(false);
+    };
+    
+    recognition.onend = () => {
+      setIsRecording(false);
+      setInterimTranscript('');
+    };
+    
+    recognitionRef.current = recognition;
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, []);
+
+  // Start recording
+  const startRecording = useCallback(() => {
+    if (!recognitionRef.current) return;
+    
+    setError(null);
+    setTranscription('');
+    setInterimTranscript('');
+    
     try {
-      setError(null);
-      setRateLimitError(null);
-      setTranscription('');
-      
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          sampleRate: 16000,
-        },
-      });
-      
-      streamRef.current = stream;
-      audioChunksRef.current = [];
-      
-      // Use webm if supported, otherwise mp4
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
-        ? 'audio/webm;codecs=opus' 
-        : MediaRecorder.isTypeSupported('audio/webm') 
-          ? 'audio/webm' 
-          : 'audio/mp4';
-      
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
-      mediaRecorderRef.current = mediaRecorder;
-      
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-      
-      mediaRecorder.onstop = async () => {
-        if (audioChunksRef.current.length > 0) {
-          await transcribeWithOpenRouter();
-        }
-      };
-      
-      mediaRecorder.start(1000); // Collect data every second
+      recognitionRef.current.start();
       setIsRecording(true);
     } catch (err) {
-      console.error('Error starting recording:', err);
-      setError('Could not access microphone. Please allow microphone access.');
+      console.error('Error starting recognition:', err);
+      setError('Could not start speech recognition. Please try again.');
     }
   }, []);
 
-  // Stop recording
+  // Stop recording and open chat with transcription
   const stopRecording = useCallback(() => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
-    
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    
     setIsRecording(false);
-  }, []);
-
-  // Transcribe audio using OpenRouter's Gemini model
-  const transcribeWithOpenRouter = async () => {
-    if (audioChunksRef.current.length === 0) return;
+    setInterimTranscript('');
     
-    setIsTranscribing(true);
-    setError(null);
-    
-    try {
-      // Create audio blob
-      const mimeType = audioChunksRef.current[0]?.type || 'audio/webm';
-      const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-      
-      // Check if audio is too short (less than 0.5 seconds of data)
-      if (audioBlob.size < 5000) {
-        setError('Recording too short. Please speak longer.');
-        return;
-      }
-      
-      // Create FormData for the API call
-      const formData = new FormData();
-      formData.append('file', audioBlob, 'recording.webm');
-      
-      // Call the Cloudflare Function transcribe endpoint
-      const response = await fetch(`${API}/transcribe`, {
-        method: 'POST',
-        body: formData,
+    // Get the final transcription (we need to wait a tiny bit for final results)
+    setTimeout(() => {
+      setTranscription(current => {
+        if (current && current.trim() && onOpenChatWithMessage) {
+          // Open chat with the transcription in the input field (not auto-send)
+          onOpenChatWithMessage({
+            message: current.trim(),
+            context: GIACOMO_CONTEXT,
+            prefillInput: true  // This puts text in input field, not auto-sends
+          });
+          // Clear transcription after opening chat
+          return '';
+        }
+        return current;
       });
-      
-      const data = await response.json();
-      
-      if (response.status === 429) {
-        setRateLimitError(data.detail || 'Rate limit exceeded. Please wait.');
-        return;
-      }
-      
-      if (!response.ok) {
-        console.error('Transcription API error:', data);
-        setError(data.error || 'Transcription failed. Please try again.');
-        return;
-      }
-      
-      if (data.text && data.text.trim()) {
-        setTranscription(data.text.trim());
-      } else if (data.error) {
-        setError(data.error);
-      } else {
-        setError('No speech detected. Please try again.');
-      }
-    } catch (err) {
-      console.error('Transcription error:', err);
-      setError('Could not transcribe audio. Please try again or type your question.');
-    } finally {
-      setIsTranscribing(false);
-    }
-  };
+    }, 100);
+  }, [onOpenChatWithMessage]);
 
   // Handle sending the message to chat
   const handleSendMessage = useCallback(() => {
@@ -266,8 +235,8 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
   // Clear transcription
   const handleClear = () => {
     setTranscription('');
+    setInterimTranscript('');
     setError(null);
-    setRateLimitError(null);
   };
 
   return (
@@ -285,10 +254,10 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
         {/* Title */}
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 font-['Space_Grotesk'] mb-6">
-            Ask Me Anything
+            {t('voice.title')}
           </h2>
           <p className="text-xl md:text-2xl text-gray-400 font-['Space_Grotesk'] max-w-2xl mx-auto">
-            Curious about my projects, skills, or experience? Just ask!
+            {t('voice.subtitle')}
           </p>
         </div>
 
@@ -317,15 +286,14 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
             {isRecording && (
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-red-500/90 px-4 py-2 rounded-full animate-pulse shadow-lg shadow-red-500/50">
                 <span className="w-2.5 h-2.5 bg-white rounded-full animate-ping" />
-                <span className="text-white text-sm font-semibold">Recording...</span>
+                <span className="text-white text-sm font-semibold">{t('voice.recording')}</span>
               </div>
             )}
             
-            {/* Transcribing indicator */}
-            {isTranscribing && (
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-cyan-500/90 px-4 py-2 rounded-full shadow-lg shadow-cyan-500/50">
-                <Loader2 className="w-4 h-4 text-black animate-spin" />
-                <span className="text-black text-sm font-semibold">Transcribing...</span>
+            {/* Live transcript indicator */}
+            {isRecording && interimTranscript && (
+              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-zinc-900/90 px-4 py-2 rounded-lg max-w-xs text-center">
+                <span className="text-cyan-400 text-sm italic">{interimTranscript}</span>
               </div>
             )}
           </div>
@@ -335,37 +303,25 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
             onClick={isRecording ? stopRecording : startRecording}
             variant={isRecording ? "destructive" : "default"}
             size="lg"
-            disabled={isTranscribing}
+            disabled={!isSupported}
             className={`px-10 py-5 text-lg md:text-xl rounded-full transition-all duration-300 font-semibold ${
               isRecording 
                 ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/50' 
                 : 'bg-cyan-500 hover:bg-cyan-400 text-black shadow-xl shadow-cyan-500/50'
             }`}
           >
-            {isTranscribing ? (
-              <>
-                <Loader2 className="w-6 h-6 mr-3 animate-spin" />
-                Processing...
-              </>
-            ) : isRecording ? (
+            {isRecording ? (
               <>
                 <MicOff className="w-6 h-6 mr-3" />
-                Stop Recording
+                {t('voice.stopRecording')}
               </>
             ) : (
               <>
                 <Mic className="w-6 h-6 mr-3" />
-                Start Recording
+                {t('voice.startRecording')}
               </>
             )}
           </Button>
-
-          {/* Rate limit error */}
-          {rateLimitError && (
-            <div className="bg-orange-500/20 border border-orange-500/50 text-orange-400 px-6 py-3 rounded-lg text-center max-w-md animate-in fade-in duration-300">
-              {rateLimitError}
-            </div>
-          )}
 
           {/* Error message */}
           {error && (
@@ -374,55 +330,22 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
             </div>
           )}
 
-          {/* Transcription display and send */}
-          {transcription && (
-            <div className="w-full max-w-2xl bg-zinc-900/80 backdrop-blur-sm border border-cyan-500/30 rounded-xl p-6 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <div className="flex items-start gap-3">
-                <div className="flex-1">
-                  <label className="text-cyan-400 text-sm font-medium mb-2 block">
-                    Your question:
-                  </label>
-                  <textarea
-                    value={transcription}
-                    onChange={(e) => setTranscription(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className="w-full bg-black/50 border border-cyan-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 resize-none text-base"
-                    rows={3}
-                    placeholder="Edit your question if needed..."
-                  />
-                </div>
-              </div>
-              
-              <div className="flex justify-end gap-3">
-                <Button
-                  onClick={handleClear}
-                  variant="outline"
-                  size="default"
-                  className="border-gray-600 text-gray-400 hover:text-white hover:border-gray-500"
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Clear
-                </Button>
-                <Button
-                  onClick={handleSendMessage}
-                  size="default"
-                  disabled={!transcription.trim()}
-                  className="bg-cyan-500 hover:bg-cyan-400 text-black disabled:opacity-50 font-semibold"
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Ask AI
-                </Button>
-              </div>
+          {/* Live transcription preview while recording */}
+          {isRecording && (transcription || interimTranscript) && (
+            <div className="w-full max-w-2xl bg-zinc-900/60 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-4 animate-in fade-in duration-300">
+              <p className="text-gray-400 text-sm mb-2">{t('voice.transcribing')}</p>
+              <p className="text-white">
+                {transcription}
+                <span className="text-cyan-400 opacity-70">{interimTranscript}</span>
+              </p>
             </div>
           )}
 
           {/* Instructions */}
           <p className="text-gray-500 text-center text-base md:text-lg max-w-lg">
             {isRecording 
-              ? "Speak clearly, then click 'Stop Recording' when done"
-              : isTranscribing
-                ? "Converting your speech to text..."
-                : "Click the button and ask me anything about my projects, skills, or experience!"}
+              ? t('voice.speakClearly')
+              : t('voice.clickButton')}
           </p>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
 
   return (
     <footer className="bg-zinc-950 border-t border-zinc-800 py-12 px-6 lg:px-8">
@@ -12,10 +14,10 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-2xl font-bold text-white mb-2 font-['Space_Grotesk']">Giacomo Reggianini</h3>
             <p className="text-gray-400 text-sm">
-              AI Engineer crafting intelligent solutions
+              {t('hero.role')}
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              © {currentYear} All rights reserved.
+              © {currentYear} {t('footer.rights')}
             </p>
           </div>
 

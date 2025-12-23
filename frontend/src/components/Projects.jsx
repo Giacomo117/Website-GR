@@ -2,21 +2,26 @@ import React from 'react';
 import { Card } from './ui/card';
 import { ExternalLink, Github, Plus, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Projects = ({ onProjectClick }) => {
+  const { t } = useLanguage();
+  
   const projects = [
     {
       id: 1,
-      title: 'Civetta - Enterprise RAG Platform',
-      description: 'A distributed Retrieval-Augmented Generation (RAG) system serving as an intelligent virtual assistant for enterprise environments, built on scalable microservices architecture with multi-tenant support and no-code document management capabilities.',
+      titleKey: 'civetta',
+      title: t('projects.civetta.title'),
+      description: t('projects.civetta.description'),
       technologies: ['Python', 'LangChain', 'Microservices', 'RAG', 'Enterprise AI'],
       gradient: 'from-cyan-500 to-blue-600',
       image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop',
     },
     {
       id: 2,
-      title: 'AutoGuardian',
-      description: 'A modular IoT platform for vehicle safety monitoring and neighbor-aware emergency alerting, featuring real-time telemetry processing, anomaly detection, and distributed alert dissemination.',
+      titleKey: 'autoguardian',
+      title: t('projects.autoguardian.title'),
+      description: t('projects.autoguardian.description'),
       technologies: ['Arduino', 'Django', 'MQTT', 'IoT', 'Real-time Processing'],
       gradient: 'from-purple-500 to-pink-600',
       image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop',
@@ -24,8 +29,9 @@ const Projects = ({ onProjectClick }) => {
     },
     {
       id: 3,
-      title: 'Drowsiness State Detector',
-      description: 'A multi-model computer vision application for real-time driver drowsiness detection, composed of three standalone deep learning models working in parallel through multi-threaded processing.',
+      titleKey: 'drowsiness',
+      title: t('projects.drowsiness.title'),
+      description: t('projects.drowsiness.description'),
       technologies: ['Python', 'OpenCV', 'PyTorch', 'Computer Vision', 'Deep Learning'],
       gradient: 'from-orange-500 to-red-600',
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop',
@@ -33,8 +39,9 @@ const Projects = ({ onProjectClick }) => {
     },
     {
       id: 4,
-      title: 'And Many More!',
-      description: 'Explore my other projects including mobile applications, web services, and research work in AI and distributed systems. Always working on something new and exciting!',
+      titleKey: 'more',
+      title: t('projects.more.title'),
+      description: t('projects.more.description'),
       technologies: ['Innovation', 'Creativity', 'Problem Solving'],
       gradient: 'from-green-500 to-teal-600',
       image: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=800&auto=format&fit=crop',
@@ -66,7 +73,7 @@ const Projects = ({ onProjectClick }) => {
 
   // Project context for AI chat
   const projectContexts = {
-    'Civetta - Enterprise RAG Platform': `Civetta - Enterprise RAG Platform
+    'civetta': `Civetta - Enterprise RAG Platform
 Associated with E38
 
 A distributed Retrieval-Augmented Generation (RAG) system serving as an intelligent virtual assistant for enterprise environments, built on scalable microservices architecture with multi-tenant support and no-code document management capabilities.
@@ -87,7 +94,7 @@ Enterprise Features:
 
 Technologies: Python, TypeScript, Angular, LangChain, Redis, MinIO, Azure OpenAI`,
     
-    'AutoGuardian': `AutoGuardian - IoT Vehicle Safety Platform
+    'autoguardian': `AutoGuardian - IoT Vehicle Safety Platform
 
 A modular IoT platform for vehicle safety monitoring and neighbor-aware emergency alerting, featuring real-time telemetry processing, anomaly detection, and distributed alert dissemination.
 
@@ -103,7 +110,7 @@ Key Features:
 Technologies: Arduino, Django, MQTT, Mosquitto, Python, IoT
 GitHub: github.com/Giacomo117/AutoGuardian`,
     
-    'Drowsiness State Detector': `Drowsiness State Detector - Real-time Driver Monitoring System
+    'drowsiness': `Drowsiness State Detector - Real-time Driver Monitoring System
 
 A multi-model computer vision application for real-time driver drowsiness detection, composed of three standalone deep learning models working in parallel through multi-threaded processing.
 
@@ -120,11 +127,11 @@ GitHub: github.com/Giacomo117/Drowsiness-State-Detector`,
 
   const handleProjectClick = (project) => {
     if (project.isMore) {
-      onProjectClick({ message: 'What other projects has Giacomo worked on?', context: null });
+      onProjectClick({ message: t('chat.moreProjects'), context: null });
     } else {
-      const context = projectContexts[project.title] || null;
+      const context = projectContexts[project.titleKey] || null;
       onProjectClick({ 
-        message: `What would you like to know about ${project.title}?`, 
+        message: `${t('chat.projectQuestion')} ${project.title}?`, 
         context: context 
       });
     }
@@ -141,10 +148,10 @@ GitHub: github.com/Giacomo117/Drowsiness-State-Detector`,
           className="mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 font-['Space_Grotesk'] text-white">
-            Featured <span className="text-cyan-400">Projects</span>
+            {t('projects.title')} <span className="text-cyan-400">{t('projects.titleHighlight')}</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl">
-            Innovative solutions leveraging AI, IoT, and enterprise architectures
+            {t('projects.subtitle')}
           </p>
         </motion.div>
 

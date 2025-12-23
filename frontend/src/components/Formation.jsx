@@ -2,26 +2,29 @@ import React from 'react';
 import { Card } from './ui/card';
 import { GraduationCap, Award, MapPin, Calendar, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Formation = () => {
+  const { t } = useLanguage();
+  
   const education = [
     {
       id: 1,
-      type: 'Master Degree',
-      title: 'Artificial Intelligence Engineering',
-      institution: 'Università di Modena e Reggio Emilia',
+      type: t('formation.master.degree'),
+      title: t('formation.master.field'),
+      institution: t('formation.master.university'),
       location: 'Modena, Italy',
       period: 'Sep 2023 - Oct 2025',
       grade: '110L',
-      thesis: 'Development of a Distributed Retrieval Augmented Generation System with Multi-Client Orchestration',
+      thesis: t('formation.master.thesis'),
       icon: GraduationCap,
       color: 'cyan',
     },
     {
       id: 2,
-      type: 'Bachelor Degree',
-      title: 'Computer Engineering',
-      institution: 'Università di Modena e Reggio Emilia',
+      type: t('formation.bachelor.degree'),
+      title: t('formation.bachelor.field'),
+      institution: t('formation.bachelor.university'),
       location: 'Modena, Italy',
       period: 'Sep 2020 - Oct 2023',
       grade: '107/110',
@@ -31,12 +34,12 @@ const Formation = () => {
     },
     {
       id: 3,
-      type: 'Erasmus+',
+      type: t('formation.erasmus.program'),
       title: 'Computer Engineering',
-      institution: 'Exeter University',
+      institution: t('formation.erasmus.university'),
       location: 'Exeter, United Kingdom',
       period: 'Jan 2023 - Jun 2023',
-      description: 'International exchange program focusing on advanced computer science topics',
+      description: t('formation.erasmus.description'),
       icon: Award,
       color: 'purple',
     },
@@ -75,10 +78,10 @@ const Formation = () => {
           className="mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 font-['Space_Grotesk'] text-white">
-            Education & <span className="text-cyan-400">Formation</span>
+            {t('formation.title')} <span className="text-cyan-400">{t('formation.titleHighlight')}</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl">
-            Academic background and international experiences
+            {t('formation.subtitle')}
           </p>
         </motion.div>
 

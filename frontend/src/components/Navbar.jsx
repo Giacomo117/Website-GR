@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSelector from './LanguageSelector';
 
 const Navbar = ({ onChatOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,31 +47,33 @@ const Navbar = ({ onChatOpen }) => {
                 onClick={() => scrollToSection('projects')}
                 className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
               >
-                Projects
+                {t('nav.projects')}
               </button>
               <button
                 onClick={() => scrollToSection('formation')}
                 className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
               >
-                Formation
+                {t('nav.formation')}
               </button>
               <button
                 onClick={() => scrollToSection('experience')}
                 className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all font-medium text-sm"
               >
-                Experience
+                {t('nav.experience')}
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
                 className="px-4 py-2 bg-cyan-500 text-black font-semibold rounded-full hover:bg-cyan-400 transition-all text-sm"
               >
-                Contact
+                {t('nav.contact')}
               </button>
             </div>
           </div>
 
-          {/* Spacer for balance */}
-          <div className="hidden md:block w-[80px]"></div>
+          {/* Language Selector - Right side */}
+          <div className="hidden md:block">
+            <LanguageSelector />
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -88,26 +93,30 @@ const Navbar = ({ onChatOpen }) => {
               onClick={() => scrollToSection('projects')}
               className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
-              Projects
+              {t('nav.projects')}
             </button>
             <button
               onClick={() => scrollToSection('formation')}
               className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
-              Formation
+              {t('nav.formation')}
             </button>
             <button
               onClick={() => scrollToSection('experience')}
               className="w-full max-w-xs text-center px-6 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
             >
-              Experience
+              {t('nav.experience')}
             </button>
             <button
               onClick={() => scrollToSection('contact')}
               className="w-full max-w-xs text-center px-6 py-3 bg-cyan-500 text-black font-semibold rounded-lg hover:bg-cyan-400 transition-all"
             >
-              Contact
+              {t('nav.contact')}
             </button>
+            {/* Mobile Language Selector */}
+            <div className="pt-2">
+              <LanguageSelector />
+            </div>
           </div>
         </div>
       )}

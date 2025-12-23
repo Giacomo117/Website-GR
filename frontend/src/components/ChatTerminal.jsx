@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import axios from 'axios';
+import { useLanguage } from '../context/LanguageContext';
 
 // Use relative URL for Cloudflare Functions (or fallback to localhost for dev)
 const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
@@ -124,16 +125,18 @@ Technologies: Neo4j, Python, Graph Data Science, GTFS, Cypher` },
 };
 
 // Command history for arrow navigation
-const ChatTerminal = ({ isOpen, onClose, projectMessage, projectContext, autoSendMessage, onAutoSendProcessed }) => {
-  const [history, setHistory] = useState([
-    { 
-      type: 'system', 
-      output: `Welcome to Giacomo's Interactive Terminal v2.0
+const ChatTerminal = ({ isOpen, onClose, projectMessage, projectContext, autoSendMessage, onAutoSendProcessed, prefillInput, onPrefillProcessed }) => {
+  const { t, language } = useLanguage();
+  
+  const getWelcomeMessage = () => ({
+    type: 'system', 
+    output: `${t('terminal.welcome')}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Ask me what you want! Or type 'help' for available commands.
+${t('terminal.helpText')}
 ` 
-    },
-  ]);
+  });
+
+  const [history, setHistory] = useState([getWelcomeMessage()]);
   const [currentCommand, setCurrentCommand] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState('~');
@@ -144,6 +147,16 @@ Ask me what you want! Or type 'help' for available commands.
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Update welcome message when language changes
+  useEffect(() => {
+    setHistory(prev => {
+      if (prev.length === 1 && prev[0].type === 'system') {
+        return [getWelcomeMessage()];
+      }
+      return prev;
+    });
+  }, [language]);
 
   // Get directory content from path
   const getNode = (path) => {
@@ -290,15 +303,46 @@ Or just type any question to ask the AI about Giacomo.`,
         setActiveContext(projectContext);
       }
       // Auto-send the message after a brief delay to allow terminal to render
-      const timer = setTimeout(() => {
-        handleCommand(autoSendMessage);
+      const timer = setTimeout(async () => {
+        const userMessage = autoSendMessage.trim();
+        const displayPath = currentPath.replace('~', '~');
+        
+        // Add user message to history
+        setHistory(prev => [...prev, { type: 'user', command: userMessage, path: displayPath }]);
+        
+        // Start loading and call AI
+        setIsLoading(true);
+        try {
+          const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: userMessage,
+              context: projectContext || null
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok && data.response) {
+            setHistory(prev => [...prev, { type: 'ai', output: data.response }]);
+          } else {
+            setHistory(prev => [...prev, { type: 'error', output: data.detail || data.error || 'Failed to get response' }]);
+          }
+        } catch (error) {
+          console.error('Auto-send error:', error);
+          setHistory(prev => [...prev, { type: 'error', output: 'Connection error. Please try again.' }]);
+        } finally {
+          setIsLoading(false);
+        }
+        
         if (onAutoSendProcessed) {
           onAutoSendProcessed();
         }
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isOpen, autoSendMessage, autoSendProcessed, isLoading, projectContext]);
+  }, [isOpen, autoSendMessage, autoSendProcessed, isLoading, projectContext, currentPath, onAutoSendProcessed]);
 
   // Reset autoSendProcessed when terminal closes
   useEffect(() => {
@@ -306,6 +350,20 @@ Or just type any question to ask the AI about Giacomo.`,
       setAutoSendProcessed(false);
     }
   }, [isOpen]);
+
+  // Handle prefill input (from voice assistant - puts text in input field)
+  useEffect(() => {
+    if (isOpen && prefillInput) {
+      setCurrentCommand(prefillInput);
+      // Set context if provided
+      if (projectContext) {
+        setActiveContext(projectContext);
+      }
+      if (onPrefillProcessed) {
+        onPrefillProcessed();
+      }
+    }
+  }, [isOpen, prefillInput, projectContext, onPrefillProcessed]);
 
   const handleCommand = async (message = currentCommand) => {
     if (isLoading) return;
