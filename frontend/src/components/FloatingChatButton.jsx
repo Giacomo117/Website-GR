@@ -28,13 +28,13 @@ const FloatingChatButton = ({ onChatOpen }) => {
       {!isOpen && (
         <button
           onClick={() => handleOpen()}
-          className="fixed bottom-6 right-8 md:right-10 z-50 w-20 h-20 md:w-32 md:h-32 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 group overflow-hidden shadow-2xl shadow-cyan-500/40"
+          className="fixed bottom-6 right-6 z-50 w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 group overflow-hidden shadow-2xl shadow-cyan-500/40"
           aria-label="Open AI Chat"
         >
           <VoicePoweredOrb 
             hue={180}
             enableVoiceControl={false}
-            className="w-full h-full scale-125 md:scale-125"
+            className="w-full h-full scale-125 -translate-x-1 md:translate-x-100"
           />
         </button>
       )}
