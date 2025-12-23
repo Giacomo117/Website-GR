@@ -62,7 +62,7 @@ export function ShaderAnimation() {
     const uniforms = {
       time: { type: "f", value: 1.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
-      yOffset: { type: "f", value: isMobile ? 0.8 : 0.0 },
+      yOffset: { type: "f", value: isMobile ? 2.0 : 0.0 },
     }
 
     // Vertex shader
