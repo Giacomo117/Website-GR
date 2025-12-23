@@ -28,7 +28,7 @@ const FloatingChatButton = ({ onChatOpen }) => {
       {!isOpen && (
         <button
           onClick={() => handleOpen()}
-          className="fixed bottom-8 right-6 z-50 w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-400/60 hover:from-cyan-400 hover:to-cyan-500 border border-cyan-400/30"
+          className="fixed bottom-6 right-6 z-50 w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-400/60 hover:from-cyan-400 hover:to-cyan-500 border border-cyan-400/30"
           aria-label="Open AI Chat"
         >
           <MessageSquare 
