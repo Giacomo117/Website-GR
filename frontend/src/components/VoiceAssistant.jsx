@@ -210,13 +210,12 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
         body: formData,
       });
       
+      const data = await response.json();
+      
       if (response.status === 429) {
-        const data = await response.json();
         setRateLimitError(data.detail || 'Rate limit exceeded. Please wait.');
         return;
       }
-      
-      const data = await response.json();
       
       if (!response.ok) {
         console.error('Transcription API error:', data);
