@@ -183,29 +183,39 @@ const VoiceAssistant = ({ onOpenChatWithMessage }) => {
 
   // Stop recording and open chat with transcription
   const stopRecording = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
+    if (!recognitionRef.current) return;
+    
+    // Store the current transcription before stopping
+    const currentTranscription = transcription;
+    const currentInterim = interimTranscript;
+    
+    recognitionRef.current.stop();
     setIsRecording(false);
     setInterimTranscript('');
     
-    // Get the final transcription (we need to wait a tiny bit for final results)
+    // Combine final transcription with any interim results
+    const fullTranscription = (currentTranscription + ' ' + currentInterim).trim();
+    
+    // Wait a bit longer for any final results from the recognition
     setTimeout(() => {
-      setTranscription(current => {
-        if (current && current.trim() && onOpenChatWithMessage) {
+      setTranscription(latestTranscription => {
+        // Use the latest transcription if available, otherwise use what we captured
+        const messageToSend = latestTranscription.trim() || fullTranscription;
+        
+        if (messageToSend && onOpenChatWithMessage) {
           // Open chat with the transcription in the input field (not auto-send)
           onOpenChatWithMessage({
-            message: current.trim(),
+            message: messageToSend,
             context: GIACOMO_CONTEXT,
             prefillInput: true  // This puts text in input field, not auto-sends
           });
           // Clear transcription after opening chat
           return '';
         }
-        return current;
+        return latestTranscription;
       });
-    }, 100);
-  }, [onOpenChatWithMessage]);
+    }, 300); // Increased timeout to allow final results to arrive
+  }, [onOpenChatWithMessage, transcription, interimTranscript]);
 
   // Handle sending the message to chat
   const handleSendMessage = useCallback(() => {
