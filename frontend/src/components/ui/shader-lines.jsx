@@ -57,14 +57,13 @@ export function ShaderAnimation() {
     // Create geometry
     const geometry = new THREE.PlaneBufferGeometry(2, 2)
 
-    // Define uniforms
-    const isMobile = window.innerWidth < 768
+    // Define uniforms - same settings for all devices
     const uniforms = {
       time: { type: "f", value: 1.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
-      yOffset: { type: "f", value: isMobile ? -1.0 : 0.0 },
-      brightness: { type: "f", value: isMobile ? 1.0 : 1.0 },
-      scale: { type: "f", value: isMobile ? 0.6 : 1.0 },
+      yOffset: { type: "f", value: 0.0 },
+      brightness: { type: "f", value: 1.0 },
+      scale: { type: "f", value: 1.0 },
     }
 
     // Vertex shader
