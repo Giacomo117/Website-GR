@@ -9,7 +9,7 @@ export const config = {
   },
 };
 
-// Simple in-memory rate limiting
+// Simple in-memory rate limiting (resets on cold start)
 const rateLimitMap = new Map();
 const RATE_LIMIT = 5; // requests per minute
 const RATE_WINDOW = 60000; // milliseconds
