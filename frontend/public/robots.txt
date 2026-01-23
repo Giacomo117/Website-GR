@@ -1,5 +1,5 @@
 # Robots.txt for Giacomo Reggianini Portfolio
-# https://giacomoreggianini.com
+# https://giacomoreggianini.it
 
 # Allow all search engines to crawl the site
 User-agent: *

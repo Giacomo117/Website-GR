@@ -84,7 +84,7 @@ export async function onRequestPost(context) {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openRouterKey}`,
-        'HTTP-Referer': 'https://giacomoreggianini.com',
+        'HTTP-Referer': 'https://giacomoreggianini.it',
         'X-Title': 'Giacomo Portfolio Voice Assistant'
       },
       body: whisperFormData

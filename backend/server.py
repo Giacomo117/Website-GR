@@ -86,7 +86,7 @@ async def transcribe_endpoint(request: Request, file: UploadFile = File(...)):
                 data=data,
                 headers={
                     'Authorization': f'Bearer {openrouter_key}',
-                    'HTTP-Referer': 'https://giacomoreggianini.com',
+                    'HTTP-Referer': 'https://giacomoreggianini.it',
                     'X-Title': 'Giacomo Portfolio Voice Assistant'
                 }
             )
