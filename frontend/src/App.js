@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import "./App.css";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { LanguageProvider } from "./context/LanguageContext";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -45,6 +46,7 @@ function App() {
         <Contact onChatOpen={handleOpenChat} />
         <Footer />
         <FloatingChatButton onChatOpen={(fn) => openChatWithMessage.current = fn} />
+        <SpeedInsights />
       </div>
     </LanguageProvider>
   );
