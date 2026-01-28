@@ -11,7 +11,7 @@
   },
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "Link",
@@ -26,13 +26,19 @@
   ],
   "redirects": [
     {
-      "source": "https://www.giacomoreggianini.it/:path*",
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.giacomoreggianini.it"
+        }
+      ],
       "destination": "https://giacomoreggianini.it/:path*",
       "permanent": true
     }
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
