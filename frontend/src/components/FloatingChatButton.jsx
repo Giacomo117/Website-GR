@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChatTerminal from './ChatTerminal';
 import { useLanguage } from '../context/LanguageContext';
 
-// Stylized 3D Avatar of Giacomo
+// Stylized 3D Avatar of Giacomo - European/Italian style
 const GiacomoAvatar = ({ isHovered, mousePosition, buttonRef }) => {
   const [eyeOffset, setEyeOffset] = useState({ x: 0, y: 0 });
   const [isBlinking, setIsBlinking] = useState(false);
@@ -52,135 +52,165 @@ const GiacomoAvatar = ({ isHovered, mousePosition, buttonRef }) => {
 
   return (
     <div className="relative w-12 h-12 md:w-14 md:h-14">
-      {/* 3D effect shadow layers */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 transform translate-x-1 translate-y-1 opacity-50" />
+      {/* 3D effect shadow */}
+      <div className="absolute inset-0 rounded-full bg-gray-800 transform translate-x-0.5 translate-y-0.5 opacity-40" />
       
-      {/* Head base with gradient */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-200 via-amber-100 to-amber-300 shadow-inner overflow-hidden">
+      {/* Head - più ovale, meno tondo, skin italiana */}
+      <div 
+        className="absolute inset-0 overflow-hidden"
+        style={{
+          borderRadius: '45% 45% 42% 42%',
+          background: 'linear-gradient(180deg, #e8c4a0 0%, #ddb892 50%, #d4a574 100%)'
+        }}
+      >
+        {/* Face shading */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
         
-        {/* Subtle face shading */}
-        <div className="absolute inset-0 bg-gradient-to-t from-amber-300/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        
-        {/* Hair - dark, styled */}
-        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-11 md:w-12">
-          <div className="relative">
-            {/* Main hair volume */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-5 md:w-11 md:h-6 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 rounded-t-full" />
-            {/* Hair texture/waves */}
-            <div className="absolute top-1 left-2 w-2 h-3 bg-gray-700/50 rounded-full rotate-12" />
-            <div className="absolute top-0.5 right-2 w-2 h-3 bg-gray-700/50 rounded-full -rotate-12" />
-            {/* Side hair */}
-            <div className="absolute top-3 -left-0.5 w-2 h-4 bg-gradient-to-b from-gray-900 to-gray-800 rounded-full" />
-            <div className="absolute top-3 -right-0.5 w-2 h-4 bg-gradient-to-b from-gray-900 to-gray-800 rounded-full" />
-          </div>
+        {/* Hair - capelli castano scuro, più voluminosi e mossi */}
+        <div className="absolute -top-1 -left-0.5 -right-0.5">
+          {/* Volume principale */}
+          <div 
+            className="w-full h-6 md:h-7"
+            style={{
+              background: 'linear-gradient(180deg, #2d1f14 0%, #3d2914 40%, #2d1f14 100%)',
+              borderRadius: '50% 50% 20% 20%'
+            }}
+          />
+          {/* Ciuffo laterale sinistro */}
+          <div 
+            className="absolute top-2 -left-0.5 w-3 h-4"
+            style={{
+              background: 'linear-gradient(135deg, #2d1f14 0%, #3d2914 100%)',
+              borderRadius: '40%'
+            }}
+          />
+          {/* Ciuffo laterale destro */}
+          <div 
+            className="absolute top-2 -right-0.5 w-3 h-4"
+            style={{
+              background: 'linear-gradient(-135deg, #2d1f14 0%, #3d2914 100%)',
+              borderRadius: '40%'
+            }}
+          />
+          {/* Highlights capelli */}
+          <div className="absolute top-1 left-3 w-4 h-2 bg-gradient-to-r from-transparent via-amber-900/20 to-transparent rounded-full" />
         </div>
 
-        {/* Face features container */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
-          
-          {/* Eyes container */}
-          <div className="flex gap-2.5 md:gap-3 mb-1">
-            {/* Left eye */}
-            <div className="relative w-2.5 h-2.5 md:w-3 md:h-3">
-              {eyesClosed ? (
-                // Closed eye - happy squint
-                <div className="absolute inset-x-0 top-1/2 h-0.5 bg-gray-800 rounded-full transform -translate-y-1/2" 
-                     style={{ 
-                       borderRadius: '0 0 50% 50%',
-                       height: '2px'
-                     }} 
-                />
-              ) : (
-                <>
-                  {/* Eye white */}
-                  <div className="absolute inset-0 bg-white rounded-full shadow-inner" />
-                  {/* Iris */}
-                  <div 
-                    className="absolute w-1.5 h-1.5 md:w-2 md:h-2 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full transition-transform duration-100"
-                    style={{ 
-                      top: '50%',
-                      left: '50%',
-                      transform: `translate(calc(-50% + ${eyeOffset.x}px), calc(-50% + ${eyeOffset.y}px))`
-                    }}
-                  >
-                    {/* Pupil */}
-                    <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 md:w-1 md:h-1 bg-gray-900 rounded-full -translate-x-1/2 -translate-y-1/2" />
-                    {/* Eye shine */}
-                    <div className="absolute top-0.5 right-0.5 w-0.5 h-0.5 bg-white rounded-full opacity-80" />
-                  </div>
-                </>
-              )}
-            </div>
-            
-            {/* Right eye */}
-            <div className="relative w-2.5 h-2.5 md:w-3 md:h-3">
-              {eyesClosed ? (
-                // Closed eye - happy squint
-                <div className="absolute inset-x-0 top-1/2 h-0.5 bg-gray-800 rounded-full transform -translate-y-1/2"
-                     style={{ 
-                       borderRadius: '0 0 50% 50%',
-                       height: '2px'
-                     }}
-                />
-              ) : (
-                <>
-                  {/* Eye white */}
-                  <div className="absolute inset-0 bg-white rounded-full shadow-inner" />
-                  {/* Iris */}
-                  <div 
-                    className="absolute w-1.5 h-1.5 md:w-2 md:h-2 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full transition-transform duration-100"
-                    style={{ 
-                      top: '50%',
-                      left: '50%',
-                      transform: `translate(calc(-50% + ${eyeOffset.x}px), calc(-50% + ${eyeOffset.y}px))`
-                    }}
-                  >
-                    {/* Pupil */}
-                    <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 md:w-1 md:h-1 bg-gray-900 rounded-full -translate-x-1/2 -translate-y-1/2" />
-                    {/* Eye shine */}
-                    <div className="absolute top-0.5 right-0.5 w-0.5 h-0.5 bg-white rounded-full opacity-80" />
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+        {/* Sopracciglia - più marcate, stile italiano */}
+        <div className="absolute top-5 left-2.5 w-2.5 h-0.5 bg-gradient-to-r from-transparent via-amber-900 to-amber-900/50 rounded-full transform -rotate-3" />
+        <div className="absolute top-5 right-2.5 w-2.5 h-0.5 bg-gradient-to-l from-transparent via-amber-900 to-amber-900/50 rounded-full transform rotate-3" />
 
-          {/* Nose - subtle */}
-          <div className="w-1 h-1.5 bg-gradient-to-b from-transparent to-amber-300/50 rounded-full mb-0.5" />
-
-          {/* Mouth */}
-          <div className={`transition-all duration-200 ${isHovered ? 'w-4 h-1.5' : 'w-3 h-0.5'}`}>
-            {isHovered ? (
-              // Smile when hovered
-              <div className="w-full h-full bg-gray-800 rounded-b-full" />
+        {/* Eyes container - posizionati più in alto */}
+        <div className="absolute top-6 left-0 right-0 flex justify-center gap-3">
+          {/* Left eye */}
+          <div className="relative w-2.5 h-3 md:w-3 md:h-3.5">
+            {eyesClosed ? (
+              <div 
+                className="absolute inset-x-0 top-1/2 h-0.5 bg-amber-900 rounded-full transform -translate-y-1/2"
+                style={{ transform: 'translateY(-50%) scaleY(0.5)' }}
+              />
             ) : (
-              // Slight smile normally
-              <div className="w-full h-full border-b-2 border-gray-700 rounded-b-full" />
+              <>
+                {/* Eye white - più allungato orizzontalmente */}
+                <div 
+                  className="absolute inset-0 bg-white shadow-inner"
+                  style={{ borderRadius: '40% 40% 45% 45%' }}
+                />
+                {/* Iris - occhi marroni/nocciola */}
+                <div 
+                  className="absolute w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-transform duration-75"
+                  style={{ 
+                    background: 'radial-gradient(circle at 30% 30%, #8B5A2B, #5D4037, #3E2723)',
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(calc(-50% + ${eyeOffset.x}px), calc(-50% + ${eyeOffset.y}px))`
+                  }}
+                >
+                  {/* Pupil */}
+                  <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-gray-900 rounded-full -translate-x-1/2 -translate-y-1/2" />
+                  {/* Eye shine */}
+                  <div className="absolute top-0.5 left-1 w-0.5 h-0.5 bg-white rounded-full" />
+                </div>
+              </>
+            )}
+          </div>
+          
+          {/* Right eye */}
+          <div className="relative w-2.5 h-3 md:w-3 md:h-3.5">
+            {eyesClosed ? (
+              <div 
+                className="absolute inset-x-0 top-1/2 h-0.5 bg-amber-900 rounded-full transform -translate-y-1/2"
+                style={{ transform: 'translateY(-50%) scaleY(0.5)' }}
+              />
+            ) : (
+              <>
+                <div 
+                  className="absolute inset-0 bg-white shadow-inner"
+                  style={{ borderRadius: '40% 40% 45% 45%' }}
+                />
+                <div 
+                  className="absolute w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-transform duration-75"
+                  style={{ 
+                    background: 'radial-gradient(circle at 30% 30%, #8B5A2B, #5D4037, #3E2723)',
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(calc(-50% + ${eyeOffset.x}px), calc(-50% + ${eyeOffset.y}px))`
+                  }}
+                >
+                  <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-gray-900 rounded-full -translate-x-1/2 -translate-y-1/2" />
+                  <div className="absolute top-0.5 left-1 w-0.5 h-0.5 bg-white rounded-full" />
+                </div>
+              </>
             )}
           </div>
         </div>
 
-        {/* Cheek blush on hover */}
-        {isHovered && (
-          <>
-            <div className="absolute bottom-3 left-1.5 w-2 h-1 bg-pink-300/40 rounded-full blur-[1px]" />
-            <div className="absolute bottom-3 right-1.5 w-2 h-1 bg-pink-300/40 rounded-full blur-[1px]" />
-          </>
-        )}
+        {/* Nose - naso più definito, stile mediterraneo */}
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 w-1.5 h-2">
+          <div className="w-full h-full bg-gradient-to-b from-transparent via-transparent to-amber-800/20 rounded-b-full" />
+        </div>
 
-        {/* Subtle ear hints */}
-        <div className="absolute top-1/2 -left-0.5 w-1.5 h-2.5 bg-gradient-to-r from-amber-300 to-amber-200 rounded-full -translate-y-1/2" />
-        <div className="absolute top-1/2 -right-0.5 w-1.5 h-2.5 bg-gradient-to-l from-amber-300 to-amber-200 rounded-full -translate-y-1/2" />
+        {/* Mouth */}
+        <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2">
+          {isHovered ? (
+            // Big smile
+            <div className="w-4 h-2 overflow-hidden">
+              <div 
+                className="w-4 h-4 border-2 border-gray-700 rounded-full"
+                style={{ 
+                  borderTop: 'none',
+                  borderLeft: 'none',
+                  borderRight: 'none',
+                  background: 'linear-gradient(180deg, transparent 40%, #c9a080 100%)'
+                }}
+              />
+            </div>
+          ) : (
+            // Slight smile
+            <div className="w-3 h-1.5 overflow-hidden">
+              <div className="w-3 h-3 border-b-2 border-amber-800/60 rounded-full" />
+            </div>
+          )}
+        </div>
+
+        {/* Stubble/beard shadow - barba leggera */}
+        <div 
+          className="absolute bottom-1 left-1/2 -translate-x-1/2 w-8 h-3 opacity-10"
+          style={{
+            background: 'radial-gradient(ellipse at center, #2d1f14 0%, transparent 70%)'
+          }}
+        />
+
+        {/* Ears */}
+        <div 
+          className="absolute top-6 -left-1 w-1.5 h-3 rounded-full"
+          style={{ background: 'linear-gradient(90deg, #c9a080, #ddb892)' }}
+        />
+        <div 
+          className="absolute top-6 -right-1 w-1.5 h-3 rounded-full"
+          style={{ background: 'linear-gradient(-90deg, #c9a080, #ddb892)' }}
+        />
       </div>
-
-      {/* Floating animation container */}
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-3px) rotate(1deg); }
-        }
-      `}</style>
     </div>
   );
 };

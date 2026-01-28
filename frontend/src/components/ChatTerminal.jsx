@@ -288,11 +288,11 @@ ${t('terminal.helpText')}
 
   // Start the SL animation (Steam Locomotive) - runs infinitely until Ctrl+C/Ctrl+D
   const startSlAnimation = useCallback(() => {
-    const terminalWidth = 100; // Characters width (wider for full terminal)
-    const trainWidth = 75; // Full train width including locomotive
+    const terminalWidth = 120; // Characters width (wider for full terminal)
+    const trainWidth = 60; // Width of the longest line in the train
     
     // Start completely off-screen to the right
-    slPositionRef.current = terminalWidth + trainWidth;
+    slPositionRef.current = terminalWidth;
     slFrameRef.current = 0;
     
     const animate = () => {
@@ -301,12 +301,6 @@ ${t('terminal.helpText')}
       
       let pos = slPositionRef.current;
       const frame = slFrameRef.current;
-      
-      // Loop back to right side when train fully exits left
-      if (pos < -trainWidth - 20) {
-        slPositionRef.current = terminalWidth + trainWidth;
-        pos = slPositionRef.current;
-      }
       
       // Build the current frame
       const smokeFrame = SL_TRAIN.smoke[frame];
@@ -325,17 +319,19 @@ ${t('terminal.helpText')}
         fullTrain.push(locoFrame[i]);
       }
       
+      // Find the max line length for proper exit detection
+      const maxLineLength = Math.max(...fullTrain.map(l => l.length));
+      
       // Offset each line based on position
       const offsetTrain = fullTrain.map(line => {
         if (pos >= 0) {
-          // Train is entering from right - add padding
-          const padding = Math.min(pos, terminalWidth);
-          return ' '.repeat(padding) + line;
+          // Train is on screen or entering from right - add padding
+          return ' '.repeat(pos) + line;
         } else {
-          // Train is exiting to left - clip from left
+          // Train is exiting to left - clip from left side
           const clipAmount = Math.abs(pos);
           if (clipAmount >= line.length) {
-            return '';
+            return ''; // Line completely exited
           }
           return line.substring(clipAmount);
         }
@@ -346,8 +342,15 @@ ${t('terminal.helpText')}
         position: pos
       });
       
+      // Check if train has COMPLETELY exited the screen to the left
+      // Train is fully gone when position + max line length < 0
+      if (pos + maxLineLength < 0) {
+        // Reset to start from right side again
+        slPositionRef.current = terminalWidth;
+      }
+      
       slAnimationRef.current = requestAnimationFrame(() => {
-        setTimeout(animate, 70); // Slightly faster for smoother feel
+        setTimeout(animate, 70); // Smooth animation
       });
     };
     
