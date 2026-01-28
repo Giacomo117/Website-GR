@@ -286,10 +286,9 @@ ${t('terminal.helpText')}
     slFrameRef.current = 0;
   }, []);
 
-  // Start the SL animation (Steam Locomotive) - runs infinitely until Ctrl+C/Ctrl+D
+  // Start the SL animation (Steam Locomotive) - runs once until train exits or Ctrl+C/Ctrl+D
   const startSlAnimation = useCallback(() => {
     const terminalWidth = 120; // Characters width (wider for full terminal)
-    const trainWidth = 60; // Width of the longest line in the train
     
     // Start completely off-screen to the right
     slPositionRef.current = terminalWidth;
@@ -343,10 +342,11 @@ ${t('terminal.helpText')}
       });
       
       // Check if train has COMPLETELY exited the screen to the left
-      // Train is fully gone when position + max line length < 0
       if (pos + maxLineLength < 0) {
-        // Reset to start from right side again
-        slPositionRef.current = terminalWidth;
+        // Train has fully exited - stop animation
+        stopSlAnimation();
+        setHistory(prev => [...prev, { type: 'output', output: '🚂 Choo choo! The train has left the station!' }]);
+        return;
       }
       
       slAnimationRef.current = requestAnimationFrame(() => {
@@ -355,7 +355,7 @@ ${t('terminal.helpText')}
     };
     
     animate();
-  }, []);
+  }, [stopSlAnimation]);
 
   // Cleanup SL animation on unmount or close
   useEffect(() => {
