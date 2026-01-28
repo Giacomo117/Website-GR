@@ -275,6 +275,97 @@ ${t('terminal.helpText')}
     return current;
   };
 
+  // Stop the SL animation
+  const stopSlAnimation = useCallback(() => {
+    if (slAnimationRef.current) {
+      cancelAnimationFrame(slAnimationRef.current);
+      slAnimationRef.current = null;
+    }
+    setSlAnimation(null);
+    slPositionRef.current = 0;
+    slFrameRef.current = 0;
+  }, []);
+
+  // Start the SL animation (Steam Locomotive)
+  const startSlAnimation = useCallback(() => {
+    const terminalWidth = 80; // Characters width
+    const trainWidth = 60;
+    const totalWidth = terminalWidth + trainWidth + 20;
+    
+    slPositionRef.current = terminalWidth + 10;
+    slFrameRef.current = 0;
+    
+    const animate = () => {
+      slPositionRef.current -= 2;
+      slFrameRef.current = (slFrameRef.current + 1) % 4;
+      
+      const pos = slPositionRef.current;
+      const frame = slFrameRef.current;
+      
+      // Build the current frame
+      const smokeFrame = SL_TRAIN.smoke[frame];
+      const locoFrame = SL_TRAIN.locomotive[frame];
+      const coalFrame = SL_TRAIN.coal;
+      
+      // Combine smoke + locomotive + coal
+      const fullTrain = [];
+      
+      // Add smoke (5 lines)
+      for (let i = 0; i < smokeFrame.length; i++) {
+        fullTrain.push(smokeFrame[i]);
+      }
+      
+      // Add locomotive (10 lines)
+      for (let i = 0; i < locoFrame.length; i++) {
+        fullTrain.push(locoFrame[i]);
+      }
+      
+      // Offset each line based on position
+      const offsetTrain = fullTrain.map(line => {
+        if (pos >= 0) {
+          return ' '.repeat(Math.min(pos, terminalWidth)) + line;
+        } else {
+          return line.substring(Math.abs(pos));
+        }
+      });
+      
+      // Trim lines to fit terminal width and ensure they don't overflow
+      const trimmedTrain = offsetTrain.map(line => {
+        if (line.length > terminalWidth) {
+          return line.substring(0, terminalWidth);
+        }
+        return line;
+      });
+      
+      setSlAnimation({
+        lines: trimmedTrain,
+        position: pos
+      });
+      
+      // Check if train has exited the screen
+      if (pos < -trainWidth - 10) {
+        stopSlAnimation();
+        setHistory(prev => [...prev, { type: 'output', output: '🚂 Choo choo! The train has left the station!' }]);
+        return;
+      }
+      
+      slAnimationRef.current = requestAnimationFrame(() => {
+        setTimeout(animate, 80); // ~12 fps for smooth animation
+      });
+    };
+    
+    animate();
+  }, [stopSlAnimation]);
+
+  // Cleanup SL animation on unmount or close
+  useEffect(() => {
+    return () => {
+      if (slAnimationRef.current) {
+        cancelAnimationFrame(slAnimationRef.current);
+      }
+    };
+  }, []);
+
   // Standard terminal commands
   const terminalCommands = {
     help: () => `Available commands:
@@ -290,6 +381,7 @@ ${t('terminal.helpText')}
   date          - Show current date/time
   echo <text>   - Print text
   neofetch      - System information
+  sl            - 🚂 Steam Locomotive (Ctrl+C to stop)
   
 Or just type any question to ask the AI about Giacomo.`,
 
@@ -376,6 +468,12 @@ Or just type any question to ask the AI about Giacomo.`,
       ████████████████████      Memory: Unlimited Knowledge
        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀       
 `,
+
+    sl: () => {
+      // Start the steam locomotive animation
+      startSlAnimation();
+      return '🚂 Choo choo! Press Ctrl+C or Ctrl+D to stop the train...';
+    },
 
     exit: () => {
       onClose();
@@ -543,9 +641,17 @@ Or just type any question to ask the AI about Giacomo.`,
   };
 
   const handleKeyDown = (e) => {
-    // Ctrl+C - cancel/new line
+    // Ctrl+C - cancel/new line or stop SL animation
     if (e.ctrlKey && e.key === 'c') {
       e.preventDefault();
+      
+      // If SL animation is running, stop it
+      if (slAnimation) {
+        stopSlAnimation();
+        setHistory(prev => [...prev, { type: 'output', output: '^C\n🛑 Train stopped!' }]);
+        return;
+      }
+      
       const displayPath = currentPath.replace('~', '~');
       if (currentCommand) {
         setHistory(prev => [...prev, { type: 'user', command: currentCommand + '^C', path: displayPath }]);
@@ -557,10 +663,24 @@ Or just type any question to ask the AI about Giacomo.`,
       return;
     }
 
+    // Ctrl+D - stop SL animation or EOF
+    if (e.ctrlKey && e.key === 'd') {
+      e.preventDefault();
+      
+      // If SL animation is running, stop it
+      if (slAnimation) {
+        stopSlAnimation();
+        setHistory(prev => [...prev, { type: 'output', output: '^D\n🛑 Train stopped!' }]);
+        return;
+      }
+      return;
+    }
+
     // Ctrl+L - clear screen
     if (e.ctrlKey && e.key === 'l') {
       e.preventDefault();
       setHistory([]);
+      stopSlAnimation(); // Also stop any running animation
       return;
     }
 
@@ -616,6 +736,13 @@ Or just type any question to ask the AI about Giacomo.`,
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
+
+  // Auto-scroll when SL animation updates
+  useEffect(() => {
+    if (slAnimation) {
+      bottomRef.current?.scrollIntoView({ behavior: 'auto' });
+    }
+  }, [slAnimation]);
 
   useEffect(() => {
     if (isOpen) {
@@ -710,6 +837,20 @@ Or just type any question to ask the AI about Giacomo.`,
             <div className="flex gap-1 md:gap-2 lg:gap-3 items-center text-cyan-400">
               <Loader2 size={12} className="md:w-4 md:h-4 lg:w-5 lg:h-5 animate-spin" />
               <span className="text-[10px] md:text-xs lg:text-sm">Processing...</span>
+            </div>
+          )}
+
+          {/* Steam Locomotive Animation */}
+          {slAnimation && (
+            <div className="relative overflow-hidden font-mono text-[8px] md:text-[10px] lg:text-xs leading-tight text-green-400 whitespace-pre bg-black">
+              <div className="animate-pulse text-yellow-400 text-[10px] md:text-xs mb-2">
+                🚂 Press Ctrl+C or Ctrl+D to stop the train...
+              </div>
+              {slAnimation.lines.map((line, i) => (
+                <div key={i} className="text-green-400" style={{ fontFamily: 'monospace' }}>
+                  {line}
+                </div>
+              ))}
             </div>
           )}
 
