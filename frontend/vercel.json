@@ -9,6 +9,28 @@
       "maxDuration": 30
     }
   },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://giacomoreggianini.it/>; rel=\"canonical\""
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "https://www.giacomoreggianini.it/:path*",
+      "destination": "https://giacomoreggianini.it/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
