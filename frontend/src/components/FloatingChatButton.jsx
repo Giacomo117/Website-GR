@@ -5,7 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 // 3D Orbiting Particles Icon - Enhanced
 const OrbitingParticles = ({ isHovered }) => {
   return (
-    <div className="relative w-14 h-14 md:w-16 md:h-16">
+    <div className="relative w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24">
       {/* Outer glow aura */}
       <div 
         className={`absolute inset-0 rounded-full transition-all duration-500 ${isHovered ? 'opacity-100' : 'opacity-60'}`}
@@ -36,7 +36,7 @@ const OrbitingParticles = ({ isHovered }) => {
         
         {/* Main core */}
         <div 
-          className={`w-5 h-5 md:w-6 md:h-6 rounded-full transition-all duration-300 ${isHovered ? 'scale-130' : 'scale-100'}`}
+          className={`w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-full transition-all duration-300 ${isHovered ? 'scale-130' : 'scale-100'}`}
           style={{
             background: 'radial-gradient(circle at 30% 30%, #ffffff 0%, #67e8f9 20%, #06b6d4 60%, #0891b2 100%)',
             boxShadow: isHovered 
@@ -258,10 +258,10 @@ const FloatingChatButton = ({ onChatOpen }) => {
           onClick={() => handleOpen()}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className={`fixed bottom-6 right-6 z-50 rounded-full flex items-center justify-center transition-all duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}
+          className={`fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 rounded-full flex items-center justify-center transition-all duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}
           style={{
-            width: '72px',
-            height: '72px',
+            width: 'clamp(72px, 10vw, 100px)',
+            height: 'clamp(72px, 10vw, 100px)',
             background: 'radial-gradient(circle at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.95) 100%)',
             boxShadow: isHovered 
               ? '0 0 40px rgba(6,182,212,0.5), 0 0 80px rgba(6,182,212,0.3), inset 0 0 30px rgba(6,182,212,0.1)' 
