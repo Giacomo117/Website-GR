@@ -1,7 +1,106 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
+
+// Steam Locomotive ASCII Art Frames (inspired by sl command)
+const SL_TRAIN = {
+  // Main locomotive body frames (alternating wheel positions)
+  locomotive: [
+    [
+      "      ====        ________                ___________ ",
+      "  _D _|  |_______/        \\__I_I_____===__|_________| ",
+      "   |(_)---  |   H\\________/ |   |        =|___ ___|   ",
+      "   /     |  |   H  |  |     |   |         ||_| |_||   ",
+      "  |      |  |   H  |__--------------------| [___] |   ",
+      "  | ________|___H__/__|_____/[][]~\\_______|       |   ",
+      "  |/ |   |-----------I_____I [][] []  D   |=======|__ ",
+      "__/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__ ",
+      " |/-=|___|=O=====O=====O=====O   |_____/~\\___/        ",
+      "  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/            ",
+    ],
+    [
+      "      ====        ________                ___________ ",
+      "  _D _|  |_______/        \\__I_I_____===__|_________| ",
+      "   |(_)---  |   H\\________/ |   |        =|___ ___|   ",
+      "   /     |  |   H  |  |     |   |         ||_| |_||   ",
+      "  |      |  |   H  |__--------------------| [___] |   ",
+      "  | ________|___H__/__|_____/[][]~\\_______|       |   ",
+      "  |/ |   |-----------I_____I [][] []  D   |=======|__ ",
+      "__/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__ ",
+      " |/-=|___|=   O=====O=====O=====O|_____/~\\___/        ",
+      "  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/            ",
+    ],
+    [
+      "      ====        ________                ___________ ",
+      "  _D _|  |_______/        \\__I_I_____===__|_________| ",
+      "   |(_)---  |   H\\________/ |   |        =|___ ___|   ",
+      "   /     |  |   H  |  |     |   |         ||_| |_||   ",
+      "  |      |  |   H  |__--------------------| [___] |   ",
+      "  | ________|___H__/__|_____/[][]~\\_______|       |   ",
+      "  |/ |   |-----------I_____I [][] []  D   |=======|__ ",
+      "__/ =| o |=-O=====O=====O=====O\\ ____Y___________|__ ",
+      " |/-=|___|=    ~~    ~~    ~~    |_____/~\\___/        ",
+      "  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/            ",
+    ],
+    [
+      "      ====        ________                ___________ ",
+      "  _D _|  |_______/        \\__I_I_____===__|_________| ",
+      "   |(_)---  |   H\\________/ |   |        =|___ ___|   ",
+      "   /     |  |   H  |  |     |   |         ||_| |_||   ",
+      "  |      |  |   H  |__--------------------| [___] |   ",
+      "  | ________|___H__/__|_____/[][]~\\_______|       |   ",
+      "  |/ |   |-----------I_____I [][] []  D   |=======|__ ",
+      "__/ =| o |=-~O=====O=====O=====O ____Y___________|__ ",
+      " |/-=|___|=      ~     ~     ~   |_____/~\\___/        ",
+      "  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/            ",
+    ],
+  ],
+  // Smoke patterns that alternate
+  smoke: [
+    [
+      "                      (  ) (@@) ( )  (@)  ()    @@    O     @     O     @",
+      "                 (@@@)                                                    ",
+      "             (    )                                                       ",
+      "          (@@@@)                                                          ",
+      "        (   )                                                             ",
+    ],
+    [
+      "                      (@@) (  ) (@)  ( )  @@    ()    @     O     @     O ",
+      "                  (   )                                                   ",
+      "              (@@@)                                                       ",
+      "           (    )                                                         ",
+      "         (@@@@)                                                           ",
+    ],
+    [
+      "                      ( )  (@@) (  ) (@)  ()    @@    O     @     O     @ ",
+      "                 (@@@@)                                                   ",
+      "              (   )                                                       ",
+      "           (@@@)                                                          ",
+      "        (     )                                                           ",
+    ],
+    [
+      "                      (@)  ( )  (@@) (  ) @@    ()    @     O     @     O ",
+      "                  (@@@)                                                   ",
+      "             (     )                                                      ",
+      "          (    )                                                          ",
+      "        (@@@@@)                                                           ",
+    ],
+  ],
+  // Coal car that follows the locomotive
+  coal: [
+    "  _________________                                                        ",
+    " _|                \\_____A                                                 ",
+    "=|                        |                                                ",
+    "-|                        |                                                ",
+    " |  ____________________  |                                                ",
+    " | |                    | |                                                ",
+    " | |   GIACOMO RAIL     | |                                                ",
+    " | |____________________| |___________                                     ",
+    " |/  O    O    O    O    \\|         \\_|                                   ",
+    "  \\_/  \\_/  \\_/  \\_/  \\_/ \\_/                                            ",
+  ],
+};
 
 // Use relative URL for Cloudflare Functions (or fallback to localhost for dev)
 const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
@@ -144,6 +243,13 @@ ${t('terminal.helpText')}
   const [activeContext, setActiveContext] = useState(null);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [autoSendProcessed, setAutoSendProcessed] = useState(false);
+  
+  // Steam Locomotive animation state
+  const [slAnimation, setSlAnimation] = useState(null);
+  const slAnimationRef = useRef(null);
+  const slPositionRef = useRef(0);
+  const slFrameRef = useRef(0);
+  
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
