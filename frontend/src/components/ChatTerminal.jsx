@@ -286,28 +286,33 @@ ${t('terminal.helpText')}
     slFrameRef.current = 0;
   }, []);
 
-  // Start the SL animation (Steam Locomotive)
+  // Start the SL animation (Steam Locomotive) - runs infinitely until Ctrl+C/Ctrl+D
   const startSlAnimation = useCallback(() => {
-    const terminalWidth = 80; // Characters width
-    const trainWidth = 60;
-    const totalWidth = terminalWidth + trainWidth + 20;
+    const terminalWidth = 100; // Characters width (wider for full terminal)
+    const trainWidth = 75; // Full train width including locomotive
     
-    slPositionRef.current = terminalWidth + 10;
+    // Start completely off-screen to the right
+    slPositionRef.current = terminalWidth + trainWidth;
     slFrameRef.current = 0;
     
     const animate = () => {
       slPositionRef.current -= 2;
       slFrameRef.current = (slFrameRef.current + 1) % 4;
       
-      const pos = slPositionRef.current;
+      let pos = slPositionRef.current;
       const frame = slFrameRef.current;
+      
+      // Loop back to right side when train fully exits left
+      if (pos < -trainWidth - 20) {
+        slPositionRef.current = terminalWidth + trainWidth;
+        pos = slPositionRef.current;
+      }
       
       // Build the current frame
       const smokeFrame = SL_TRAIN.smoke[frame];
       const locoFrame = SL_TRAIN.locomotive[frame];
-      const coalFrame = SL_TRAIN.coal;
       
-      // Combine smoke + locomotive + coal
+      // Combine smoke + locomotive
       const fullTrain = [];
       
       // Add smoke (5 lines)
@@ -323,39 +328,31 @@ ${t('terminal.helpText')}
       // Offset each line based on position
       const offsetTrain = fullTrain.map(line => {
         if (pos >= 0) {
-          return ' '.repeat(Math.min(pos, terminalWidth)) + line;
+          // Train is entering from right - add padding
+          const padding = Math.min(pos, terminalWidth);
+          return ' '.repeat(padding) + line;
         } else {
-          return line.substring(Math.abs(pos));
+          // Train is exiting to left - clip from left
+          const clipAmount = Math.abs(pos);
+          if (clipAmount >= line.length) {
+            return '';
+          }
+          return line.substring(clipAmount);
         }
-      });
-      
-      // Trim lines to fit terminal width and ensure they don't overflow
-      const trimmedTrain = offsetTrain.map(line => {
-        if (line.length > terminalWidth) {
-          return line.substring(0, terminalWidth);
-        }
-        return line;
       });
       
       setSlAnimation({
-        lines: trimmedTrain,
+        lines: offsetTrain,
         position: pos
       });
       
-      // Check if train has exited the screen
-      if (pos < -trainWidth - 10) {
-        stopSlAnimation();
-        setHistory(prev => [...prev, { type: 'output', output: '🚂 Choo choo! The train has left the station!' }]);
-        return;
-      }
-      
       slAnimationRef.current = requestAnimationFrame(() => {
-        setTimeout(animate, 80); // ~12 fps for smooth animation
+        setTimeout(animate, 70); // Slightly faster for smoother feel
       });
     };
     
     animate();
-  }, [stopSlAnimation]);
+  }, []);
 
   // Cleanup SL animation on unmount or close
   useEffect(() => {
