@@ -207,7 +207,7 @@ const translations = {
       greeting: 'Ciao, sono',
       name: 'Giacomo',
       role: 'AI Engineer',
-      roleShort: 'AI Engineer che crea soluzioni intelligenti',
+      roleShort: 'AI Engineer | Trasformo le tue idee in soluzioni',
       description: 'Costruisco sistemi intelligenti che risolvono problemi reali. Specializzato in sistemi RAG, computer vision e soluzioni AI enterprise.',
       cta: 'Esplora i Miei Lavori',
       chatCta: 'Chatta con AI',

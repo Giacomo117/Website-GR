@@ -30,16 +30,39 @@
   "related_applications": [],
   "shortcuts": [
     {
+      "name": "About Me",
+      "short_name": "About",
+      "description": "Learn about my background and expertise in AI",
+      "url": "/#about",
+      "icons": [{ "src": "/Logo-2.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Experience",
+      "short_name": "Experience",
+      "description": "Professional experience in AI Engineering",
+      "url": "/#experience",
+      "icons": [{ "src": "/Logo-2.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Education",
+      "short_name": "Education",
+      "description": "Academic background and certifications",
+      "url": "/#education",
+      "icons": [{ "src": "/Logo-2.png", "sizes": "96x96" }]
+    },
+    {
       "name": "Projects",
       "short_name": "Projects",
-      "description": "View featured AI projects",
-      "url": "/#projects"
+      "description": "Featured AI projects and portfolio",
+      "url": "/#projects",
+      "icons": [{ "src": "/Logo-2.png", "sizes": "96x96" }]
     },
     {
       "name": "Contact",
       "short_name": "Contact",
-      "description": "Get in touch",
-      "url": "/#contact"
+      "description": "Get in touch for collaborations",
+      "url": "/#contact",
+      "icons": [{ "src": "/Logo-2.png", "sizes": "96x96" }]
     }
   ]
 }

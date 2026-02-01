@@ -43,7 +43,7 @@ const Hero = ({ onChatOpen }) => {
               </div>
               
               <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400 font-['Space_Grotesk'] drop-shadow-lg">
-                {t('hero.greeting')} <span className="text-cyan-400">Giacomo Reggianini</span>
+                {t('hero.greeting')} <span className="text-cyan-400">Giacomo</span>
               </h1>
               
               <p className="text-lg md:text-2xl lg:text-3xl text-gray-200 mb-6 md:mb-8 font-['Space_Grotesk'] font-medium drop-shadow-md">
