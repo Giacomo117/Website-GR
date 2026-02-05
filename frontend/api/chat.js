@@ -41,7 +41,7 @@ STUDI:
 - Triennale Ing. Informatica @ Unimore: 107/110  
 - Erasmus @ University of Exeter, UK
 
-CONTATTI: reggianini.giacomo01@gmail.com | +39 329 449 4417 | github.com/Giacomo117
+CONTATTI: reggianini.giacomo01@gmail.com | linkedin.com/in/giacomo-reggianini-0667bb300
 
 PROGETTI:
 - CIVETTA: Piattaforma RAG enterprise (microservizi, Redis, Azure OpenAI)
