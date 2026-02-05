@@ -145,7 +145,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4o',
+        model: 'openai/gpt-4o-mini',
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }

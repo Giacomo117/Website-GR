@@ -96,7 +96,7 @@ async def get_ai_response(user_message: str) -> str:
                     "Content-Type": "application/json",
                 },
                 json={
-                    "model": "openai/gpt-4o",
+                    "model": "openai/gpt-4o-mini",
                     "messages": [
                         {"role": "system", "content": GIACOMO_CONTEXT},
                         {"role": "user", "content": user_message}
