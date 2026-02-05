@@ -122,271 +122,6 @@ const SL_TRAIN = {
   ],
 };
 
-// Hacker Animation Frames - A story of a hacker breaking into the system
-const HACKER_ANIMATION = {
-  // Phase 1: Hacker walking towards computer (frames for movement)
-  walking: [
-    // Frame 1 - walking pose 1
-    [
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                   .---.            ",
-      "                                                  /o   o\\           ",
-      "                                                  |  ^  |           ",
-      "                                                  | '-' |           ",
-      "                                                   \\___/            ",
-      "                                                    |||             ",
-      "                                                 ___|||___          ",
-      "                                                /   |||   \\         ",
-      "                                               /    |||    \\        ",
-      "                                                   / \\              ",
-      "                                                  /   \\             ",
-      "                                                 /     \\            ",
-    ],
-    // Frame 2 - walking pose 2
-    [
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                                    ",
-      "                                                   .---.            ",
-      "                                                  /o   o\\           ",
-      "                                                  |  ^  |           ",
-      "                                                  | '-' |           ",
-      "                                                   \\___/            ",
-      "                                                    |||             ",
-      "                                                 ___|||___          ",
-      "                                                /   |||   \\         ",
-      "                                               /    |||    \\        ",
-      "                                                   /|\\              ",
-      "                                                  / | \\             ",
-      "                                                    |               ",
-    ],
-  ],
-  // Phase 2: Computer setup (static scene with computer)
-  computer: [
-    "    _____________________________________________                     ",
-    "   |  ___________                                |                    ",
-    "   | |           |  GIACOMO SYSTEMS v3.14       |                    ",
-    "   | |           |  ________________________    |                    ",
-    "   | |           | |                        |   |                    ",
-    "   | |           | |  PASSWORD: ********    |   |                    ",
-    "   | |           | |                        |   |                    ",
-    "   | |           | |  [ENTER TO CONTINUE]   |   |                    ",
-    "   | |           | |________________________|   |                    ",
-    "   | |___________|                              |                    ",
-    "   |_____________________________________________|                    ",
-    "          ||                          ||                              ",
-    "   _______||__________________________||_______                       ",
-    "  |___________________________________________|                       ",
-    "                                                                      ",
-  ],
-  // Phase 3: Hacker sitting at computer
-  sitting: [
-    "    _____________________________________________                     ",
-    "   |  ___________                                |                    ",
-    "   | |           |  GIACOMO SYSTEMS v3.14       |                    ",
-    "   | |           |  ________________________    |                    ",
-    "   | |           | |                        |   |    .---.           ",
-    "   | |           | |  PASSWORD: _           |   |   /o   o\\          ",
-    "   | |           | |                        |   |   |  ^  |          ",
-    "   | |           | |  [ENTER TO CONTINUE]   |   |   | '~' |          ",
-    "   | |           | |________________________|   |    \\___/           ",
-    "   | |___________|                              |     |||            ",
-    "   |_____________________________________________| ___|||___         ",
-    "          ||                          ||          |   |||   |        ",
-    "   _______||__________________________||_______  /|   |||   |\\       ",
-    "  |___________________________________________|    \\       /         ",
-    "                                                    \\_____/          ",
-  ],
-  // Phase 4: Typing animation frames
-  typing: [
-    // Frame 1 - hands up
-    [
-      "    _____________________________________________                     ",
-      "   |  ___________                                |                    ",
-      "   | |           |  GIACOMO SYSTEMS v3.14       |                    ",
-      "   | |           |  ________________________    |                    ",
-      "   | |           | |                        |   |    .---.           ",
-      "   | |           | |  PASSWORD: **          |   |   /o   o\\          ",
-      "   | |           | |                        |   |   |  ^  |          ",
-      "   | |           | |  CRACKING...           |   |   | '~' |          ",
-      "   | |           | |________________________|   |    \\___/           ",
-      "   | |___________|                              |     |H|            ",
-      "   |_____________________________________________| ___|H|___         ",
-      "          ||                          ||          \\  |H|   /        ",
-      "   _______||__________________________||_______    \\ |H| /          ",
-      "  |___________________________________________|     \\___/           ",
-      "                                                                     ",
-    ],
-    // Frame 2 - hands down
-    [
-      "    _____________________________________________                     ",
-      "   |  ___________                                |                    ",
-      "   | |           |  GIACOMO SYSTEMS v3.14       |                    ",
-      "   | |           |  ________________________    |                    ",
-      "   | |           | |                        |   |    .---.           ",
-      "   | |           | |  PASSWORD: ****        |   |   /o   o\\          ",
-      "   | |           | |                        |   |   |  ^  |          ",
-      "   | |           | |  CRACKING....          |   |   | '-' |          ",
-      "   | |           | |________________________|   |    \\___/           ",
-      "   | |___________|                              |     |M|            ",
-      "   |_____________________________________________| ___|M|___         ",
-      "          ||                          ||         |\\  |M|  /|        ",
-      "   _______||__________________________||_______  | \\_|M|_/ |        ",
-      "  |___________________________________________|  |  \\___/  |        ",
-      "                                                 |_________|        ",
-    ],
-    // Frame 3 - intense typing
-    [
-      "    _____________________________________________                     ",
-      "   |  ___________                                |                    ",
-      "   | |           |  GIACOMO SYSTEMS v3.14       |                    ",
-      "   | |           |  ________________________    |                    ",
-      "   | |           | |                        |   |    .---.           ",
-      "   | |           | |  PASSWORD: ******      |   |   /O   O\\          ",
-      "   | |           | |                        |   |   |  ^  |          ",
-      "   | |           | |  CRACKING.....         |   |   | '>>' |         ",
-      "   | |           | |________________________|   |    \\___/           ",
-      "   | |___________|                              |    \\|||/           ",
-      "   |_____________________________________________| ___|||___         ",
-      "          ||                          ||          \\  |||   /        ",
-      "   _______||__________________________||_______    \\_|||_/          ",
-      "  |___________________________________________|      |_|            ",
-      "                                                    /   \\           ",
-    ],
-  ],
-  // Phase 5: Access Granted celebration
-  success: [
-    // Frame 1 - screen shows success
-    [
-      "    _____________________________________________                     ",
-      "   |  ___________                                |                    ",
-      "   | |  * * * *  |  GIACOMO SYSTEMS v3.14       |                    ",
-      "   | |   * * *   |  ________________________    |                    ",
-      "   | |  * * * *  | |                        |   |    .---.           ",
-      "   | |           | |   ACCESS GRANTED!!!    |   |   /^   ^\\          ",
-      "   | |           | |                        |   |   |  o  |          ",
-      "   | |           | |   WELCOME, HACKER!     |   |   | \\_/ |          ",
-      "   | |           | |________________________|   |    \\___/           ",
-      "   | |___________|                              |    \\|||/           ",
-      "   |_____________________________________________| ___|H|___         ",
-      "          ||                          ||          \\  |H|   /        ",
-      "   _______||__________________________||_______    \\_|H|_/          ",
-      "  |___________________________________________|      |_|            ",
-      "                                                    /   \\           ",
-    ],
-    // Frame 2 - celebration arms up
-    [
-      "                         * * *                                       ",
-      "    _______________*_____*___*_*_______________________               ",
-      "   |  ___________    *     *                           |              ",
-      "   | |  \\O/ \\O/  |  GIACOMO SYSTEMS v3.14    *        |              ",
-      "   | |   |   |   |  ________________________           |    \\O/      ",
-      "   | |           | |                        |   |      |     |       ",
-      "   | |           | |   ACCESS GRANTED!!!    |   |      |    /|\\      ",
-      "   | |           | |                        |   |  *   |     |       ",
-      "   | |           | |   WELCOME, HACKER!     |   |      |    / \\      ",
-      "   | |           | |________________________|   |      |             ",
-      "   | |___________|                              |      |             ",
-      "   |_____________________________________________|                    ",
-      "          ||                          ||                              ",
-      "   _______||__________________________||_______                       ",
-      "  |___________________________________________|                       ",
-    ],
-    // Frame 3 - more celebration with confetti
-    [
-      "     *       *           *   *       *                    *          ",
-      "         *       *   *           *       *        *                  ",
-      "    ___*___________________________________________*___               ",
-      "   |  ___________  *                     *         |                  ",
-      "   | | CONGRATS! |  GIACOMO SYSTEMS v3.14         |      \\O/        ",
-      "   | |   \\O/     |  ________________________      |       |          ",
-      "   | |    |      | |  YOU'RE IN THE SYSTEM  |     |      /|\\         ",
-      "   | |   /|\\     | |                        |     |       |          ",
-      "   | |           | |   SECRETS UNLOCKED!    |     |      / \\         ",
-      "   | |           | |________________________|     |                   ",
-      "   | |___________|                                |                   ",
-      "   |_______________________________________________|                  ",
-      "          ||                          ||                              ",
-      "   _______||__________________________||_______                       ",
-      "  |___________________________________________|                       ",
-    ],
-  ],
-  // Phase 6: Final message with dancing
-  finale: [
-    // Frame 1
-    [
-      "  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  ",
-      "                                                                     ",
-      "    ╔═══════════════════════════════════════════════════════════╗    ",
-      "    ║                                                           ║    ",
-      "    ║   ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗ ██╗    ║    ",
-      "    ║   ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗██║    ║    ",
-      "    ║   ███████║███████║██║     █████╔╝ █████╗  ██║  ██║██║    ║    ",
-      "    ║   ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██║  ██║╚═╝    ║    ",
-      "    ║   ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██████╔╝██╗    ║    ",
-      "    ║   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝    ║    ",
-      "    ║                                                           ║    ",
-      "    ║           Mission Complete! You're a legend! 🎉           ║    ",
-      "    ║                                                           ║    ",
-      "    ╚═══════════════════════════════════════════════════════════╝    ",
-      "                                                                     ",
-      "                           \\O/   \\O/   \\O/                          ",
-      "                            |     |     |                            ",
-      "                           / \\   / \\   / \\                          ",
-    ],
-    // Frame 2
-    [
-      "     *     *     *     *     *     *     *     *     *     *     *   ",
-      "  *     *     *     *     *     *     *     *     *     *     *      ",
-      "    ╔═══════════════════════════════════════════════════════════╗    ",
-      "    ║                                                           ║    ",
-      "    ║   ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗ ██╗    ║    ",
-      "    ║   ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗██║    ║    ",
-      "    ║   ███████║███████║██║     █████╔╝ █████╗  ██║  ██║██║    ║    ",
-      "    ║   ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██║  ██║╚═╝    ║    ",
-      "    ║   ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██████╔╝██╗    ║    ",
-      "    ║   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝    ║    ",
-      "    ║                                                           ║    ",
-      "    ║           Mission Complete! You're a legend! 🎉           ║    ",
-      "    ║                                                           ║    ",
-      "    ╚═══════════════════════════════════════════════════════════╝    ",
-      "                                                                     ",
-      "                            O     O     O                            ",
-      "                           /|\\   /|\\   /|\\                          ",
-      "                           / \\   / \\   / \\                          ",
-    ],
-    // Frame 3
-    [
-      "  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  ",
-      "     *     *     *     *     *     *     *     *     *     *        ",
-      "    ╔═══════════════════════════════════════════════════════════╗    ",
-      "    ║                                                           ║    ",
-      "    ║   ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗ ██╗    ║    ",
-      "    ║   ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗██║    ║    ",
-      "    ║   ███████║███████║██║     █████╔╝ █████╗  ██║  ██║██║    ║    ",
-      "    ║   ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██║  ██║╚═╝    ║    ",
-      "    ║   ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██████╔╝██╗    ║    ",
-      "    ║   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝    ║    ",
-      "    ║                                                           ║    ",
-      "    ║           Mission Complete! You're a legend! 🎉           ║    ",
-      "    ║                                                           ║    ",
-      "    ╚═══════════════════════════════════════════════════════════╝    ",
-      "                                                                     ",
-      "                          \\O/    O    \\O/                           ",
-      "                           |    /|\\    |                             ",
-      "                          / \\   / \\   / \\                           ",
-    ],
-  ],
-};
-
 // Use relative URL for Cloudflare Functions (or fallback to localhost for dev)
 const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
 
@@ -579,13 +314,6 @@ ${t('terminal.helpText')}
   const slPositionRef = useRef(0);
   const slFrameRef = useRef(0);
   
-  // Hacker animation state
-  const [hackAnimation, setHackAnimation] = useState(null);
-  const hackAnimationRef = useRef(null);
-  const hackPhaseRef = useRef(0);
-  const hackFrameRef = useRef(0);
-  const hackStepRef = useRef(0);
-  
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
@@ -632,84 +360,6 @@ ${t('terminal.helpText')}
     slPositionRef.current = 0;
     slFrameRef.current = 0;
   }, []);
-
-  // Stop the Hacker animation
-  const stopHackAnimation = useCallback(() => {
-    if (hackAnimationRef.current) {
-      clearTimeout(hackAnimationRef.current);
-      hackAnimationRef.current = null;
-    }
-    setHackAnimation(null);
-    hackPhaseRef.current = 0;
-    hackFrameRef.current = 0;
-    hackStepRef.current = 0;
-  }, []);
-
-  // Start the Hacker animation - a story of hacking into the system
-  const startHackAnimation = useCallback(() => {
-    hackPhaseRef.current = 0; // Start at phase 0 (walking)
-    hackFrameRef.current = 0;
-    hackStepRef.current = 0;
-    
-    const phases = [
-      { name: 'walking', duration: 3000, frames: HACKER_ANIMATION.walking, loop: true },
-      { name: 'approach', duration: 2000, frames: [HACKER_ANIMATION.computer], loop: false },
-      { name: 'sitting', duration: 2000, frames: [HACKER_ANIMATION.sitting], loop: false },
-      { name: 'typing', duration: 5000, frames: HACKER_ANIMATION.typing, loop: true },
-      { name: 'success', duration: 3000, frames: HACKER_ANIMATION.success, loop: true },
-      { name: 'finale', duration: 5000, frames: HACKER_ANIMATION.finale, loop: true },
-    ];
-    
-    let phaseStartTime = Date.now();
-    let currentPhase = 0;
-    
-    const animate = () => {
-      const now = Date.now();
-      const phase = phases[currentPhase];
-      const elapsed = now - phaseStartTime;
-      
-      // Check if we should move to next phase
-      if (elapsed >= phase.duration) {
-        currentPhase++;
-        if (currentPhase >= phases.length) {
-          // Animation complete
-          stopHackAnimation();
-          setHistory(prev => [...prev, { 
-            type: 'output', 
-            output: '\n🎉 Mission Complete! You successfully hacked into Giacomo\'s system!\n💻 Type "help" to see available commands or ask anything about Giacomo.' 
-          }]);
-          return;
-        }
-        phaseStartTime = now;
-        hackFrameRef.current = 0;
-      }
-      
-      // Get current frame
-      const currentPhaseData = phases[currentPhase];
-      const frameIndex = currentPhaseData.loop 
-        ? Math.floor((now / 300)) % currentPhaseData.frames.length 
-        : 0;
-      
-      const currentFrame = currentPhaseData.frames[frameIndex];
-      
-      // For walking phase, move the character from right to left
-      let displayFrame = currentFrame;
-      if (currentPhaseData.name === 'walking') {
-        const progress = elapsed / phase.duration;
-        const offset = Math.floor((1 - progress) * 50); // Start from right, move left
-        displayFrame = currentFrame.map(line => ' '.repeat(Math.max(0, offset)) + line);
-      }
-      
-      setHackAnimation({
-        lines: displayFrame,
-        phase: currentPhaseData.name
-      });
-      
-      hackAnimationRef.current = setTimeout(animate, 100);
-    };
-    
-    animate();
-  }, [stopHackAnimation]);
 
   // Start the SL animation (Steam Locomotive) - runs once until train exits or Ctrl+C/Ctrl+D
   const startSlAnimation = useCallback(() => {
@@ -811,7 +461,6 @@ ${t('terminal.helpText')}
   echo <text>   - Print text
   neofetch      - System information
   sl            - 🚂 Steam Locomotive (Ctrl+C to stop)
-  hack          - 💻 Hacker Story Animation (~20s)
   
 Or just type any question to ask the AI about Giacomo.`,
 
@@ -913,12 +562,6 @@ Or just type any question to ask the AI about Giacomo.`,
       // Start the steam locomotive animation
       startSlAnimation();
       return '🚂 Choo choo! Press Ctrl+C or Ctrl+D to stop the train...';
-    },
-
-    hack: () => {
-      // Start the hacker story animation
-      startHackAnimation();
-      return '💻 Initiating hack sequence... Press Ctrl+C to abort mission...';
     },
 
     exit: () => {
@@ -1067,9 +710,19 @@ Or just type any question to ask the AI about Giacomo.`,
     // Unknown command - ask AI
     setIsLoading(true);
     try {
+      // Build conversation history for context (last 10 messages)
+      const conversationHistory = history
+        .filter(entry => entry.type === 'user' || entry.type === 'assistant' || entry.type === 'ai')
+        .slice(-10)
+        .map(entry => ({
+          role: entry.type === 'user' ? 'user' : 'assistant',
+          content: entry.type === 'user' ? entry.command : entry.output
+        }));
+      
       const response = await axios.post(`${API}/chat`, {
         message: userMessage,
-        context: activeContext
+        context: activeContext,
+        history: conversationHistory
       });
       setHistory(prev => [...prev, { type: 'assistant', output: response.data.response }]);
     } catch (error) {
@@ -1309,20 +962,6 @@ Or just type any question to ask the AI about Giacomo.`,
               </div>
               {slAnimation.lines.map((line, i) => (
                 <div key={i} className="text-green-400" style={{ fontFamily: 'monospace' }}>
-                  {line}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Hacker Animation */}
-          {hackAnimation && (
-            <div className="relative overflow-hidden font-mono text-[8px] md:text-[10px] lg:text-xs leading-tight whitespace-pre bg-black">
-              <div className="animate-pulse text-red-400 text-[10px] md:text-xs mb-2">
-                💻 Hacking in progress... Press Ctrl+C to abort mission
-              </div>
-              {hackAnimation.lines.map((line, i) => (
-                <div key={i} className={hackAnimation.phase === 'finale' || hackAnimation.phase === 'success' ? 'text-green-400' : 'text-cyan-400'} style={{ fontFamily: 'monospace' }}>
                   {line}
                 </div>
               ))}
