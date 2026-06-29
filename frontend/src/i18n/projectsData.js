@@ -119,7 +119,7 @@ export const projectsData = [
     tech: "Neo4j · APOC · GTFS",
     year: "2024",
     association: "Università degli Studi di Modena e Reggio Emilia",
-    image: "https://images.unsplash.com/photo-1502810365585-56ddb3b6a6f1?w=900&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop",
     summary:
       "A multi-modal routing system for public transportation networks using Neo4j graph database technology, implementing optimized pathfinding algorithms for real-world transit data. The system processes GTFS (General Transit Feed Specification) data for Modena, Italy, combining bus routes with pedestrian transfers to provide comprehensive journey planning with time-dependent scheduling and geospatial proximity search.",
     sections: [
