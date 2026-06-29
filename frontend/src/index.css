@@ -1,53 +1,141 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: #000000;
-    color: #ffffff;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg);
+  color: rgb(var(--fg));
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.font-serif-italic {
+  font-family: 'Newsreader', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Elegant serif used for the scroll-reveal statements */
+.reveal-serif {
+  font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.005em;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+::selection {
+  background: rgba(99, 140, 255, 0.35);
+  color: #ffffff;
 }
 
 @layer base {
   :root {
-        --background: 0 0% 0%;
-        --foreground: 0 0% 100%;
-        --card: 0 0% 5%;
-        --card-foreground: 0 0% 100%;
-        --popover: 0 0% 5%;
-        --popover-foreground: 0 0% 100%;
-        --primary: 189 100% 50%;
-        --primary-foreground: 0 0% 0%;
-        --secondary: 0 0% 10%;
-        --secondary-foreground: 0 0% 100%;
-        --muted: 0 0% 15%;
-        --muted-foreground: 0 0% 60%;
-        --accent: 189 100% 50%;
-        --accent-foreground: 0 0% 0%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 100%;
-        --border: 0 0% 15%;
-        --input: 0 0% 15%;
-        --ring: 189 100% 50%;
-        --chart-1: 189 100% 50%;
-        --chart-2: 213 100% 50%;
-        --chart-3: 0 0% 60%;
-        --chart-4: 0 0% 40%;
-        --chart-5: 0 0% 20%;
-        --radius: 0.5rem;
-    }
+    --background: 240 12% 4%;
+    --foreground: 0 0% 96%;
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 10% 4%;
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 6% 14%;
+    --muted-foreground: 240 5% 55%;
+    --accent: 222 90% 64%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 16%;
+    --input: 240 6% 16%;
+    --ring: 222 90% 64%;
+    --radius: 0.75rem;
+
+    /* ---- Theme tokens (DARK = default: cosmic night) ---- */
+    --bg: #060608;
+    --bg-soft: #08080b;
+    --bg-elevated: #0a0a0d;
+    --fg: 245 245 247;          /* ink (rgb triplet) */
+    --acc-1: 111 155 255;       /* blue */
+    --acc-2: 94 210 255;        /* cyan */
+    --acc-3: 129 140 248;       /* indigo */
+    --acc-4: 167 139 250;       /* violet */
+    --rim-line: 225 238 255;
+    --rim-glow: 140 185 255;
+    --rim-fade: 70 120 220;
+    --nav-bg: 12 12 15;
+    --scrollbar: #2a2a30;
+    --scrollbar-hover: #3a3a42;
+    /* Card-wash RGB triplet — used by image-backed cards (Projects bento grid).
+       Matches --bg so the gradient blends seamlessly into the section. */
+    --card-wash: 6 6 10;
+  }
+
+  :root.light {
+    --background: 220 30% 98%;
+    --foreground: 222 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 25% 12%;
+    --primary: 222 25% 12%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 16% 94%;
+    --secondary-foreground: 222 25% 12%;
+    --muted: 220 16% 94%;
+    --muted-foreground: 222 10% 40%;
+    --accent: 24 95% 53%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 14% 88%;
+    --input: 222 14% 88%;
+    --ring: 24 95% 53%;
+
+    /* ---- Theme tokens (LIGHT = bright day, warm "opposite" accents) ---- */
+    --bg: #f1e1b8;
+    --bg-soft: #efddad;
+    --bg-elevated: #ffffff;
+    --fg: 20 23 33;             /* dark slate ink */
+    --acc-1: 234 88 12;         /* orange */
+    --acc-2: 245 158 11;        /* amber */
+    --acc-3: 244 63 94;         /* rose */
+    --acc-4: 217 70 160;        /* pink */
+    --rim-line: 234 120 40;     /* warm sun line */
+    --rim-glow: 251 146 60;     /* orange glow */
+    --rim-fade: 253 186 116;    /* peach fade */
+    --nav-bg: 255 255 255;
+    --scrollbar: #d4d6df;
+    --scrollbar-hover: #b9bcc9;
+    /* Warm beige wash that matches the light "ground" background. */
+    --card-wash: 241 225 184;
+  }
 }
 
 @layer base {
@@ -59,217 +147,520 @@ code {
   }
 }
 
-@layer utilities {
-  .animate-spotlight {
-    animation: spotlight 2s ease 0.75s 1 forwards;
-  }
+/* Starfield twinkle — opacity + scale for a sparkling, lively feel */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50%      { opacity: 1;    transform: scale(1.35); }
 }
 
-@keyframes spotlight {
-  0% {
-    opacity: 0;
-    transform: translate(-72%, -62%) scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -40%) scale(1);
-  }
+/* Brighter "glint" stars with a soft colored halo (uses currentColor) */
+@keyframes twinkleGlow {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); filter: drop-shadow(0 0 1px currentColor); }
+  50%      { opacity: 1;    transform: scale(1.6); filter: drop-shadow(0 0 6px currentColor); }
 }
 
-.loader {
-  width: 48px;
-  height: 48px;
-  border: 3px solid #00D9FF;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Mobile: Much more zoomed out robot */
-@media (max-width: 768px) {
-  #hero .absolute.inset-0 {
-    height: 220vh;
-    top: -20vh;
-  }
-}
-
-/* Animations for chat terminal */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-from-bottom-5 {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-.fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-.slide-in-from-bottom-5 {
-  animation: slide-in-from-bottom-5 0.3s ease-out;
-}
-
-/* Mobile responsive improvements */
-@media (max-width: 640px) {
-  /* Better text wrapping on mobile */
-  .break-words {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  
-  /* Ensure cards don't overflow */
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-}
-
-/* Smooth horizontal scrolling on mobile */
-@media (max-width: 1024px) {
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  
-  .overflow-x-auto::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-/* Box Loader Animations */
-@keyframes box1 {
-  0%, 50% {
-    transform: translate(100%, 0);
-  }
-  100% {
-    transform: translate(200%, 0);
-  }
-}
-
-@keyframes box2 {
-  0% {
-    transform: translate(0, 100%);
+/* Planet rim — thin top line with a soft fade glow (static, gentle pulse, theme-aware) */
+@keyframes rimGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1.5px rgb(var(--rim-line) / 0.85),
+      0 0 70px 8px rgb(var(--rim-glow) / 0.45),
+      0 0 180px 60px rgb(var(--rim-fade) / 0.26);
   }
   50% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(100%, 0);
-  }
-}
-
-@keyframes box3 {
-  0%, 50% {
-    transform: translate(100%, 100%);
-  }
-  100% {
-    transform: translate(0, 100%);
+    box-shadow:
+      0 0 0 1.5px rgb(var(--rim-line) / 1),
+      0 0 82px 10px rgb(var(--rim-glow) / 0.55),
+      0 0 200px 66px rgb(var(--rim-fade) / 0.30);
   }
 }
 
-@keyframes box4 {
-  0% {
-    transform: translate(200%, 0);
+/* Slow drift for atmosphere */
+@keyframes drift {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Gentle starfield drift (parallax feel) */
+@keyframes starsDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-16px, 12px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+.stars-drift { animation: starsDrift 45s ease-in-out infinite; }
+
+/* Planet rim: static position, only the thin top line gently illuminates */
+.planet-rim {
+  animation: rimGlow 6s ease-in-out infinite;
+}
+
+/* Drifting nebula glows for subtle ambient color motion */
+@keyframes nebulaPulse {
+  0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0) scale(1); }
+  50%      { opacity: 0.85; transform: translate3d(12px, -10px, 0) scale(1.08); }
+}
+.nebula-pulse { animation: nebulaPulse 14s ease-in-out infinite; }
+
+/* Gentle breathing for ambient section glows */
+@keyframes glowBreathe {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+.glow-breathe { animation: glowBreathe 8s ease-in-out infinite; }
+
+/* Slow twinkle for a few brighter stars */
+@keyframes floatStar {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(8px, -10px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Fade up entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Marquee for logos */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+/* Reverse marquee — used by the 2nd LogoCloud row for visual contrast */
+@keyframes marqueeReverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-marquee-reverse {
+  animation: marqueeReverse 42s linear infinite;
+  will-change: transform;
+}
+
+/* LogoCloud row 2 — Simple Icons CDN renders monochrome SVGs in their brand
+   color; we re-tint them via filter so they look uniform in both themes and
+   pop on hover (full brand color). */
+.tech-logo-img {
+  /* In dark mode: clip to white-ish + dim. */
+  filter: brightness(0) invert(1) brightness(0.65);
+  opacity: 0.55;
+}
+.tech-logo:hover .tech-logo-img {
+  filter: none;
+  opacity: 1;
+  transform: translateY(-2px) scale(1.08);
+}
+:root.light .tech-logo-img {
+  /* In light mode: warm dark-rust tint. */
+  filter: brightness(0) saturate(100%) invert(22%) sepia(35%) saturate(2200%) hue-rotate(355deg) brightness(0.9);
+  opacity: 0.6;
+}
+:root.light .tech-logo:hover .tech-logo-img {
+  filter: none;
+  opacity: 1;
+}
+
+/* Pause both marquees when the user hovers the section (so you can read names) */
+.tech-logo:hover ~ * .animate-marquee-reverse,
+.tech-logo:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
   }
-  50% {
-    transform: translate(200%, 100%);
+}
+
+/* Tech marquee item: cool colored glow on hover */
+.tech-item {
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+.tech-item:hover {
+  color: #cfe0ff;
+  text-shadow: 0 0 18px rgba(111, 155, 255, 0.55);
+  transform: translateY(-2px);
+}
+
+/* Animated aurora gradient text (blue -> cyan -> violet) */
+@keyframes auroraShift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.gradient-text-aurora {
+  background: linear-gradient(90deg, #6f9bff, #5ed2ff, #a78bfa, #6f9bff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: auroraShift 6s linear infinite;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(90deg, #6f9bff, #93b4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Vertical accent bar (project rows) — theme-aware gradient */
+.accent-bar {
+  background: linear-gradient(to bottom, rgb(var(--acc-1)), rgb(var(--acc-2)), rgb(var(--acc-4)));
+}
+
+/* Multi-line text truncation */
+.clamp-2,
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-2 { -webkit-line-clamp: 2; }
+.clamp-3 { -webkit-line-clamp: 3; }
+
+/* =====================================================================
+   Project card micro-interactions
+   ===================================================================== */
+
+/* True 3D depth — children "lift" out of the tilted card on hover. */
+.card-3d { transform-style: preserve-3d; }
+.card-layer-top {
+  transform: translateZ(18px);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-layer-content {
+  transform: translateZ(0px);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-layer-numeral {
+  transform: translateZ(0px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s ease, opacity 0.4s ease;
+}
+.group:hover .card-layer-top { transform: translateZ(32px); }
+.group:hover .card-layer-content { transform: translateZ(28px); }
+.group:hover .card-layer-numeral { transform: translateZ(45px); }
+
+/* Tech ticker — endless horizontal scroll of skill chips inside each card.
+   The track contains the skills duplicated twice so a -50% translate loops
+   seamlessly. */
+@keyframes techTicker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.tech-ticker-track {
+  animation: techTicker 22s linear infinite;
+  will-change: transform;
+}
+/* Pause the ticker while hovering the card so users can read each chip. */
+.group:hover .tech-ticker-track {
+  animation-play-state: paused;
+}
+
+/* Aurora sweep that wipes across the project title on hover. */
+@keyframes titleSweep {
+  0%   { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+.project-title {
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgb(var(--acc-1) / 0.6) 45%,
+    rgb(var(--acc-3) / 0.7) 50%,
+    rgb(var(--acc-1) / 0.6) 55%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  background-position: -150% 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.group:hover .project-title {
+  animation: titleSweep 1.4s ease-in-out 1;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tech-ticker-track,
+  .group:hover .project-title {
+    animation: none !important;
   }
-  100% {
-    transform: translate(100%, 100%);
+  .card-layer-top,
+  .card-layer-content,
+  .card-layer-numeral,
+  .group:hover .card-layer-top,
+  .group:hover .card-layer-content,
+  .group:hover .card-layer-numeral {
+    transform: none !important;
   }
 }
 
-/* Box Loader Styles */
-.boxes {
-  --size: 40px;
-  --duration: 1500ms;
-  height: calc(var(--size) * 2);
-  width: calc(var(--size) * 3);
-  position: relative;
-  transform-style: preserve-3d;
-  transform-origin: 50% 50%;
-  transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+/* Respect users who prefer reduced motion: keep it calm */
+@media (prefers-reduced-motion: reduce) {
+  .planet-rim,
+  .nebula-pulse,
+  .glow-breathe,
+  .stars-drift,
+  .gradient-text-aurora,
+  .animate-marquee {
+    animation: none !important;
+  }
 }
 
-.box {
-  width: var(--size);
-  height: var(--size);
-  position: absolute;
-  transform-style: preserve-3d;
+/* =====================================================================
+   LIGHT THEME OVERRIDES
+   Remap the hard-coded utility colors to theme tokens when <html> has
+   the .light class. Higher specificity (:root.light .x) wins over the
+   base Tailwind utilities, so no component class changes are required.
+   ===================================================================== */
+
+/* --- Text (ink = --fg) --- */
+:root.light .text-white { color: rgb(var(--fg)); }
+:root.light .text-white\/90 { color: rgb(var(--fg) / 0.90); }
+:root.light .text-white\/85 { color: rgb(var(--fg) / 0.85); }
+:root.light .text-white\/70 { color: rgb(var(--fg) / 0.70); }
+:root.light .text-white\/65 { color: rgb(var(--fg) / 0.65); }
+:root.light .text-white\/60 { color: rgb(var(--fg) / 0.60); }
+:root.light .text-white\/55 { color: rgb(var(--fg) / 0.55); }
+:root.light .text-white\/50 { color: rgb(var(--fg) / 0.52); }
+:root.light .text-white\/45 { color: rgb(var(--fg) / 0.48); }
+:root.light .text-white\/40 { color: rgb(var(--fg) / 0.45); }
+:root.light .text-white\/35 { color: rgb(var(--fg) / 0.42); }
+:root.light .text-white\/30 { color: rgb(var(--fg) / 0.38); }
+:root.light .text-white\/25 { color: rgb(var(--fg) / 0.34); }
+:root.light .hover\:text-white:hover { color: rgb(var(--fg)); }
+:root.light .group:hover .group-hover\:text-white { color: rgb(var(--fg)); }
+:root.light .placeholder\:text-white\/40::placeholder { color: rgb(var(--fg) / 0.45); }
+:root.light .text-black { color: var(--bg); }
+
+/* --- Backgrounds (ink overlays / surfaces) --- */
+:root.light .bg-white { background-color: rgb(var(--fg)); }
+:root.light .bg-white\/5 { background-color: rgb(var(--fg) / 0.04); }
+:root.light .bg-white\/10 { background-color: rgb(var(--fg) / 0.07); }
+:root.light .hover\:bg-white\/5:hover { background-color: rgb(var(--fg) / 0.05); }
+:root.light .hover\:bg-white\/10:hover { background-color: rgb(var(--fg) / 0.08); }
+:root.light .hover\:bg-white\/90:hover { background-color: rgb(var(--fg) / 0.88); }
+
+/* --- Borders --- */
+:root.light .border-white\/10 { border-color: rgb(var(--fg) / 0.12); }
+:root.light .border-white\/15 { border-color: rgb(var(--fg) / 0.16); }
+:root.light .hover\:border-white\/20:hover { border-color: rgb(var(--fg) / 0.24); }
+:root.light .hover\:border-white\/30:hover { border-color: rgb(var(--fg) / 0.32); }
+:root.light .focus-within\:border-white\/25:focus-within { border-color: rgb(var(--acc-1) / 0.55); }
+
+/* --- Section / elevated surfaces (hard-coded dark hexes) --- */
+:root.light .bg-\[\#060608\] { background-color: transparent; }
+:root.light .bg-\[\#060608\]\/96 { background-color: rgb(241 225 184 / 0.97); }
+:root.light .bg-\[\#08080b\] { background-color: transparent; }
+:root.light .bg-\[\#0a0a0d\] { background-color: var(--bg-elevated); }
+:root.light .bg-\[\#0c0c0f\]\/50 { background-color: rgb(248 240 224 / 0.6); }
+:root.light .bg-\[\#0c0c0f\]\/90 { background-color: rgb(248 240 224 / 0.9); }
+:root.light .bg-\[\#101014\]\/95 { background-color: rgb(252 247 236 / 0.97); }
+
+/* The whole page becomes a continuous warm "ground": beige + dotted pattern with
+   a gentle vertical fade so the hero terrain flows to the bottom without a hard seam. */
+:root.light .App {
+  background-color: #f1e1b8;
+  background-image:
+    radial-gradient(circle, rgba(176, 136, 80, 0.11) 1px, transparent 1.7px),
+    linear-gradient(180deg, #f1e1b8 0%, #f1e1b8 24%, #f4e6c4 48%, #f8edd4 74%, #fcf5ea 100%);
+  background-size: 20px 20px, 100% 100%;
+  background-attachment: scroll, scroll;
+  background-repeat: repeat, no-repeat;
 }
 
-.box-1 {
-  animation: box1 var(--duration) linear infinite;
-  transform: translate(100%, 0);
+/* --- Accent colors --- */
+:root.light .text-\[\#6f9bff\] { color: rgb(var(--acc-1)); }
+:root.light .text-\[\#9db8ff\] { color: rgb(var(--acc-1)); }
+:root.light .text-\[\#cdd9ff\] { color: rgb(var(--acc-1)); }
+:root.light .group:hover .group-hover\:text-\[\#6f9bff\] { color: rgb(var(--acc-1)); }
+:root.light .group:hover .group-hover\:text-\[\#cdd9ff\] { color: rgb(var(--acc-1)); }
+:root.light .bg-\[\#6f9bff\] { background-color: rgb(var(--acc-1)); }
+:root.light .accent-\[\#6f9bff\] { accent-color: rgb(var(--acc-1)); }
+
+/* --- Aurora gradient text becomes a warm sunrise gradient in light mode --- */
+:root.light .gradient-text-aurora {
+  background-image: linear-gradient(90deg, #ea580c, #f59e0b, #f43f5e, #ea580c);
 }
 
-.box-2 {
-  animation: box2 var(--duration) linear infinite;
-  transform: translate(0, 100%);
+/* --- Tech marquee hover glow (warm) --- */
+:root.light .tech-item:hover {
+  color: #b45309;
+  text-shadow: 0 0 18px rgba(245, 158, 11, 0.5);
 }
 
-.box-3 {
-  animation: box3 var(--duration) linear infinite;
-  transform: translate(100%, 100%);
+/* --- Selection (warm) --- */
+:root.light ::selection {
+  background: rgba(234, 88, 12, 0.22);
+  color: #14171f;
 }
 
-.box-4 {
-  animation: box4 var(--duration) linear infinite;
-  transform: translate(200%, 0);
-}
+/* =====================================================================
+   ChatTerminal — theme-aware overrides (kept fully scoped to .chat-root
+   so the original component classes remain untouched). Dark mode keeps
+   the classic cyan terminal look; light mode switches to a warm,
+   editorial "sunrise terminal" palette that harmonizes with the
+   rest of the portfolio (#f1e1b8 ground + orange accents).
+   ===================================================================== */
 
-.box .face {
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
+/* Subtle backdrop tint switch */
+:root.light .chat-root.bg-black\/50 { background-color: rgba(50, 32, 12, 0.32); }
+
+/* Modal shell */
+:root.light .chat-root .bg-black { background-color: #fbf3e1; }     /* warm cream terminal */
+:root.light .chat-root .bg-zinc-900 { background-color: #f0dcb2; }  /* slightly darker beige (header/footer) */
+:root.light .chat-root .border-cyan-500 { border-color: rgba(234, 88, 12, 0.6); }
+:root.light .chat-root .border-cyan-500\/30 { border-color: rgba(234, 88, 12, 0.28); }
+
+/* Text — terminal accents → warm sunrise palette */
+:root.light .chat-root .text-cyan-400 { color: #c2410c; }     /* primary accent (was cyan) */
+:root.light .chat-root .text-cyan-300 { color: #d97706; }
+:root.light .chat-root .text-green-400 { color: #047857; }    /* prompt user (deep teal-green stays "OK" semantic) */
+:root.light .chat-root .text-blue-400 { color: #1d4ed8; }     /* path indigo */
+:root.light .chat-root .text-yellow-400 { color: #a16207; }   /* hints / train */
+:root.light .chat-root .text-red-400 { color: #b91c1c; }      /* errors */
+:root.light .chat-root .text-red-500 { background-color: #b91c1c; }
+:root.light .chat-root .bg-red-500 { background-color: #d97706; }   /* macOS dot red → warm orange */
+:root.light .chat-root .bg-yellow-500 { background-color: #ca8a04; }
+:root.light .chat-root .bg-green-500 { background-color: #15803d; }
+
+/* Main body / output text */
+:root.light .chat-root .text-white { color: #1a1410; }            /* main ink */
+:root.light .chat-root .text-gray-300 { color: #3a322a; }         /* assistant text */
+:root.light .chat-root .text-gray-400 { color: #5b4a36; }         /* secondary */
+:root.light .chat-root .text-gray-500 { color: #7a6a55; }         /* footer hint */
+:root.light .chat-root .hover\:text-white:hover { color: #1a1410; }
+:root.light .chat-root .caret-white { caret-color: #c2410c; }
+
+/* Inline links inside formatted assistant text (formatMarkdown adds cyan-400) */
+:root.light .chat-root .text-cyan-400.hover\:text-cyan-300:hover { color: #ea580c; }
+
+/* Block-bg scoped overlays (steam locomotive uses bg-black inside) */
+:root.light .chat-root .bg-black.bg-black { background-color: #fbf3e1; }
+
+/* Theme-aware scrollbar inside the terminal — applied in both modes */
+.chat-terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #00D9FF #1f2937;
+}
+.chat-terminal-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.chat-terminal-scroll::-webkit-scrollbar-track { background: #1f2937; }
+.chat-terminal-scroll::-webkit-scrollbar-thumb {
   background: #00D9FF;
-  opacity: 0.7;
+  border-radius: 4px;
+}
+:root.light .chat-terminal-scroll {
+  scrollbar-color: #c2410c #f0dcb2;
+}
+:root.light .chat-terminal-scroll::-webkit-scrollbar-track { background: #f0dcb2; }
+:root.light .chat-terminal-scroll::-webkit-scrollbar-thumb { background: #c2410c; }
+
+/* =====================================================================
+   FloatingChatButton — round aurora chip + hover label.
+   ===================================================================== */
+
+/* Theme tokens for the floating button (so dark/light just swap vars). */
+:root {
+  --fcb-bg: #0c0c0f;                  /* solid disc */
+  --fcb-bg-2: #1a1a24;                /* disc gradient end */
+  --fcb-border: rgba(111, 155, 255, 0.45);
+  --fcb-prompt: #93b4ff;              /* '>_' glyph color */
+  --fcb-aurora-a: #6f9bff;            /* aurora ring start (blue) */
+  --fcb-aurora-b: #5ed2ff;            /* aurora ring mid (cyan) */
+  --fcb-aurora-c: #a78bfa;            /* aurora ring end (violet) */
+  --fcb-halo: rgba(111, 155, 255, 0.35);
+  --fcb-label-bg: rgba(12, 12, 15, 0.85);
+  --fcb-label-fg: #e6e8ee;
+  --fcb-label-border: rgba(111, 155, 255, 0.35);
+}
+:root.light {
+  --fcb-bg: #fffaf0;
+  --fcb-bg-2: #fbe9c8;
+  --fcb-border: rgba(234, 88, 12, 0.45);
+  --fcb-prompt: #c2410c;              /* warm rust */
+  --fcb-aurora-a: #ea580c;            /* orange */
+  --fcb-aurora-b: #f59e0b;            /* amber */
+  --fcb-aurora-c: #f43f5e;            /* rose */
+  --fcb-halo: rgba(234, 88, 12, 0.28);
+  --fcb-label-bg: rgba(255, 247, 230, 0.92);
+  --fcb-label-fg: #2a2018;
+  --fcb-label-border: rgba(234, 88, 12, 0.35);
 }
 
-.box .face-front {
-  transform: rotateY(0deg) translateZ(calc(var(--size) / 2));
+/* Animated aurora rotation around the button */
+@keyframes fcbAuroraSpin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes fcbHaloPulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.95; transform: scale(1.07); }
+}
+@keyframes fcbCursorBlink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
-.box .face-right {
-  transform: rotateY(90deg) translateZ(calc(var(--size) / 2));
+.floating-chat-btn .floating-chat-surface {
+  background: radial-gradient(120% 120% at 30% 20%, var(--fcb-bg-2), var(--fcb-bg));
+  border: 1px solid var(--fcb-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 24px rgba(0, 0, 0, 0.32);
+}
+.floating-chat-btn .floating-chat-ring {
+  background: conic-gradient(
+    from 0deg,
+    var(--fcb-aurora-a),
+    var(--fcb-aurora-b),
+    var(--fcb-aurora-c),
+    var(--fcb-aurora-a)
+  );
+  animation: fcbAuroraSpin 6s linear infinite;
+  -webkit-mask:
+    radial-gradient(circle, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+          mask:
+    radial-gradient(circle, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+}
+.floating-chat-btn .floating-chat-halo {
+  background: radial-gradient(circle, var(--fcb-halo), transparent 70%);
+  animation: fcbHaloPulse 4.2s ease-in-out infinite;
+}
+.floating-chat-btn:hover .floating-chat-ring {
+  animation-duration: 3.5s;
+}
+.floating-chat-btn:hover .floating-chat-surface {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 34px rgba(0, 0, 0, 0.4),
+    0 0 0 4px var(--fcb-halo);
+}
+.floating-chat-btn .floating-chat-cursor {
+  animation: fcbCursorBlink 1.05s steps(1, end) infinite;
 }
 
-.box .face-top {
-  transform: rotateX(90deg) translateZ(calc(var(--size) / 2));
+/* Hover label */
+.floating-chat-label {
+  background: var(--fcb-label-bg);
+  color: var(--fcb-label-fg);
+  border-color: var(--fcb-label-border);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
-.box .face-back {
-  transform: rotateY(180deg) translateZ(calc(var(--size) / 2));
-  background: #0066FF;
+@media (prefers-reduced-motion: reduce) {
+  .floating-chat-btn .floating-chat-ring,
+  .floating-chat-btn .floating-chat-halo,
+  .floating-chat-btn .floating-chat-cursor {
+    animation: none !important;
+  }
 }

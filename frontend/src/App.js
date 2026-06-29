@@ -1,54 +1,68 @@
-import React, { useRef, useState } from "react";
 import "./App.css";
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import { LanguageProvider } from "./context/LanguageContext";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LanguageProvider } from "./i18n/LanguageContext";
+import { LanguageProvider as ChatLanguageProvider } from "./context/LanguageContext";
+import { ThemeProvider, useTheme } from "./theme/ThemeContext";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import VoiceAssistant from "./components/VoiceAssistant";
-import Projects from "./components/Projects";
-import Formation from "./components/Formation";
+import LogoCloud from "./components/LogoCloud";
+import ScrollRevealText from "./components/ScrollRevealText";
+import Services from "./components/Services";
+import CaseStudies from "./components/CaseStudies";
 import Experience from "./components/Experience";
-import Contact from "./components/Contact";
+import Education from "./components/Education";
+import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
 import FloatingChatButton from "./components/FloatingChatButton";
-import LoadingScreen from "./components/LoadingScreen";
+import { useLang } from "./i18n/LanguageContext";
+import { Toaster } from "./components/ui/sonner";
+
+const Home = () => {
+  const { c } = useLang();
+  return (
+    <div className="relative">
+      <Navbar />
+      <main>
+        <Hero />
+        <LogoCloud />
+        <section className="relative bg-[#060608]">
+          {c.statements.map((s, i) => (
+            <ScrollRevealText key={`${s.accent}-${i}`} text={s.text} accent={s.accent} />
+          ))}
+        </section>
+        <Services />
+        <CaseStudies />
+        <Experience />
+        <Education />
+        <Newsletter />
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+const ThemedToaster = () => {
+  const { theme } = useTheme();
+  return <Toaster position="bottom-center" theme={theme} />;
+};
 
 function App() {
-  const openChatWithMessage = useRef(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleProjectClick = (projectData) => {
-    if (openChatWithMessage.current) {
-      openChatWithMessage.current(projectData);
-    }
-  };
-
-  const handleOpenChat = () => {
-    if (openChatWithMessage.current) {
-      openChatWithMessage.current(null);
-    }
-  };
-
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-  };
-
   return (
-    <LanguageProvider>
-      {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
-      <div className="App" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
-        <Navbar onChatOpen={handleOpenChat} />
-        <Hero onChatOpen={handleOpenChat} />
-        <VoiceAssistant onOpenChatWithMessage={handleProjectClick} />
-        <Projects onProjectClick={handleProjectClick} />
-        <Formation />
-        <Experience />
-        <Contact onChatOpen={handleOpenChat} />
-        <Footer />
-        <FloatingChatButton onChatOpen={(fn) => openChatWithMessage.current = fn} />
-        <SpeedInsights />
-      </div>
-    </LanguageProvider>
+    <div className="App">
+      <ThemeProvider>
+        <LanguageProvider>
+          <ChatLanguageProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Home />} />
+              </Routes>
+            </BrowserRouter>
+            <FloatingChatButton />
+            <ThemedToaster />
+          </ChatLanguageProvider>
+        </LanguageProvider>
+      </ThemeProvider>
+    </div>
   );
 }
 

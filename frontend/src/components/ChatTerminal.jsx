@@ -122,8 +122,10 @@ const SL_TRAIN = {
   ],
 };
 
-// Use relative URL for Cloudflare Functions (or fallback to localhost for dev)
-const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8000/api';
+// Use REACT_APP_BACKEND_URL (set via .env) so the chat hits the correct backend
+// in every environment (dev preview + production). The chat endpoint itself
+// (/api/chat) is unchanged from the main branch.
+const API = `${process.env.REACT_APP_BACKEND_URL || ''}/api`;
 
 // Virtual filesystem structure
 const FILESYSTEM = {
@@ -313,6 +315,9 @@ ${t('terminal.helpText')}
   const slAnimationRef = useRef(null);
   const slPositionRef = useRef(0);
   const slFrameRef = useRef(0);
+  // Hack animation timeout ref (referenced in cleanup effect below; missing
+  // declaration in the original main branch caused a runtime ReferenceError).
+  const hackAnimationRef = useRef(null);
   
   const bottomRef = useRef(null);
   const terminalRef = useRef(null);
@@ -877,7 +882,7 @@ Or just type any question to ask the AI about Giacomo.`,
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-2 md:p-4 lg:p-6">
+    <div className="chat-root fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-2 md:p-4 lg:p-6">
       <div className="w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl bg-black rounded-lg overflow-hidden shadow-2xl border border-cyan-500 animate-in fade-in slide-in-from-bottom-5 duration-300">
         {/* Terminal Header - Smaller on Mobile */}
         <div className="flex items-center justify-between gap-2 p-2 md:p-3 lg:p-4 bg-zinc-900 text-xs text-gray-400 border-b border-cyan-500/30">
@@ -900,11 +905,7 @@ Or just type any question to ask the AI about Giacomo.`,
         {/* Terminal Output - Responsive sizing for different screen sizes */}
         <div 
           ref={terminalRef} 
-          className="h-[70vh] md:h-[60vh] lg:h-[65vh] xl:h-[70vh] max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] 2xl:max-h-[800px] overflow-y-auto p-2 md:p-4 lg:p-5 xl:p-6 space-y-1 md:space-y-2 bg-black cursor-text text-xs md:text-sm lg:text-base font-mono"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#00D9FF #1f2937'
-          }}
+          className="chat-terminal-scroll h-[70vh] md:h-[60vh] lg:h-[65vh] xl:h-[70vh] max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] 2xl:max-h-[800px] overflow-y-auto p-2 md:p-4 lg:p-5 xl:p-6 space-y-1 md:space-y-2 bg-black cursor-text text-xs md:text-sm lg:text-base font-mono"
           onClick={() => inputRef.current?.focus()}
         >
           {history.map((entry, i) => (
