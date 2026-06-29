@@ -125,7 +125,7 @@ const SL_TRAIN = {
 // Use REACT_APP_BACKEND_URL (set via .env) so the chat hits the correct backend
 // in every environment (dev preview + production). The chat endpoint itself
 // (/api/chat) is unchanged from the main branch.
-const API = `${process.env.REACT_APP_BACKEND_URL || ''}/api`;
+const API = `${import.meta.env.VITE_BACKEND_URL || ''}/api`;
 
 // Virtual filesystem structure
 const FILESYSTEM = {
