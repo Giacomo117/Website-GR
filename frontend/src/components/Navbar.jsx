@@ -75,6 +75,16 @@ const Navbar = () => {
           }`}
         >
           <div className="flex items-center justify-between px-5 h-12">
+            {/* Mobile-only language toggle — sits on the LEFT, mirroring the
+                hamburger/sidebar button on the right (same icon size & style). */}
+            <button
+              className="lg:hidden inline-flex items-center text-white/85 hover:text-white transition-colors"
+              onClick={toggle}
+              aria-label="Cambia lingua"
+            >
+              <Globe size={24} />
+            </button>
+
             {/* Left links */}
             <div className="hidden lg:flex items-center gap-1 flex-1">
               {leftLinks.map((link) => (
@@ -82,8 +92,9 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Center logo */}
-            <a href="#home" className="flex items-center gap-2 shrink-0">
+            {/* Center logo (desktop only — hidden on mobile so the bar is just
+                the two mirrored icon buttons) */}
+            <a href="#home" className="hidden lg:flex items-center gap-2 shrink-0">
               <WebionMark className="w-5 h-5 text-white hidden sm:block" />
               <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">Giacomo Reggianini</span>
             </a>
