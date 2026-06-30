@@ -3,13 +3,6 @@ import { ChevronDown, Menu, X, Globe, Sun, Moon } from "lucide-react";
 import { useLang } from "../i18n/LanguageContext";
 import { useTheme } from "../theme/ThemeContext";
 
-const WebionMark = ({ className = "" }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 7l3.2 10L8.4 9 11.6 17 14.8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M16.5 7l3.2 10L22.9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.55" />
-  </svg>
-);
-
 const Navbar = () => {
   const { c, lang, setLang, toggle } = useLang();
   const { theme, toggleTheme } = useTheme();
@@ -261,4 +254,3 @@ const NavItem = ({ link, openDrop, setOpenDrop, align = "left" }) => {
 };
 
 export default Navbar;
-export { WebionMark };

@@ -2,7 +2,6 @@ import React from "react";
 import { Linkedin, Instagram, Github, ArrowUp, Globe } from "lucide-react";
 import { useLang } from "../i18n/LanguageContext";
 import { person } from "../i18n/content";
-import { WebionMark } from "./Navbar";
 
 const Footer = () => {
   const { c, lang, setLang } = useLang();
@@ -21,7 +20,6 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-3">
             <div className="flex items-center gap-2">
-              <WebionMark className="w-6 h-6 text-white" />
               <span className="text-xl font-bold tracking-tight text-white">Giacomo Reggianini</span>
             </div>
 
