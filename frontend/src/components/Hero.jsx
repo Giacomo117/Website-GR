@@ -16,8 +16,8 @@ const Hero = () => {
       "170,225,255", // cyan
       "205,190,255", // violet
     ];
-    // In daylight the stars become faint cool blue-grey dots scattered across the morning sky
-    const lightTints = ["120,145,195", "140,165,210", "100,128,185", "160,182,222"];
+    // In daylight the stars become faint warm-brown dots scattered across the dawn sky
+    const lightTints = ["91,57,38", "120,80,52", "140,100,72", "165,120,88"];
     const tints = isLight ? lightTints : darkTints;
     // On phones/tablets we render far fewer stars — 90 individually
     // animated DOM nodes are a big mobile-GPU tax for very little visual
@@ -43,28 +43,28 @@ const Hero = () => {
   }, [isLight]);
 
   const atmosphere = isLight
-    ? "radial-gradient(120% 80% at 50% 118%, rgba(86,140,235,0.52) 0%, rgba(120,170,255,0.30) 22%, rgba(190,215,255,0.15) 42%, rgba(255,255,255,0) 68%)"
+    ? "radial-gradient(120% 80% at 50% 118%, rgba(240,116,56,0.64) 0%, rgba(252,156,96,0.36) 22%, rgba(255,210,165,0.16) 42%, rgba(255,255,255,0) 68%)"
     : "radial-gradient(120% 80% at 50% 118%, rgba(120,170,255,0.55) 0%, rgba(60,110,210,0.32) 22%, rgba(20,40,90,0.18) 42%, rgba(6,6,8,0) 68%)";
   const nebulaA = isLight
-    ? "radial-gradient(circle, rgba(110,150,240,0.16), transparent 70%)"
+    ? "radial-gradient(circle, rgba(255,148,92,0.18), transparent 70%)"
     : "radial-gradient(circle, rgba(120,90,230,0.18), transparent 70%)";
   const nebulaB = isLight
-    ? "radial-gradient(circle, rgba(120,185,235,0.14), transparent 70%)"
+    ? "radial-gradient(circle, rgba(232,108,118,0.14), transparent 70%)"
     : "radial-gradient(circle, rgba(60,150,230,0.16), transparent 70%)";
 
-  // Light: cool "clear-sky daybreak" — pale blue-white top fading into soft
-  // sky-blue at the horizon, so the atmosphere glow blends seamlessly into the
-  // airy blue-tinted ground.
+  // Light: warm "dawn over Mediterranean" sky — taupe top fading into peach and a
+  // slightly REDDER apricot at the horizon, blending into the warm amber ground.
   const skyBg = isLight
-    ? "linear-gradient(180deg, #f3f7fe 0%, #e7eefb 32%, #d4e2f8 66%, #c1d6f5 100%)"
+    ? "linear-gradient(180deg, #ecdcce 0%, #f1d2b4 32%, #f4bd88 66%, #efac6a 100%)"
     : "transparent";
 
-  // Light: airy blue-white "ground" below the curve, with a subtle dotted pattern.
-  // Matches the page (.App) base so the hero terrain flows seamlessly into the rest.
+  // Light: warm amber "ground" below the curve (yellow nudged a touch redder),
+  // with a subtle dotted pattern. Matches the page (.App) base so the hero terrain
+  // flows seamlessly into the rest.
   const planetStyle = isLight
     ? {
-        backgroundColor: "#eef3fc",
-        backgroundImage: "radial-gradient(circle, rgba(70,110,180,0.10) 1px, transparent 1.7px)",
+        backgroundColor: "#f3d6a5",
+        backgroundImage: "radial-gradient(circle, rgba(176,116,64,0.12) 1px, transparent 1.7px)",
         backgroundSize: "20px 20px",
       }
     : { backgroundColor: "#060608" };
@@ -134,7 +134,7 @@ const Hero = () => {
         className="hero-sphere-stage hero-halo pointer-events-none absolute inset-0 z-[5]"
         style={{
           background: isLight
-            ? "radial-gradient(55% 42% at 50% 60%, rgba(170,205,255,0.55) 0%, rgba(170,205,255,0.22) 32%, rgba(170,205,255,0.08) 55%, rgba(170,205,255,0) 80%)"
+            ? "radial-gradient(55% 42% at 50% 60%, rgba(255,198,150,0.55) 0%, rgba(255,198,150,0.22) 32%, rgba(255,198,150,0.08) 55%, rgba(255,198,150,0) 80%)"
             : "radial-gradient(55% 42% at 50% 58%, rgba(95,150,235,0.40) 0%, rgba(70,120,210,0.20) 32%, rgba(40,70,150,0.08) 55%, rgba(20,40,90,0) 80%)",
           filter: "blur(18px)",
         }}

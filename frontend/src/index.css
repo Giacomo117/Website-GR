@@ -112,43 +112,43 @@ code {
   }
 
   :root.light {
-    --background: 216 50% 98%;
-    --foreground: 222 35% 14%;
+    --background: 220 30% 98%;
+    --foreground: 222 25% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 222 35% 14%;
+    --card-foreground: 222 25% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 35% 14%;
-    --primary: 222 35% 14%;
+    --popover-foreground: 222 25% 12%;
+    --primary: 222 25% 12%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 216 30% 94%;
-    --secondary-foreground: 222 35% 14%;
-    --muted: 216 30% 94%;
-    --muted-foreground: 222 14% 40%;
-    --accent: 221 83% 53%;
+    --secondary: 220 16% 94%;
+    --secondary-foreground: 222 25% 12%;
+    --muted: 220 16% 94%;
+    --muted-foreground: 222 10% 40%;
+    --accent: 22 95% 52%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 216 22% 88%;
-    --input: 216 22% 88%;
-    --ring: 221 83% 53%;
+    --border: 222 14% 88%;
+    --input: 222 14% 88%;
+    --ring: 22 95% 52%;
 
-    /* ---- Theme tokens (LIGHT = clear-sky daybreak, cool serene accents) ---- */
-    --bg: #eaf1fb;
-    --bg-soft: #e2ecf9;
+    /* ---- Theme tokens (LIGHT = warm day; "yellow" ground nudged a touch redder) ---- */
+    --bg: #f3d6a5;
+    --bg-soft: #f0cf98;
     --bg-elevated: #ffffff;
-    --fg: 22 28 45;            /* deep slate-blue ink */
-    --acc-1: 37 99 235;        /* blue */
-    --acc-2: 14 165 233;       /* sky */
-    --acc-3: 99 102 241;       /* indigo */
-    --acc-4: 124 92 246;       /* violet */
-    --rim-line: 120 165 240;   /* soft blue sun line */
-    --rim-glow: 150 190 255;   /* sky glow */
-    --rim-fade: 200 222 255;   /* pale blue fade */
+    --fg: 20 23 33;             /* dark slate ink */
+    --acc-1: 234 88 12;         /* orange */
+    --acc-2: 245 158 11;        /* amber */
+    --acc-3: 244 63 94;         /* rose */
+    --acc-4: 217 70 160;        /* pink */
+    --rim-line: 234 110 38;     /* warm sun line */
+    --rim-glow: 250 132 56;     /* orange glow */
+    --rim-fade: 252 176 108;    /* peach fade */
     --nav-bg: 255 255 255;
-    --scrollbar: #c5d2e8;
-    --scrollbar-hover: #a9bbd8;
-    /* Cool blue-white wash that matches the light "ground" background. */
-    --card-wash: 234 241 251;
+    --scrollbar: #dccdb0;
+    --scrollbar-hover: #c8b48f;
+    /* Warm wash that matches the light "ground" background. */
+    --card-wash: 243 214 165;
   }
 }
 
@@ -550,20 +550,21 @@ code {
 
 /* --- Section / elevated surfaces (hard-coded dark hexes) --- */
 :root.light .bg-\[\#060608\] { background-color: transparent; }
-:root.light .bg-\[\#060608\]\/96 { background-color: rgb(234 241 251 / 0.97); }
+:root.light .bg-\[\#060608\]\/96 { background-color: rgb(243 214 165 / 0.97); }
 :root.light .bg-\[\#08080b\] { background-color: transparent; }
 :root.light .bg-\[\#0a0a0d\] { background-color: var(--bg-elevated); }
-:root.light .bg-\[\#0c0c0f\]\/50 { background-color: rgb(244 248 253 / 0.6); }
-:root.light .bg-\[\#0c0c0f\]\/90 { background-color: rgb(244 248 253 / 0.9); }
-:root.light .bg-\[\#101014\]\/95 { background-color: rgb(248 251 255 / 0.97); }
+:root.light .bg-\[\#0c0c0f\]\/50 { background-color: rgb(250 238 216 / 0.6); }
+:root.light .bg-\[\#0c0c0f\]\/90 { background-color: rgb(250 238 216 / 0.9); }
+:root.light .bg-\[\#101014\]\/95 { background-color: rgb(253 245 230 / 0.97); }
 
-/* The whole page becomes a continuous airy "ground": blue-white + dotted pattern
-   with a gentle vertical fade so the hero terrain flows to the bottom without a hard seam. */
+/* The whole page becomes a continuous warm "ground": amber-beige + dotted pattern with
+   a gentle vertical fade so the hero terrain flows to the bottom without a hard seam.
+   ("yellow" ground nudged a touch redder per request.) */
 :root.light .App {
-  background-color: #eaf1fb;
+  background-color: #f3d6a5;
   background-image:
-    radial-gradient(circle, rgba(70, 110, 180, 0.09) 1px, transparent 1.7px),
-    linear-gradient(180deg, #eaf1fb 0%, #eaf1fb 24%, #eef3fc 48%, #f3f7fd 74%, #f8fbff 100%);
+    radial-gradient(circle, rgba(176, 116, 64, 0.12) 1px, transparent 1.7px),
+    linear-gradient(180deg, #f3d6a5 0%, #f3d6a5 24%, #f5ddb2 48%, #f8e8c9 74%, #fcf4e7 100%);
   background-size: 20px 20px, 100% 100%;
   background-attachment: scroll, scroll;
   background-repeat: repeat, no-repeat;
@@ -578,21 +579,31 @@ code {
 :root.light .bg-\[\#6f9bff\] { background-color: rgb(var(--acc-1)); }
 :root.light .accent-\[\#6f9bff\] { accent-color: rgb(var(--acc-1)); }
 
-/* --- Aurora gradient text becomes a cool sky gradient in light mode --- */
+/* --- Aurora gradient text becomes a warm sunrise gradient in light mode --- */
 :root.light .gradient-text-aurora {
-  background-image: linear-gradient(90deg, #2563eb, #0ea5e9, #6366f1, #2563eb);
+  background-image: linear-gradient(90deg, #ea580c, #f59e0b, #f43f5e, #ea580c);
 }
 
-/* --- Tech marquee hover glow (cool) --- */
+/* --- Tech marquee hover glow (warm) --- */
 :root.light .tech-item:hover {
-  color: #1d4ed8;
-  text-shadow: 0 0 18px rgba(59, 130, 246, 0.5);
+  color: #b45309;
+  text-shadow: 0 0 18px rgba(245, 158, 11, 0.5);
 }
 
-/* --- Selection (cool) --- */
+/* --- Selection (warm) --- */
 :root.light ::selection {
-  background: rgba(59, 130, 246, 0.20);
-  color: #141a2d;
+  background: rgba(234, 88, 12, 0.22);
+  color: #14171f;
+}
+
+/* --- "What I do" (Services) cards: distinct warm tinted surface in light mode
+   instead of the default white elevated card. --- */
+:root.light .service-card {
+  background-color: #fbe7cb !important;
+  border-color: rgba(180, 118, 56, 0.28) !important;
+}
+:root.light .service-card:hover {
+  border-color: rgba(180, 118, 56, 0.5) !important;
 }
 
 /* =====================================================================
@@ -858,7 +869,7 @@ body.menu-open .planet-rim {
     -webkit-backdrop-filter: none !important;
   }
   :root.light .bg-\[\#060608\]\/96 {
-    background-color: #eaf1fb !important;
+    background-color: #f3d6a5 !important;
   }
 
   /* Stop the section ambient "breathing" (perpetual, off-screen) */

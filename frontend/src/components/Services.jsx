@@ -36,7 +36,7 @@ const Card = ({ s, index }) => {
     <button
       ref={ref}
       onClick={goToContact}
-      className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0d] text-left transition-all duration-700 min-h-[220px] hover:border-white/25 hover:-translate-y-1 ${
+      className={`service-card group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0d] text-left transition-all duration-700 min-h-[220px] hover:border-white/25 hover:-translate-y-1 ${
         show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{ transitionDelay: `${index * 90}ms` }}
