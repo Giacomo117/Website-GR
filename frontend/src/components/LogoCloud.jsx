@@ -8,63 +8,83 @@ const TECH = [
   "Azure", "Neo4j", "PostgreSQL", "Redis", "MongoDB", "Git", "Linux", "AutoGen",
 ];
 
-/* Row 2 — Best-in-class tech logos (image marquee, opposite direction).
+/* Row 2 — Curated best-in-class tech logos (image marquee, opposite direction).
    Slugs match Simple Icons CDN: https://cdn.simpleicons.org/<slug>
    Logos are served as monochrome SVGs and re-tinted via CSS filter so they
-   look uniform in both dark and light mode. */
+   look uniform in both dark and light mode. Kept compact (~26 icons) so the
+   initial page weight stays low. */
 const TECH_LOGOS = [
   { slug: "python", name: "Python" },
-  { slug: "javascript", name: "JavaScript" },
   { slug: "typescript", name: "TypeScript" },
+  { slug: "javascript", name: "JavaScript" },
   { slug: "react", name: "React" },
   { slug: "nextdotjs", name: "Next.js" },
   { slug: "nodedotjs", name: "Node.js" },
-  { slug: "vuedotjs", name: "Vue" },
-  { slug: "angular", name: "Angular" },
-  { slug: "svelte", name: "Svelte" },
   { slug: "tailwindcss", name: "Tailwind" },
   { slug: "django", name: "Django" },
   { slug: "fastapi", name: "FastAPI" },
-  { slug: "flask", name: "Flask" },
-  { slug: "spring", name: "Spring" },
-  { slug: "rust", name: "Rust" },
-  { slug: "go", name: "Go" },
-  { slug: "kotlin", name: "Kotlin" },
-  { slug: "swift", name: "Swift" },
-  { slug: "openjdk", name: "Java" },
-  { slug: "cplusplus", name: "C++" },
+  { slug: "pytorch", name: "PyTorch" },
+  { slug: "tensorflow", name: "TensorFlow" },
+  { slug: "openai", name: "OpenAI" },
+  { slug: "huggingface", name: "Hugging Face" },
   { slug: "postgresql", name: "PostgreSQL" },
   { slug: "mongodb", name: "MongoDB" },
-  { slug: "mysql", name: "MySQL" },
   { slug: "redis", name: "Redis" },
   { slug: "neo4j", name: "Neo4j" },
-  { slug: "elasticsearch", name: "Elasticsearch" },
   { slug: "docker", name: "Docker" },
   { slug: "kubernetes", name: "Kubernetes" },
   { slug: "amazonwebservices", name: "AWS" },
   { slug: "microsoftazure", name: "Azure" },
   { slug: "googlecloud", name: "Google Cloud" },
-  { slug: "terraform", name: "Terraform" },
   { slug: "linux", name: "Linux" },
-  { slug: "nginx", name: "Nginx" },
   { slug: "git", name: "Git" },
   { slug: "github", name: "GitHub" },
-  { slug: "gitlab", name: "GitLab" },
-  { slug: "pytorch", name: "PyTorch" },
-  { slug: "tensorflow", name: "TensorFlow" },
-  { slug: "openai", name: "OpenAI" },
-  { slug: "huggingface", name: "Hugging Face" },
-  { slug: "pandas", name: "Pandas" },
-  { slug: "numpy", name: "NumPy" },
-  { slug: "jupyter", name: "Jupyter" },
   { slug: "graphql", name: "GraphQL" },
-  { slug: "apachekafka", name: "Kafka" },
 ];
+
+/* A single copy of the marquee track. We render two of these side-by-side
+   inside an animated parent. Because each copy carries identical inner gaps
+   AND identical right-padding (to act as the "seam gap"), translating the
+   outer parent by exactly -50% produces a perfectly seamless loop with no
+   visible jumps or empty stretches. */
+const TextRow = ({ items }) => (
+  <div className="flex shrink-0 items-center gap-16 sm:gap-20 pr-16 sm:pr-20">
+    {items.map((label, i) => (
+      <span
+        key={i}
+        className="tech-item whitespace-nowrap text-xl font-semibold tracking-tight text-white/35"
+      >
+        {label}
+      </span>
+    ))}
+  </div>
+);
+
+const LogoRow = ({ items }) => (
+  <div className="flex shrink-0 items-center gap-10 sm:gap-12 pr-10 sm:pr-12">
+    {items.map((logo, i) => (
+      <div
+        key={`${logo.slug}-${i}`}
+        title={logo.name}
+        className="tech-logo group/logo relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center"
+      >
+        <img
+          src={`https://cdn.simpleicons.org/${logo.slug}`}
+          alt={logo.name}
+          loading="lazy"
+          decoding="async"
+          className="tech-logo-img h-full w-full object-contain transition-all duration-300"
+        />
+        <span className="tech-logo-tip pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[var(--bg-elevated)] px-2 py-1 text-[11px] font-medium text-white/80 opacity-0 backdrop-blur-md transition-opacity duration-200 group-hover/logo:opacity-100">
+          {logo.name}
+        </span>
+      </div>
+    ))}
+  </div>
+);
 
 const LogoCloud = () => {
   const { c } = useLang();
-  const loop = [...TECH, ...TECH];
-  const logoLoop = [...TECH_LOGOS, ...TECH_LOGOS];
 
   return (
     <section className="relative bg-[#060608] py-24 sm:py-28">
@@ -78,43 +98,20 @@ const LogoCloud = () => {
         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-[var(--bg)] to-transparent" />
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-[var(--bg)] to-transparent" />
 
-        <div className="flex w-max animate-marquee items-center gap-16 sm:gap-20">
-          {loop.map((logo, i) => (
-            <span
-              key={i}
-              className="tech-item whitespace-nowrap text-xl font-semibold tracking-tight text-white/35"
-            >
-              {logo}
-            </span>
-          ))}
+        <div className="flex w-max animate-marquee">
+          <TextRow items={TECH} />
+          <TextRow items={TECH} />
         </div>
       </div>
 
-      {/* Row 2 — logo marquee with the best-in-class IT tech logos (opposite direction) */}
+      {/* Row 2 — logo marquee (opposite direction) */}
       <div className="relative mt-10 overflow-hidden">
         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-[var(--bg)] to-transparent" />
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-[var(--bg)] to-transparent" />
 
-        <div className="flex w-max animate-marquee-reverse items-center gap-10 sm:gap-12">
-          {logoLoop.map((logo, i) => (
-            <div
-              key={`${logo.slug}-${i}`}
-              title={logo.name}
-              className="tech-logo group/logo relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center"
-            >
-              <img
-                src={`https://cdn.simpleicons.org/${logo.slug}`}
-                alt={logo.name}
-                loading="lazy"
-                decoding="async"
-                className="tech-logo-img h-full w-full object-contain transition-all duration-300"
-              />
-              {/* Hover tooltip */}
-              <span className="tech-logo-tip pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[var(--bg-elevated)] px-2 py-1 text-[11px] font-medium text-white/80 opacity-0 backdrop-blur-md transition-opacity duration-200 group-hover/logo:opacity-100">
-                {logo.name}
-              </span>
-            </div>
-          ))}
+        <div className="flex w-max animate-marquee-reverse">
+          <LogoRow items={TECH_LOGOS} />
+          <LogoRow items={TECH_LOGOS} />
         </div>
       </div>
     </section>

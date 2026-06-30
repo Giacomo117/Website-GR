@@ -20,7 +20,7 @@ const Hero = () => {
     const lightTints = ["91,57,38", "120,80,52", "140,100,72", "165,120,88"];
     const tints = isLight ? lightTints : darkTints;
     const arr = [];
-    for (let i = 0; i < 170; i++) {
+    for (let i = 0; i < 90; i++) {
       const size = Math.random() * 2 + 0.4;
       arr.push({
         left: Math.random() * 100,

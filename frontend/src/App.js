@@ -11,7 +11,7 @@ import Services from "./components/Services";
 import CaseStudies from "./components/CaseStudies";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
-import Newsletter from "./components/Newsletter";
+import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingChatButton from "./components/FloatingChatButton";
 import { useLang } from "./i18n/LanguageContext";
@@ -34,7 +34,7 @@ const Home = () => {
         <CaseStudies />
         <Experience />
         <Education />
-        <Newsletter />
+        <Contact />
       </main>
       <Footer />
     </div>

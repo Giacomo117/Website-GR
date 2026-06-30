@@ -41,7 +41,7 @@ export const content = {
       line1: "Ciao, sono Giacomo",
       line2: "creo soluzioni intelligenti",
       intro:
-        "Costruisco sistemi intelligenti che risolvono problemi reali. Specializzato in sistemi RAG, computer vision e soluzioni di AI enterprise.",
+        "Sistemi RAG, computer vision e AI enterprise — pensati per risolvere problemi reali.",
       cta1: "Esplora i miei lavori",
       cta2: "Mettiti in contatto",
       location: "Modena, Italia",
@@ -120,6 +120,22 @@ export const content = {
       errEmail: "Inserisci un indirizzo email valido",
       errConsent: "Devi autorizzare il trattamento dei dati personali",
     },
+    contact: {
+      kicker: "Contatti",
+      titleA: "Mettiamoci",
+      titleEm: "in contatto",
+      subtitle:
+        "Hai un progetto in mente o vuoi semplicemente fare due chiacchiere? Scrivimi su LinkedIn o via email — rispondo sempre.",
+      linkedinLabel: "LinkedIn",
+      linkedinTitle: "Connettiti con me",
+      linkedinDesc: "Per opportunità professionali e networking",
+      emailLabel: "Email",
+      emailDesc: "Per progetti, collaborazioni o domande",
+      copyBtn: "Copia indirizzo email",
+      copied: "Email copiata!",
+      copiedOk: "Email copiata negli appunti",
+      copiedErr: "Impossibile copiare l'email",
+    },
     footer: {
       tagline: "Per aspera ad astra",
       follow: "Seguimi",
@@ -171,7 +187,7 @@ export const content = {
       line1: "Hi, I'm Giacomo",
       line2: "crafting intelligent solutions",
       intro:
-        "I build intelligent systems that solve real-world problems. Specialized in RAG systems, computer vision, and enterprise AI solutions.",
+        "RAG systems, computer vision and enterprise AI — built to solve real-world problems.",
       cta1: "Explore My Work",
       cta2: "Get in Touch",
       location: "Modena, Italy",
@@ -249,6 +265,22 @@ export const content = {
       okMsg: "Subscription completed. Thank you!",
       errEmail: "Please enter a valid email address",
       errConsent: "You must authorize the processing of personal data",
+    },
+    contact: {
+      kicker: "Contact",
+      titleA: "Let's get",
+      titleEm: "in touch",
+      subtitle:
+        "Got a project in mind or just want to chat? Reach out on LinkedIn or via email — I always reply.",
+      linkedinLabel: "LinkedIn",
+      linkedinTitle: "Connect with me",
+      linkedinDesc: "For professional opportunities and networking",
+      emailLabel: "Email",
+      emailDesc: "For projects, collaborations or questions",
+      copyBtn: "Copy email address",
+      copied: "Email copied!",
+      copiedOk: "Email copied to clipboard",
+      copiedErr: "Could not copy email",
     },
     footer: {
       tagline: "Per aspera ad astra",
