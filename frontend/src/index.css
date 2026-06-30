@@ -8,6 +8,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Remove iOS/Android 300ms tap delay + faster touch response */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+a, button, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -663,4 +671,83 @@ code {
   .floating-chat-btn .floating-chat-cursor {
     animation: none !important;
   }
+}
+
+
+/* =====================================================================
+   MOBILE / TOUCH PERFORMANCE OVERRIDES
+   On phones the heavy effects (large backdrop-blurs, 200px box-shadow
+   pulses, blurred nebula glows, conic-gradient spins, 90 twinkling
+   star elements) bring the GPU to its knees and tank interaction
+   responsiveness (tap delay, sluggish menu open, jank on scroll).
+   Below 1024px (or any coarse-pointer device) we deliberately
+   simplify the visuals to keep the UI snappy without sacrificing
+   the cosmic look on desktop.
+   ===================================================================== */
+@media (max-width: 1024px), (pointer: coarse) {
+  /* Cap backdrop-blurs — biggest mobile GPU killer */
+  .backdrop-blur-2xl,
+  .backdrop-blur-xl {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  .backdrop-blur-md {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  /* Mobile menu: solid surface, no expensive blur on full-screen overlay */
+  .bg-\[\#060608\]\/96 {
+    background-color: #060608 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :root.light .bg-\[\#060608\]\/96 {
+    background-color: #f1e1b8 !important;
+  }
+
+  /* Stop the hero's perpetual ambient animations — they burn battery
+     and contend with the main thread for paint, slowing taps */
+  .stars-drift,
+  .nebula-pulse,
+  .planet-rim,
+  .glow-breathe {
+    animation: none !important;
+  }
+
+  /* Shrink nebula blur radius dramatically (was 90-100px) */
+  .blur-\[90px\] {
+    filter: blur(28px) !important;
+  }
+  .blur-\[100px\] {
+    filter: blur(30px) !important;
+  }
+
+  /* Lighter, static planet-rim shadow (no 200px spread pulsing) */
+  .planet-rim {
+    box-shadow:
+      0 0 0 1px rgb(var(--rim-line) / 0.85),
+      0 0 40px 6px rgb(var(--rim-glow) / 0.35) !important;
+  }
+
+  /* Floating chat: keep clickable, drop the expensive spin/pulse/mask */
+  .floating-chat-btn .floating-chat-ring,
+  .floating-chat-btn .floating-chat-halo,
+  .floating-chat-btn .floating-chat-cursor {
+    animation: none !important;
+  }
+  .floating-chat-btn .floating-chat-ring {
+    background: none !important;
+    -webkit-mask: none !important;
+            mask: none !important;
+  }
+
+  /* Marquees keep moving (cheap transforms) but slow them slightly to
+     give the GPU some breathing room */
+  .animate-marquee { animation-duration: 36s; }
+  .animate-marquee-reverse { animation-duration: 52s; }
 }

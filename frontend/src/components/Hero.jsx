@@ -19,8 +19,15 @@ const Hero = () => {
     // In daylight the stars become faint warm-brown dots scattered across the dawn sky
     const lightTints = ["91,57,38", "120,80,52", "140,100,72", "165,120,88"];
     const tints = isLight ? lightTints : darkTints;
+    // On phones/tablets we render far fewer stars — 90 individually
+    // animated DOM nodes are a big mobile-GPU tax for very little visual
+    // gain on a small screen.
+    const isMobile =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 1024);
+    const count = isMobile ? 35 : 90;
     const arr = [];
-    for (let i = 0; i < 90; i++) {
+    for (let i = 0; i < count; i++) {
       const size = Math.random() * 2 + 0.4;
       arr.push({
         left: Math.random() * 100,
