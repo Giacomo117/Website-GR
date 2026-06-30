@@ -176,24 +176,24 @@ const Hero = () => {
 
       {/* ===================== DESKTOP HERO (full) ===================== */}
       <div className="relative z-10 hidden md:flex min-h-screen flex-col items-center justify-center px-6 text-center">
-        <div className="hero-desktop-badge inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
+        <div className="fade-up inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
           <span className="text-[13px] font-medium text-white/90">{c.hero.badge}</span>
         </div>
 
-        <h1 className="mt-7 max-w-4xl text-white">
-          <span className="hero-desktop-line1 block text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.05]">
+        <h1 className="fade-up mt-7 max-w-4xl text-white" style={{ animationDelay: "0.1s" }}>
+          <span className="block text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.05]">
             {c.hero.line1}
           </span>
-          <span className="hero-desktop-line2 font-serif-italic block text-5xl sm:text-6xl md:text-7xl leading-[1.15] mt-2 text-white">
+          <span className="font-serif-italic block text-5xl sm:text-6xl md:text-7xl leading-[1.15] mt-2 text-white">
             {c.hero.line2}
           </span>
         </h1>
 
-        <p className="hero-desktop-intro mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-white/55">
+        <p className="fade-up mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-white/55" style={{ animationDelay: "0.2s" }}>
           {c.hero.intro}
         </p>
 
-        <div className="hero-desktop-cta mt-9 flex flex-wrap items-center justify-center gap-3">
+        <div className="fade-up mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "0.3s" }}>
           <a
             href="#progetti"
             className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-all hover:scale-[1.03]"
@@ -208,7 +208,7 @@ const Hero = () => {
           </a>
         </div>
 
-        <div className="hero-desktop-location mt-7 inline-flex items-center gap-1.5 text-sm text-white/40">
+        <div className="fade-up mt-7 inline-flex items-center gap-1.5 text-sm text-white/40" style={{ animationDelay: "0.4s" }}>
           <MapPin size={14} /> {c.hero.location}
         </div>
       </div>
