@@ -46,7 +46,7 @@ const ProjectCard = ({ p, index, onOpen }) => {
   useEffect(() => {
     const ob = new IntersectionObserver(
       ([e]) => e.isIntersecting && setShow(true),
-      { threshold: 0.15 }
+      { rootMargin: "0px 0px 320px 0px", threshold: 0.01 }
     );
     if (ref.current) ob.observe(ref.current);
     return () => ob.disconnect();

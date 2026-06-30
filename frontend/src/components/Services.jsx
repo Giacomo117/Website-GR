@@ -12,7 +12,7 @@ const Card = ({ s, index }) => {
   useEffect(() => {
     const ob = new IntersectionObserver(
       ([e]) => e.isIntersecting && setShow(true),
-      { threshold: 0.2 }
+      { rootMargin: "0px 0px 320px 0px", threshold: 0.01 }
     );
     if (ref.current) ob.observe(ref.current);
     return () => ob.disconnect();

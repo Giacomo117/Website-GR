@@ -6,7 +6,7 @@ const EduCard = ({ e, thesisLabel, index }) => {
   const ref = useRef(null);
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const ob = new IntersectionObserver(([o]) => o.isIntersecting && setShow(true), { threshold: 0.2 });
+    const ob = new IntersectionObserver(([o]) => o.isIntersecting && setShow(true), { rootMargin: "0px 0px 320px 0px", threshold: 0.01 });
     if (ref.current) ob.observe(ref.current);
     return () => ob.disconnect();
   }, []);
