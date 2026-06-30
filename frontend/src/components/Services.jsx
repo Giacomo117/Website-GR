@@ -66,8 +66,10 @@ const Services = () => {
             {s.titleA} <span className="font-serif-italic text-white/90">{s.titleEm}</span>
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-white/50">{s.intro}</p>
+          {/* Mobile-only swipe hint (same behaviour as the Projects carousel) */}
+          <p className="mt-3 text-xs text-white/35 lg:hidden">← {c.projects.swipeHint} →</p>
         </div>
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="services-carousel mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {s.items.map((item, i) => (
             <Card key={item.title} s={item} index={i} />
           ))}

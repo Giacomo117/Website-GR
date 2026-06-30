@@ -44,6 +44,26 @@ const Navbar = () => {
   ];
   const mobileLinks = [...leftLinks, ...rightLinks];
 
+  // Robust in-page navigation for the MOBILE menu. Relying on a plain
+  // <a href="#id"> here was unreliable: the full-screen overlay is
+  // position:fixed with body overflow:hidden, so the browser's native
+  // hash-jump happened while scrolling was still locked and the page
+  // ended up at the wrong section (often the last one). We instead close
+  // the menu first, then smooth-scroll to the target once the overlay is
+  // gone and scrolling is unlocked.
+  const goTo = (href) => (e) => {
+    if (!href || !href.startsWith("#")) return;
+    e.preventDefault();
+    const id = href.slice(1);
+    setMobileOpen(false);
+    setExpanded(null);
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      else window.location.hash = href;
+    }, 300);
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-3">
@@ -129,7 +149,7 @@ const Navbar = () => {
                             <a
                               key={d.label}
                               href={d.href}
-                              onClick={() => setMobileOpen(false)}
+                              onClick={goTo(d.href)}
                               className="py-2 text-lg text-white/55 hover:text-white"
                             >
                               {d.label}
@@ -141,7 +161,7 @@ const Navbar = () => {
                   ) : (
                     <a
                       href={link.href}
-                      onClick={() => setMobileOpen(false)}
+                      onClick={goTo(link.href)}
                       className="block py-5 text-2xl font-medium text-white"
                     >
                       {link.label}
@@ -177,7 +197,7 @@ const Navbar = () => {
               </div>
               <a
                 href="#contattaci"
-                onClick={() => setMobileOpen(false)}
+                onClick={goTo("#contattaci")}
                 className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black"
               >
                 {c.nav.contatta}

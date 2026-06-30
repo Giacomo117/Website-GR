@@ -178,7 +178,7 @@ export const content = {
         { title: "CONTATTI", links: [{ label: "Contattami", href: "#contattaci" }] },
       ],
       contactsLabel: "Contatti",
-      legal: "© 2025 Giacomo Reggianini — AI Engineer — Modena, Italia",
+      legal: "© 2026 Giacomo Reggianini — AI Engineer — Modena, Italia",
       bottom: [
         { label: "Progetti", href: "#progetti" },
         { label: "Contatti", href: "#contattaci" },
@@ -347,7 +347,7 @@ export const content = {
         { title: "CONTACT", links: [{ label: "Contact me", href: "#contattaci" }] },
       ],
       contactsLabel: "Contact",
-      legal: "© 2025 Giacomo Reggianini — AI Engineer — Modena, Italy",
+      legal: "© 2026 Giacomo Reggianini — AI Engineer — Modena, Italy",
       bottom: [
         { label: "Projects", href: "#progetti" },
         { label: "Contact", href: "#contattaci" },

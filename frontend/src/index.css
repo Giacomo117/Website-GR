@@ -8,6 +8,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Offset in-page anchor jumps for the fixed navbar so section headings
+   aren't hidden underneath it. */
+section[id] {
+  scroll-margin-top: 76px;
+}
+
 /* Remove iOS/Android 300ms tap delay + faster touch response */
 * {
   -webkit-tap-highlight-color: transparent;
@@ -808,6 +814,30 @@ body.menu-open .planet-rim {
     scroll-snap-align: center;
     min-height: 340px !important;
   }
+
+  /* Services ("Cosa Faccio") — same horizontal scroll-snap carousel as the
+     projects bento, so on phones/tablets the cards scroll to the RIGHT
+     instead of stacking downward. */
+  .services-carousel {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    padding: 0.25rem 1.25rem 1rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .services-carousel::-webkit-scrollbar { display: none; }
+  .services-carousel > * {
+    flex: 0 0 80%;
+    max-width: 80%;
+    scroll-snap-align: center;
+  }
 }
 
 
@@ -848,13 +878,22 @@ body.menu-open .planet-rim {
     background-color: #f1e1b8 !important;
   }
 
-  /* Stop the hero's perpetual ambient animations — they burn battery
-     and contend with the main thread for paint, slowing taps */
-  .stars-drift,
-  .nebula-pulse,
-  .planet-rim,
+  /* Stop the section ambient "breathing" (perpetual, off-screen) */
   .glow-breathe {
     animation: none !important;
+  }
+
+  /* The hero sphere layers (stars / nebula / planet-rim) are ALSO
+     .hero-sphere-stage elements which start at opacity:0 on mobile.
+     Previously we killed their animation entirely here, which left them
+     stuck invisible → the planet/horizon never appeared on phones.
+     Instead, give them the cheap ONE-SHOT entrance (heroSphereRise) so
+     they fade up into view once and then hold (no battery-draining
+     infinite loop). */
+  .stars-drift,
+  .nebula-pulse,
+  .planet-rim {
+    animation: heroSphereRise 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.25s forwards !important;
   }
 
   /* Shrink nebula blur radius dramatically (was 90-100px) */

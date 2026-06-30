@@ -24,7 +24,6 @@ const Footer = () => {
               <WebionMark className="w-6 h-6 text-white" />
               <span className="text-xl font-bold tracking-tight text-white">Giacomo Reggianini</span>
             </div>
-            <p className="font-serif-italic mt-6 text-lg text-white/50">{f.tagline}</p>
 
             <div className="mt-8">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/35">{f.follow}</p>

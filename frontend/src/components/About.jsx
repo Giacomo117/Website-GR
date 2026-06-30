@@ -63,18 +63,6 @@ const About = () => {
                 <p key={i}>{p}</p>
               ))}
             </div>
-
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {a.facts.map((f) => (
-                <div
-                  key={f.label}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 backdrop-blur-sm"
-                >
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-white/40">{f.label}</p>
-                  <p className="mt-1 text-sm font-medium text-white/90">{f.value}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

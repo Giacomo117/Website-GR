@@ -25,7 +25,7 @@ const TECH_LOGOS = [
   { slug: "fastapi", name: "FastAPI" },
   { slug: "pytorch", name: "PyTorch" },
   { slug: "tensorflow", name: "TensorFlow" },
-  { slug: "openai", name: "OpenAI" },
+  { slug: "openai", name: "OpenAI", src: "/assets/logos/openai.svg" },
   { slug: "huggingface", name: "Hugging Face" },
   { slug: "postgresql", name: "PostgreSQL" },
   { slug: "mongodb", name: "MongoDB" },
@@ -33,8 +33,8 @@ const TECH_LOGOS = [
   { slug: "neo4j", name: "Neo4j" },
   { slug: "docker", name: "Docker" },
   { slug: "kubernetes", name: "Kubernetes" },
-  { slug: "amazonwebservices", name: "AWS" },
-  { slug: "microsoftazure", name: "Azure" },
+  { slug: "amazonwebservices", name: "AWS", src: "/assets/logos/aws.svg" },
+  { slug: "microsoftazure", name: "Azure", src: "/assets/logos/azure.svg" },
   { slug: "googlecloud", name: "Google Cloud" },
   { slug: "linux", name: "Linux" },
   { slug: "git", name: "Git" },
@@ -48,7 +48,7 @@ const TECH_LOGOS = [
    outer parent by exactly -50% produces a perfectly seamless loop with no
    visible jumps or empty stretches. */
 const TextRow = ({ items }) => (
-  <div className="flex shrink-0 items-center gap-16 sm:gap-20 pr-16 sm:pr-20">
+  <div className="flex shrink-0 items-center gap-16 sm:gap-20 pr-16 sm:pr-20 py-3">
     {items.map((label, i) => (
       <span
         key={i}
@@ -61,7 +61,7 @@ const TextRow = ({ items }) => (
 );
 
 const LogoRow = ({ items }) => (
-  <div className="flex shrink-0 items-center gap-10 sm:gap-12 pr-10 sm:pr-12">
+  <div className="flex shrink-0 items-center gap-10 sm:gap-12 pr-10 sm:pr-12 py-5">
     {items.map((logo, i) => (
       <div
         key={`${logo.slug}-${i}`}
@@ -69,7 +69,7 @@ const LogoRow = ({ items }) => (
         className="tech-logo group/logo relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center"
       >
         <img
-          src={`https://cdn.simpleicons.org/${logo.slug}`}
+          src={logo.src ? logo.src : `https://cdn.simpleicons.org/${logo.slug}`}
           alt={logo.name}
           loading="lazy"
           decoding="async"
@@ -86,6 +86,13 @@ const LogoRow = ({ items }) => (
 const LogoCloud = () => {
   const { c } = useLang();
 
+  // Each marquee "copy" repeats the items so a single copy is always wider
+  // than even ultra-wide monitors — this guarantees the strip fills the
+  // viewport edge-to-edge from the very first frame (no empty gap on large
+  // screens) while the two-copies + translateX(-50%) loop stays seamless.
+  const techLoop = [...TECH, ...TECH];
+  const logosLoop = [...TECH_LOGOS, ...TECH_LOGOS];
+
   return (
     <section className="relative bg-[#060608] py-24 sm:py-28">
       <div className="mx-auto max-w-6xl px-6 text-center">
@@ -99,8 +106,8 @@ const LogoCloud = () => {
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-[var(--bg)] to-transparent" />
 
         <div className="flex w-max animate-marquee">
-          <TextRow items={TECH} />
-          <TextRow items={TECH} />
+          <TextRow items={techLoop} />
+          <TextRow items={techLoop} />
         </div>
       </div>
 
@@ -110,8 +117,8 @@ const LogoCloud = () => {
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-[var(--bg)] to-transparent" />
 
         <div className="flex w-max animate-marquee-reverse">
-          <LogoRow items={TECH_LOGOS} />
-          <LogoRow items={TECH_LOGOS} />
+          <LogoRow items={logosLoop} />
+          <LogoRow items={logosLoop} />
         </div>
       </div>
     </section>

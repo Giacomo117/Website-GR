@@ -144,6 +144,10 @@ const Hero = () => {
         {/* Top spacer to vertically position text near the visual center-top */}
         <div className="flex-[0.9]" />
 
+        <span className="hero-mobile-badge mb-3 block text-[19px] font-semibold tracking-tight text-white/90">
+          Giacomo
+        </span>
+
         <div className="hero-mobile-badge inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
           <WebionMark className="w-3.5 h-3.5 text-white" />
           <span className="text-[13px] font-medium text-white/90">{c.hero.badge}</span>
