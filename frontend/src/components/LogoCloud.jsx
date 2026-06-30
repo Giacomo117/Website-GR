@@ -112,7 +112,7 @@ const LogoCloud = () => {
       </div>
 
       {/* Row 2 — logo marquee (opposite direction) */}
-      <div className="relative mt-10 overflow-hidden">
+      <div className="relative mt-10 overflow-x-clip overflow-y-visible">
         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-[var(--bg)] to-transparent" />
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-[var(--bg)] to-transparent" />
 
