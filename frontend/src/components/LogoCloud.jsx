@@ -75,7 +75,7 @@ const LogoRow = ({ items }) => (
           decoding="async"
           className="tech-logo-img h-full w-full object-contain transition-all duration-300"
         />
-        <span className="tech-logo-tip pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[var(--bg-elevated)] px-2 py-1 text-[11px] font-medium text-white/80 opacity-0 backdrop-blur-md transition-opacity duration-200 group-hover/logo:opacity-100">
+        <span className="tech-logo-tip pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#111113] px-2 py-1 text-[11px] font-medium text-white/80 opacity-0 backdrop-blur-md transition-opacity duration-200 group-hover/logo:opacity-100">
           {logo.name}
         </span>
       </div>
