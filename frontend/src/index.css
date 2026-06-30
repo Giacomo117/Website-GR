@@ -798,9 +798,10 @@ body.menu-open .planet-rim {
   .projects-bento {
     display: flex !important;
     flex-direction: row !important;
+    align-items: stretch !important;
     gap: 1rem !important;
     overflow-x: auto !important;
-    overflow-y: visible !important;
+    overflow-y: hidden !important;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 1.25rem;
     padding: 0.25rem 1.25rem 1rem;
@@ -808,6 +809,10 @@ body.menu-open .planet-rim {
     margin-right: -1.5rem;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    /* Cards stay FIXED vertically: overflow-y is clipped so the carousel
+       can NEVER be scrolled up/down internally — only left/right. Vertical
+       swipes simply scroll the page as normal (not trapped). */
+    overscroll-behavior-x: contain;
   }
   .projects-bento::-webkit-scrollbar { display: none; }
   .projects-bento > * {
