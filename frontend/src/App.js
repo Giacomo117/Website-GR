@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import LogoCloud from "./components/LogoCloud";
 import ScrollRevealText from "./components/ScrollRevealText";
+import About from "./components/About";
 import Services from "./components/Services";
 import CaseStudies from "./components/CaseStudies";
 import Experience from "./components/Experience";
@@ -30,6 +31,7 @@ const Home = () => {
             <ScrollRevealText key={`${s.accent}-${i}`} text={s.text} accent={s.accent} />
           ))}
         </section>
+        <About />
         <Services />
         <CaseStudies />
         <Experience />

@@ -32,6 +32,7 @@ export const content = {
         { label: "Sviluppo Software", href: "#competenze", desc: "Backend, API e web app" },
       ],
       dropSu: [
+        { label: "Chi sono", href: "#su-di-me", desc: "Profilo personale" },
         { label: "Esperienza", href: "#esperienza", desc: "Percorso professionale" },
         { label: "Formazione", href: "#formazione", desc: "Studi e formazione" },
       ],
@@ -45,6 +46,9 @@ export const content = {
       cta1: "Esplora i miei lavori",
       cta2: "Mettiti in contatto",
       location: "Modena, Italia",
+      mobileBold: "AI Engineering",
+      mobileItalic: "per problemi reali",
+      mobileCta: "Contattami",
     },
     tech: { title: "Le migliori tecnologie", subtitle: "per i veri esploratori del domani" },
     statements: [
@@ -76,6 +80,23 @@ export const content = {
         { tag: "Software", title: "Sviluppo Software", desc: "Backend robusti, API e applicazioni web performanti, pensate per scalare.", points: ["Backend & API", "Web App", "Microservices"] },
         { tag: "Enterprise AI", title: "Soluzioni Enterprise", desc: "Architetture cloud-native e sistemi RAG distribuiti per ambienti enterprise.", points: ["RAG Systems", "Cloud / Azure", "Architetture scalabili"] },
       ],
+    },
+    about: {
+      kicker: "Chi sono",
+      titleA: "L'ingegnere",
+      titleEm: "dietro al codice",
+      paragraphs: [
+        "Sono Giacomo Reggianini, AI Engineer con base a Modena. Mi occupo di progettare e costruire sistemi intelligenti — dai modelli di computer vision in tempo reale alle architetture RAG distribuite — trasformando problemi complessi in soluzioni affidabili.",
+        "Ho conseguito la Laurea Magistrale in Artificial Intelligence Engineering all'Università di Modena e Reggio Emilia con il massimo dei voti, dopo un'esperienza Erasmus all'University of Exeter. Oggi lavoro come AI Software Engineer in E38, dove costruisco soluzioni di AI enterprise per i clienti.",
+        "Quando non scrivo codice, mi piace insegnare: faccio tutoring di matematica, fisica e programmazione, perché credo che spiegare sia il modo migliore per capire davvero.",
+      ],
+      facts: [
+        { label: "Base", value: "Modena, Italia" },
+        { label: "Ruolo", value: "AI Software Engineer @ E38" },
+        { label: "Laurea", value: "AI Engineering · 110L" },
+        { label: "Focus", value: "RAG · Computer Vision · LLM" },
+      ],
+      imageAlt: "Ritratto di Giacomo Reggianini",
     },
     projects: {
       kicker: "Progetti",
@@ -149,6 +170,7 @@ export const content = {
           { label: "Sviluppo Software", href: "#competenze" },
         ] },
         { title: "SU DI ME", links: [
+          { label: "Chi sono", href: "#su-di-me" },
           { label: "Esperienza", href: "#esperienza" },
           { label: "Formazione", href: "#formazione" },
         ] },
@@ -178,6 +200,7 @@ export const content = {
         { label: "Software Development", href: "#competenze", desc: "Backend, APIs & web apps" },
       ],
       dropSu: [
+        { label: "About", href: "#su-di-me", desc: "Personal profile" },
         { label: "Experience", href: "#esperienza", desc: "Professional journey" },
         { label: "Education", href: "#formazione", desc: "Studies & formation" },
       ],
@@ -191,6 +214,9 @@ export const content = {
       cta1: "Explore My Work",
       cta2: "Get in Touch",
       location: "Modena, Italy",
+      mobileBold: "AI Engineering",
+      mobileItalic: "for real-world problems",
+      mobileCta: "Contact me",
     },
     tech: { title: "The best technologies", subtitle: "for the true explorers of tomorrow" },
     statements: [
@@ -222,6 +248,23 @@ export const content = {
         { tag: "Software", title: "Software Development", desc: "Robust backends, APIs and performant web applications, built to scale.", points: ["Backend & API", "Web App", "Microservices"] },
         { tag: "Enterprise AI", title: "Enterprise Solutions", desc: "Cloud-native architectures and distributed RAG systems for enterprise environments.", points: ["RAG Systems", "Cloud / Azure", "Scalable architectures"] },
       ],
+    },
+    about: {
+      kicker: "About me",
+      titleA: "The engineer",
+      titleEm: "behind the code",
+      paragraphs: [
+        "I'm Giacomo Reggianini, an AI Engineer based in Modena. I design and build intelligent systems — from real-time computer vision models to distributed RAG architectures — turning complex problems into reliable solutions.",
+        "I earned my Master's degree in Artificial Intelligence Engineering at the University of Modena and Reggio Emilia with top honors, after an Erasmus exchange at the University of Exeter. Today I work as an AI Software Engineer at E38, where I build enterprise AI solutions for clients.",
+        "When I'm not writing code I enjoy teaching: I tutor maths, physics and programming, because explaining something is the best way to truly understand it.",
+      ],
+      facts: [
+        { label: "Based in", value: "Modena, Italy" },
+        { label: "Role", value: "AI Software Engineer @ E38" },
+        { label: "Degree", value: "AI Engineering · 110L" },
+        { label: "Focus", value: "RAG · Computer Vision · LLM" },
+      ],
+      imageAlt: "Portrait of Giacomo Reggianini",
     },
     projects: {
       kicker: "Projects",
@@ -295,6 +338,7 @@ export const content = {
           { label: "Software Development", href: "#competenze" },
         ] },
         { title: "ABOUT ME", links: [
+          { label: "About", href: "#su-di-me" },
           { label: "Experience", href: "#esperienza" },
           { label: "Education", href: "#formazione" },
         ] },

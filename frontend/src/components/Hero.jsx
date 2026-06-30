@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, PenLine } from "lucide-react";
 import { WebionMark } from "./Navbar";
 import { useLang } from "../i18n/LanguageContext";
 import { useTheme } from "../theme/ThemeContext";
@@ -119,7 +119,44 @@ const Hero = () => {
         }}
       />
 
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
+      {/* Soft halo above the sphere — gives the headline a luminous "dome" backdrop
+          like the Webion reference. Sits between stars and content. */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[5]"
+        style={{
+          background: isLight
+            ? "radial-gradient(48% 38% at 50% 56%, rgba(255,210,170,0.45) 0%, rgba(255,210,170,0.18) 38%, rgba(255,210,170,0) 72%)"
+            : "radial-gradient(48% 38% at 50% 54%, rgba(100,150,235,0.32) 0%, rgba(70,110,200,0.16) 38%, rgba(20,40,90,0) 72%)",
+        }}
+      />
+
+      {/* ===================== MOBILE HERO (minimal — Webion-style) ===================== */}
+      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 text-center md:hidden">
+        <div className="hero-mobile-badge inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
+          <WebionMark className="w-3.5 h-3.5 text-white" />
+          <span className="text-[13px] font-medium text-white/90">{c.hero.badge}</span>
+        </div>
+
+        <h1 className="mt-8 max-w-[22ch] text-white">
+          <span className="hero-mobile-line1 block text-[44px] font-bold tracking-tight leading-[1.05]">
+            {c.hero.mobileBold}
+          </span>
+          <span className="hero-mobile-line2 font-serif-italic block text-[34px] leading-[1.2] mt-2 text-white">
+            {c.hero.mobileItalic}
+          </span>
+        </h1>
+
+        <a
+          href="#contattaci"
+          className="hero-mobile-cta mt-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-6 py-3 text-[15px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
+        >
+          <PenLine size={16} className="opacity-90" />
+          {c.hero.mobileCta}
+        </a>
+      </div>
+
+      {/* ===================== DESKTOP HERO (full) ===================== */}
+      <div className="relative z-10 hidden md:flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <div className="fade-up inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
           <WebionMark className="w-3.5 h-3.5 text-white" />
           <span className="text-[13px] font-medium text-white/90">{c.hero.badge}</span>

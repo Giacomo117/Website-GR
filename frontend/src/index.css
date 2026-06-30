@@ -233,6 +233,56 @@ code {
   animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* =====================================================================
+   Mobile Hero — smooth, cinematic entrance.
+   Letters/lines slide up with a soft blur clearing, in a clean stagger:
+   badge → bold headline → italic headline → CTA.
+   ===================================================================== */
+@keyframes heroMobileReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(8px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.hero-mobile-badge {
+  opacity: 0;
+  animation: heroMobileReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+}
+.hero-mobile-line1 {
+  display: block;
+  opacity: 0;
+  animation: heroMobileReveal 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.30s forwards;
+}
+.hero-mobile-line2 {
+  display: block;
+  opacity: 0;
+  animation: heroMobileReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}
+.hero-mobile-cta {
+  opacity: 0;
+  animation: heroMobileReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-mobile-badge,
+  .hero-mobile-line1,
+  .hero-mobile-line2,
+  .hero-mobile-cta {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
 /* Marquee for logos */
 @keyframes marquee {
   0% { transform: translateX(0); }
