@@ -71,6 +71,20 @@ const ScrollRevealText = ({ text, accent = "neutral" }) => {
   const { theme } = useTheme();
   const isLight = theme === "light";
 
+  // On phones/touch devices the per-frame scroll-driven gradient + text-shadow
+  // writes across dozens of words (x3 sections) cause heavy repaint jank and
+  // make fast scrolling feel slow / not "load in time". There we switch to a
+  // cheap ONE-SHOT reveal: a single IntersectionObserver flips the words from
+  // dim to their bright target colour via a staggered CSS transition — no
+  // scroll listener, no requestAnimationFrame, no text-shadow blur.
+  const isMobile = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 1024),
+    []
+  );
+  const [revealed, setRevealed] = React.useState(false);
+
   // Recompute per-word target color when palette/theme changes.
   const targets = useMemo(() => {
     const sets = isLight ? LIGHT_PALETTES : PALETTES;
@@ -79,7 +93,32 @@ const ScrollRevealText = ({ text, accent = "neutral" }) => {
     return words.map((_, i) => sampleGradient(palette, i / total));
   }, [words, accent, isLight]);
 
+  // ---- MOBILE: cheap one-shot reveal ----
   useEffect(() => {
+    if (!isMobile) return undefined;
+    const el = containerRef.current;
+    if (!el) return undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setRevealed(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      // fire well before the section enters the viewport so it's already
+      // revealed when the user arrives, even on a fast flick-scroll.
+      { rootMargin: "0px 0px 400px 0px", threshold: 0.01 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [isMobile]);
+
+  // ---- DESKTOP: rich scroll-driven gradient reveal ----
+  useEffect(() => {
+    if (isMobile) return undefined;
     const base = isLight ? [196, 200, 208] : [78, 84, 104];
     const popTarget = isLight ? [25, 28, 38] : [255, 255, 255];
     const popCoeff = isLight ? 0.5 : 0.55;
@@ -134,7 +173,6 @@ const ScrollRevealText = ({ text, accent = "neutral" }) => {
       schedule();
     };
 
-    // IntersectionObserver: only listen to scroll while the section is on/near screen.
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -146,7 +184,6 @@ const ScrollRevealText = ({ text, accent = "neutral" }) => {
     );
     if (containerRef.current) io.observe(containerRef.current);
 
-    // Initial paint and listeners
     schedule();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", schedule);
@@ -157,24 +194,38 @@ const ScrollRevealText = ({ text, accent = "neutral" }) => {
       io.disconnect();
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
     };
-  }, [words.length, targets, isLight]);
+  }, [isMobile, words.length, targets, isLight]);
+
+  const baseColor = isLight ? "rgb(150, 154, 164)" : "rgb(96, 102, 124)";
 
   return (
     <div ref={containerRef} className="mx-auto max-w-5xl px-6 py-[14vh]">
       <p className="reveal-serif text-3xl sm:text-4xl md:text-5xl font-normal leading-[1.4] flex flex-wrap">
-        {words.map((word, i) => (
-          <span
-            key={i}
-            ref={(el) => (wordRefs.current[i] = el)}
-            className="mr-[0.28em]"
-            style={{
-              color: isLight ? "rgb(196, 200, 208)" : "rgb(78, 84, 104)",
-              transition: "color 0.15s linear, text-shadow 0.15s linear",
-            }}
-          >
-            {word}
-          </span>
-        ))}
+        {words.map((word, i) => {
+          // On mobile: cheap staggered color transition, no text-shadow.
+          const mobileStyle = isMobile
+            ? {
+                color: revealed
+                  ? `rgb(${targets[i].map((v) => Math.round(v)).join(", ")})`
+                  : baseColor,
+                transition: "color 0.5s ease-out",
+                transitionDelay: `${Math.min(i * 28, 700)}ms`,
+              }
+            : {
+                color: isLight ? "rgb(196, 200, 208)" : "rgb(78, 84, 104)",
+                transition: "color 0.15s linear, text-shadow 0.15s linear",
+              };
+          return (
+            <span
+              key={i}
+              ref={(el) => (wordRefs.current[i] = el)}
+              className="mr-[0.28em]"
+              style={mobileStyle}
+            >
+              {word}
+            </span>
+          );
+        })}
       </p>
     </div>
   );

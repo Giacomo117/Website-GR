@@ -836,19 +836,22 @@ body.menu-open .planet-rim {
    the cosmic look on desktop.
    ===================================================================== */
 @media (max-width: 1024px), (pointer: coarse) {
-  /* Cap backdrop-blurs — biggest mobile GPU killer */
+  /* backdrop-filter is the single biggest scroll-perf killer on mobile — the
+     browser re-samples the blurred backdrop on EVERY frame while the page
+     scrolls. Disable it entirely on phones/touch devices; the semi-opaque
+     element backgrounds keep everything perfectly legible. */
   .backdrop-blur-2xl,
-  .backdrop-blur-xl {
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-  }
-  .backdrop-blur-md {
-    backdrop-filter: blur(6px) !important;
-    -webkit-backdrop-filter: blur(6px) !important;
-  }
+  .backdrop-blur-xl,
+  .backdrop-blur-md,
   .backdrop-blur-sm {
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Stop the per-card auto-scrolling skill tickers — 5 continuous marquees
+     repainting in the background is wasted work on a phone. */
+  .tech-ticker-track {
+    animation: none !important;
   }
 
   /* Mobile menu: solid surface, no expensive blur on full-screen overlay */
