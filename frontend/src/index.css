@@ -832,6 +832,16 @@ body.menu-open .planet-rim {
     scroll-snap-align: center;
     min-height: 340px !important;
   }
+
+  /* "What I do" (Services) carousel — the first card sits at the LEFT and a
+     clear slice (~18%) of the second card peeks on the right, so it's obvious
+     the row can be swiped. Scoped to #competenze so the Projects carousel
+     (centered cards) is left untouched. */
+  #competenze .projects-bento > * {
+    flex: 0 0 80%;
+    max-width: 80%;
+    scroll-snap-align: start;
+  }
 }
 
 
