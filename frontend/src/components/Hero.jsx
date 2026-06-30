@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { ArrowRight, MapPin, PenLine } from "lucide-react";
-import { WebionMark } from "./Navbar";
 import { useLang } from "../i18n/LanguageContext";
 import { useTheme } from "../theme/ThemeContext";
 
@@ -178,7 +177,6 @@ const Hero = () => {
       {/* ===================== DESKTOP HERO (full) ===================== */}
       <div className="relative z-10 hidden md:flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <div className="fade-up inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
-          <WebionMark className="w-3.5 h-3.5 text-white" />
           <span className="text-[13px] font-medium text-white/90">{c.hero.badge}</span>
         </div>
 

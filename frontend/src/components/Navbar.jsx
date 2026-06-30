@@ -95,7 +95,6 @@ const Navbar = () => {
             {/* Center logo (desktop only — hidden on mobile so the bar is just
                 the two mirrored icon buttons) */}
             <a href="#home" className="hidden lg:flex items-center gap-2 shrink-0">
-              <WebionMark className="w-5 h-5 text-white hidden sm:block" />
               <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">Giacomo Reggianini</span>
             </a>
 
