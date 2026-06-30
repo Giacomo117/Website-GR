@@ -17,10 +17,18 @@ const Card = ({ s, index }) => {
     if (ref.current) ob.observe(ref.current);
     return () => ob.disconnect();
   }, []);
+  const goToContact = () => {
+    const el = document.getElementById("contattaci");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   return (
     <div
       ref={ref}
-      className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-7 transition-all duration-700 hover:-translate-y-1 hover:border-white/20 ${
+      onClick={goToContact}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && goToContact()}
+      className={`group relative cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-7 transition-all duration-700 hover:-translate-y-1 hover:border-white/20 ${
         show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{ transitionDelay: `${index * 90}ms` }}
@@ -69,7 +77,7 @@ const Services = () => {
           {/* Mobile-only swipe hint (same behaviour as the Projects carousel) */}
           <p className="mt-3 text-xs text-white/35 lg:hidden">← {c.projects.swipeHint} →</p>
         </div>
-        <div className="services-carousel mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="projects-bento mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {s.items.map((item, i) => (
             <Card key={item.title} s={item} index={i} />
           ))}

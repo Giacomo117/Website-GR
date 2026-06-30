@@ -230,10 +230,12 @@ code {
   100% { transform: translate3d(0, 0, 0); }
 }
 
-/* Fade up entrance */
+/* Fade up entrance — with a soft blur clearing so the text "writes" itself
+   into view on first load (matches the cinematic mobile reveal). */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(24px); filter: blur(7px); }
+  60%  { filter: blur(0); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 .fade-up {
   animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -319,7 +321,7 @@ code {
   100% { transform: translateX(-50%); }
 }
 .animate-marquee {
-  animation: marquee 28s linear infinite;
+  animation: marquee 55s linear infinite;
 }
 
 /* Reverse marquee — used by the 2nd LogoCloud row for visual contrast */
@@ -814,30 +816,6 @@ body.menu-open .planet-rim {
     scroll-snap-align: center;
     min-height: 340px !important;
   }
-
-  /* Services ("Cosa Faccio") — same horizontal scroll-snap carousel as the
-     projects bento, so on phones/tablets the cards scroll to the RIGHT
-     instead of stacking downward. */
-  .services-carousel {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 1rem !important;
-    overflow-x: auto !important;
-    overflow-y: visible !important;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 1.25rem;
-    padding: 0.25rem 1.25rem 1rem;
-    margin-left: -1.5rem;
-    margin-right: -1.5rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .services-carousel::-webkit-scrollbar { display: none; }
-  .services-carousel > * {
-    flex: 0 0 80%;
-    max-width: 80%;
-    scroll-snap-align: center;
-  }
 }
 
 
@@ -924,7 +902,9 @@ body.menu-open .planet-rim {
   }
 
   /* Marquees keep moving (cheap transforms) but slow them slightly to
-     give the GPU some breathing room */
-  .animate-marquee { animation-duration: 36s; }
+     give the GPU some breathing room. The text row carries more/wider
+     content than the logo row, so it needs a proportionally LONGER
+     duration to travel at the SAME visual speed as the logos. */
+  .animate-marquee { animation-duration: 68s; }
   .animate-marquee-reverse { animation-duration: 52s; }
 }

@@ -230,18 +230,20 @@ const NavItem = ({ link, openDrop, setOpenDrop, align = "left" }) => {
 
       {hasDrop && open && (
         <div
-          className={`absolute top-full mt-2 ${align === "right" ? "right-0" : "left-0"} w-64 rounded-xl border border-white/10 bg-[#101014]/95 backdrop-blur-xl p-2 shadow-2xl`}
+          className={`absolute top-full ${align === "right" ? "right-0" : "left-0"} pt-2 z-50`}
         >
-          {link.dropdown.map((d) => (
-            <a
-              key={d.label}
-              href={d.href}
-              className="block rounded-lg px-3 py-2.5 hover:bg-white/5 transition-colors"
-            >
-              <div className="text-white text-sm font-medium">{d.label}</div>
-              <div className="text-white/45 text-xs mt-0.5">{d.desc}</div>
-            </a>
-          ))}
+          <div className="w-64 rounded-xl border border-white/10 bg-[#101014]/95 backdrop-blur-xl p-2 shadow-2xl">
+            {link.dropdown.map((d) => (
+              <a
+                key={d.label}
+                href={d.href}
+                className="block rounded-lg px-3 py-2.5 hover:bg-white/5 transition-colors"
+              >
+                <div className="text-white text-sm font-medium">{d.label}</div>
+                <div className="text-white/45 text-xs mt-0.5">{d.desc}</div>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>

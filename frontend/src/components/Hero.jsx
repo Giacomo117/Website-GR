@@ -111,13 +111,18 @@ const Hero = () => {
         ))}
       </div>
 
-      {/* Planet horizon — staged so it rises after the text on mobile */}
+      {/* Planet horizon — staged so it rises after the text on mobile.
+          IMPORTANT: centered horizontally with margin-left (NOT transform),
+          so the heroSphereRise entrance animation (which animates transform)
+          can never knock it off-centre. */}
       <div
-        className="hero-sphere-stage planet-rim pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-[50%]"
+        className="hero-sphere-stage planet-rim pointer-events-none absolute rounded-[50%]"
         style={{
           width: "260vw",
           height: "260vw",
           top: "70vh",
+          left: "50%",
+          marginLeft: "-130vw",
           ...planetStyle,
         }}
       />
