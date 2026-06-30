@@ -346,8 +346,11 @@ const CaseStudies = () => {
           <Sparkles size={14} /> {p.detailsHint}
         </p>
 
-        {/* Bento grid */}
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-12 lg:auto-rows-[220px]">
+        {/* Mobile-only swipe hint */}
+        <p className="mt-2 text-xs text-white/35 lg:hidden">← {p.swipeHint || "Scorri per vedere tutti"} →</p>
+
+        {/* Bento grid (desktop) / horizontal carousel (mobile via .projects-bento css) */}
+        <div className="projects-bento mt-10 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-12 lg:auto-rows-[220px]">
           {projectsData.map((proj, i) => (
             <ProjectCard key={proj.id} p={proj} index={i} onOpen={setSelected} />
           ))}

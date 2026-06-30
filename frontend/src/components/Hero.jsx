@@ -74,23 +74,26 @@ const Hero = () => {
       {/* Sky: subtle vertical color fade so it isn't flat white (light) / dark space (dark) */}
       <div className="pointer-events-none absolute inset-0" style={{ background: skyBg }} />
 
+      {/* Atmosphere — desktop keeps the original strong gradient; on mobile we
+          fade it in along with the sphere so the text reads first, then the
+          horizon "rises". Wrapped so we can stage it. */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[85vh]"
+        className="hero-sphere-stage pointer-events-none absolute inset-x-0 bottom-0 h-[85vh]"
         style={{ background: atmosphere }}
       />
 
       {/* Drifting nebula glows for ambient colored motion */}
       <div
-        className="nebula-pulse pointer-events-none absolute left-[14%] top-[16%] h-72 w-72 rounded-full blur-[90px]"
+        className="hero-sphere-stage nebula-pulse pointer-events-none absolute left-[14%] top-[16%] h-72 w-72 rounded-full blur-[90px]"
         style={{ background: nebulaA }}
       />
       <div
-        className="nebula-pulse pointer-events-none absolute right-[10%] top-[28%] h-80 w-80 rounded-full blur-[100px]"
+        className="hero-sphere-stage nebula-pulse pointer-events-none absolute right-[10%] top-[28%] h-80 w-80 rounded-full blur-[100px]"
         style={{ background: nebulaB, animationDelay: "4s" }}
       />
 
       {/* Twinkling, color-tinted starfield with a slow parallax drift */}
-      <div className="stars-drift absolute inset-0">
+      <div className="hero-sphere-stage stars-drift absolute inset-0">
         {stars.map((s, i) => (
           <span
             key={i}
@@ -108,9 +111,9 @@ const Hero = () => {
         ))}
       </div>
 
-      {/* Planet horizon — huge circle so its edges always reach the page sides (edge-to-edge) */}
+      {/* Planet horizon — staged so it rises after the text on mobile */}
       <div
-        className="planet-rim pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-[50%]"
+        className="hero-sphere-stage planet-rim pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-[50%]"
         style={{
           width: "260vw",
           height: "260vw",
@@ -119,38 +122,50 @@ const Hero = () => {
         }}
       />
 
-      {/* Soft halo above the sphere — gives the headline a luminous "dome" backdrop
-          like the Webion reference. Sits between stars and content. */}
+      {/* Soft, BLURRED inner halo above the sphere — gives a clean fading
+          dome backdrop that matches the Webion reference. Animated in
+          softly so the text appears against an empty sky first. */}
       <div
-        className="pointer-events-none absolute inset-0 z-[5]"
+        className="hero-sphere-stage hero-halo pointer-events-none absolute inset-0 z-[5]"
         style={{
           background: isLight
-            ? "radial-gradient(48% 38% at 50% 56%, rgba(255,210,170,0.45) 0%, rgba(255,210,170,0.18) 38%, rgba(255,210,170,0) 72%)"
-            : "radial-gradient(48% 38% at 50% 54%, rgba(100,150,235,0.32) 0%, rgba(70,110,200,0.16) 38%, rgba(20,40,90,0) 72%)",
+            ? "radial-gradient(55% 42% at 50% 60%, rgba(255,210,170,0.55) 0%, rgba(255,210,170,0.22) 32%, rgba(255,210,170,0.08) 55%, rgba(255,210,170,0) 80%)"
+            : "radial-gradient(55% 42% at 50% 58%, rgba(95,150,235,0.40) 0%, rgba(70,120,210,0.20) 32%, rgba(40,70,150,0.08) 55%, rgba(20,40,90,0) 80%)",
+          filter: "blur(18px)",
         }}
       />
 
-      {/* ===================== MOBILE HERO (minimal — Webion-style) ===================== */}
-      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 text-center md:hidden">
+      {/* ===================== MOBILE HERO (minimal — Webion-style) =====================
+          Three vertical zones via flex:
+          - top: badge + headline (centered, animates in first)
+          - middle/lower: empty space (sphere visually crosses here)
+          - bottom: CTA (sits below the sphere line)                                       */}
+      <div className="relative z-10 flex min-h-[100svh] flex-col items-center px-6 text-center md:hidden">
+        {/* Top spacer to vertically position text near the visual center-top */}
+        <div className="flex-[0.9]" />
+
         <div className="hero-mobile-badge inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
           <WebionMark className="w-3.5 h-3.5 text-white" />
           <span className="text-[13px] font-medium text-white/90">{c.hero.badge}</span>
         </div>
 
-        <h1 className="mt-8 max-w-[22ch] text-white">
-          <span className="hero-mobile-line1 block text-[44px] font-bold tracking-tight leading-[1.05]">
+        <h1 className="mx-auto mt-7 w-full max-w-[20rem] text-white text-center">
+          <span className="hero-mobile-line1 block text-[40px] font-bold tracking-tight leading-[1.05]">
             {c.hero.mobileBold}
           </span>
-          <span className="hero-mobile-line2 font-serif-italic block text-[34px] leading-[1.2] mt-2 text-white">
+          <span className="hero-mobile-line2 font-serif-italic block text-[30px] leading-[1.2] mt-2 text-white">
             {c.hero.mobileItalic}
           </span>
         </h1>
 
+        {/* Bottom spacer pushes CTA below the sphere horizon */}
+        <div className="flex-[1.1]" />
+
         <a
           href="#contattaci"
-          className="hero-mobile-cta mt-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-6 py-3 text-[15px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
+          className="hero-mobile-cta mb-14 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2 text-[13.5px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
         >
-          <PenLine size={16} className="opacity-90" />
+          <PenLine size={14} className="opacity-90" />
           {c.hero.mobileCta}
         </a>
       </div>

@@ -269,13 +269,37 @@ code {
 }
 .hero-mobile-cta {
   opacity: 0;
-  animation: heroMobileReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+  animation: heroMobileReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.05s forwards;
 }
+
+/* =====================================================================
+   Hero sphere staging — on MOBILE only, the sphere (atmosphere + nebula
+   + planet-rim + halo + stars) starts hidden and fades up from below
+   AFTER the headline has appeared. On desktop these are visible from
+   the start as before.
+   ===================================================================== */
+@keyframes heroSphereRise {
+  0%   { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 767px) {
+  .hero-sphere-stage {
+    opacity: 0;
+    animation: heroSphereRise 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.25s forwards;
+  }
+  /* The halo is layered on top of the sphere — keep its blurred soft
+     fading look (bug #8) and let it pulse very gently to feel alive. */
+  .hero-halo {
+    will-change: opacity, transform;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-mobile-badge,
   .hero-mobile-line1,
   .hero-mobile-line2,
-  .hero-mobile-cta {
+  .hero-mobile-cta,
+  .hero-sphere-stage {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -722,6 +746,70 @@ code {
     animation: none !important;
   }
 }
+
+/* =====================================================================
+   Mobile menu — snappy entrance (was a sluggish 1s fade-up on the whole
+   panel which caused the perceived "lag" when tapping the hamburger).
+   Now uses a fast 220ms transform + opacity with separate backdrop fade.
+   ===================================================================== */
+@keyframes mobileMenuBgIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mobileMenuPanelIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mobile-menu-bg {
+  animation: mobileMenuBgIn 180ms ease-out both;
+}
+.mobile-menu-panel {
+  animation: mobileMenuPanelIn 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* When the mobile menu is open, hide the floating chat button (it was
+   showing on top of nav links). Also stop the perpetual hero animations
+   behind the menu so the device is free to react to taps instantly. */
+body.menu-open .floating-chat-btn {
+  display: none !important;
+}
+body.menu-open .stars-drift,
+body.menu-open .nebula-pulse,
+body.menu-open .planet-rim {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+/* =====================================================================
+   Mobile projects carousel — on small screens the bento grid is replaced
+   by a horizontal scroll-snap row so users swipe through one card at a
+   time instead of scrolling a very long stacked list. Desktop layout
+   (lg breakpoint) is untouched and keeps the original bento grid.
+   ===================================================================== */
+@media (max-width: 1023px) {
+  .projects-bento {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    padding: 0.25rem 1.25rem 1rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .projects-bento::-webkit-scrollbar { display: none; }
+  .projects-bento > * {
+    flex: 0 0 86%;
+    max-width: 86%;
+    scroll-snap-align: center;
+    min-height: 340px !important;
+  }
+}
+
 
 
 /* =====================================================================

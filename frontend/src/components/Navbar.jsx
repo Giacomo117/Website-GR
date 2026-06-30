@@ -26,7 +26,11 @@ const Navbar = () => {
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    document.body.classList.toggle("menu-open", mobileOpen);
+    return () => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("menu-open");
+    };
   }, [mobileOpen]);
 
   const leftLinks = [
@@ -50,7 +54,7 @@ const Navbar = () => {
               : "bg-[#0c0c0f]/50 border-white/10 backdrop-blur-md"
           }`}
         >
-          <div className="flex items-center justify-between px-5 h-14">
+          <div className="flex items-center justify-between px-5 h-12">
             {/* Left links */}
             <div className="hidden lg:flex items-center gap-1 flex-1">
               {leftLinks.map((link) => (
@@ -102,8 +106,8 @@ const Navbar = () => {
       {/* Full-screen mobile menu */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-[#060608]/96 backdrop-blur-2xl" />
-          <div className="relative flex h-full flex-col overflow-y-auto px-8 pt-28 pb-10 fade-up">
+          <div className="absolute inset-0 bg-[#060608]/96 mobile-menu-bg" />
+          <div className="mobile-menu-panel relative flex h-full flex-col overflow-y-auto px-8 pt-24 pb-10">
             <nav className="flex flex-col">
               {mobileLinks.map((link) => (
                 <div key={link.label} className="border-b border-white/10">
