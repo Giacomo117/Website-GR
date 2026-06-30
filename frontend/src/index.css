@@ -290,16 +290,45 @@ code {
   0%   { opacity: 0; transform: translateY(40px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-@media (max-width: 767px) {
-  .hero-sphere-stage {
-    opacity: 0;
-    animation: heroSphereRise 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.25s forwards;
-  }
-  /* The halo is layered on top of the sphere — keep its blurred soft
-     fading look (bug #8) and let it pulse very gently to feel alive. */
-  .hero-halo {
-    will-change: opacity, transform;
-  }
+
+/* Sphere entrance — cinematic rise on BOTH mobile and desktop */
+.hero-sphere-stage {
+  opacity: 0;
+  animation: heroSphereRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) 1.0s forwards;
+}
+.hero-halo {
+  will-change: opacity, transform;
+}
+
+/* =====================================================================
+   Desktop Hero — cinematic stagger matching mobile feel.
+   Badge → line1 → line2 → intro → CTA → location, each with blur-clearing.
+   ===================================================================== */
+.hero-desktop-badge {
+  opacity: 0;
+  animation: heroMobileReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+.hero-desktop-line1 {
+  display: block;
+  opacity: 0;
+  animation: heroMobileReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+.hero-desktop-line2 {
+  display: block;
+  opacity: 0;
+  animation: heroMobileReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}
+.hero-desktop-intro {
+  opacity: 0;
+  animation: heroMobileReveal 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+}
+.hero-desktop-cta {
+  opacity: 0;
+  animation: heroMobileReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+}
+.hero-desktop-location {
+  opacity: 0;
+  animation: heroMobileReveal 1.0s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -307,7 +336,13 @@ code {
   .hero-mobile-line1,
   .hero-mobile-line2,
   .hero-mobile-cta,
-  .hero-sphere-stage {
+  .hero-sphere-stage,
+  .hero-desktop-badge,
+  .hero-desktop-line1,
+  .hero-desktop-line2,
+  .hero-desktop-intro,
+  .hero-desktop-cta,
+  .hero-desktop-location {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
