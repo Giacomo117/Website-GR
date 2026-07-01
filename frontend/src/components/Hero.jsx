@@ -119,7 +119,7 @@ const Hero = () => {
         style={{
           width: "260vw",
           height: "260vw",
-          top: "70vh",
+          top: "62vh",
           left: "50%",
           marginLeft: "-130vw",
           ...planetStyle,
@@ -144,10 +144,9 @@ const Hero = () => {
           - top: badge + headline (centered, animates in first)
           - middle/lower: empty space (sphere visually crosses here)
           - bottom: CTA (sits below the sphere line)                                       */}
-      <div className="relative z-10 flex min-h-[100svh] flex-col items-center px-6 text-center md:hidden">
-        {/* Top spacer to vertically position text near the visual center-top.
-            Slightly increased so the badge + headline sit a touch lower. */}
-        <div className="flex-[1.25]" />
+      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 text-center md:hidden">
+        {/* Top spacer */}
+        <div className="flex-1" />
 
         <div className="hero-mobile-badge inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-sm">
           <span className="text-[13px] font-medium text-white/90">Giacomo</span>
@@ -162,12 +161,12 @@ const Hero = () => {
           </span>
         </h1>
 
-        {/* Bottom spacer pushes CTA below the sphere horizon */}
-        <div className="flex-[1.1]" />
+        {/* Bottom spacer */}
+        <div className="flex-[1.5]" />
 
         <a
           href="#contattaci"
-          className="hero-mobile-cta mb-14 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2 text-[13.5px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
+          className="hero-mobile-cta mb-[env(safe-area-inset-bottom,2rem)] inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-[13.5px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
         >
           <PenLine size={14} className="opacity-90" />
           {c.hero.mobileCta}
