@@ -2,14 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useLang } from "../i18n/LanguageContext";
 
-// Per-service accent pair cycled across the cards — mapped to theme CSS
-// variables so they re-skin automatically in light mode (same tokens the
-// Projects bento cards use).
+// Per-service accent pair cycled across the cards
 const SERVICE_ACCENTS = [
-  { a: "var(--acc-1)", b: "var(--acc-3)" },
-  { a: "var(--acc-2)", b: "var(--acc-1)" },
-  { a: "var(--acc-3)", b: "var(--acc-4)" },
-  { a: "var(--acc-4)", b: "var(--acc-2)" },
+  { a: "99,102,241", b: "168,85,247" },   // indigo → purple
+  { a: "59,130,246", b: "99,102,241" },   // blue → indigo
+  { a: "168,85,247", b: "236,72,153" },   // purple → pink
+  { a: "236,72,153", b: "59,130,246" },   // pink → blue
 ];
 
 /* Card styled to match the Projects bento tiles: full-bleed accent mesh
@@ -45,7 +43,7 @@ const Card = ({ s, index }) => {
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: `radial-gradient(120% 95% at 0% 0%, rgb(${accent.a} / 0.20), transparent 55%), radial-gradient(120% 95% at 100% 100%, rgb(${accent.b} / 0.16), transparent 55%)`,
+          background: `radial-gradient(120% 95% at 0% 0%, rgba(${accent.a},0.20), transparent 55%), radial-gradient(120% 95% at 100% 100%, rgba(${accent.b},0.16), transparent 55%)`,
         }}
       />
       {/* Subtle grain to match the cosmic vibe */}
@@ -64,7 +62,7 @@ const Card = ({ s, index }) => {
       {/* Soft corner glow (hover only) */}
       <div
         className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: `radial-gradient(circle, rgb(${accent.b} / 0.35), transparent 70%)` }}
+        style={{ background: `radial-gradient(circle, rgba(${accent.b},0.35), transparent 70%)` }}
       />
 
       {/* CONTENT */}
@@ -72,13 +70,13 @@ const Card = ({ s, index }) => {
         <div className="flex items-start justify-between gap-3">
           <span
             className="rounded-full border px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider text-white/85 backdrop-blur-md"
-            style={{ borderColor: `rgb(${accent.a} / 0.45)`, backgroundColor: "rgb(var(--card-wash) / 0.55)" }}
+            style={{ borderColor: `rgba(${accent.a},0.45)`, backgroundColor: "rgba(15,15,20,0.55)" }}
           >
             {s.tag}
           </span>
           <div
             className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/15 text-white/75 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:border-white/40 group-hover:text-white"
-            style={{ backgroundColor: "rgb(var(--card-wash) / 0.55)" }}
+            style={{ backgroundColor: "rgba(15,15,20,0.55)" }}
           >
             <ArrowUpRight
               size={16}
