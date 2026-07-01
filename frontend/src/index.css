@@ -100,9 +100,9 @@ code {
     --acc-2: 94 210 255;        /* cyan */
     --acc-3: 129 140 248;       /* indigo */
     --acc-4: 167 139 250;       /* violet */
-    --rim-line: 225 238 255;
-    --rim-glow: 140 185 255;
-    --rim-fade: 70 120 220;
+    --rim-line: 200 220 255;
+    --rim-glow: 139 92 246;
+    --rim-fade: 56 189 248;
     --nav-bg: 12 12 15;
     --scrollbar: #2a2a30;
     --scrollbar-hover: #3a3a42;

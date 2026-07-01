@@ -43,13 +43,13 @@ const Hero = () => {
 
   const atmosphere = isLight
     ? "radial-gradient(120% 80% at 50% 118%, rgba(240,116,56,0.64) 0%, rgba(252,156,96,0.36) 22%, rgba(255,210,165,0.16) 42%, rgba(255,255,255,0) 68%)"
-    : "radial-gradient(120% 80% at 50% 118%, rgba(120,170,255,0.55) 0%, rgba(60,110,210,0.32) 22%, rgba(20,40,90,0.18) 42%, rgba(6,6,8,0) 68%)";
+    : "radial-gradient(140% 85% at 50% 115%, rgba(56,189,248,0.50) 0%, rgba(99,102,241,0.35) 18%, rgba(139,92,246,0.20) 36%, rgba(6,6,8,0) 62%)";
   const nebulaA = isLight
     ? "radial-gradient(circle, rgba(255,148,92,0.18), transparent 70%)"
-    : "radial-gradient(circle, rgba(120,90,230,0.18), transparent 70%)";
+    : "radial-gradient(circle, rgba(139,92,246,0.22), transparent 70%)";
   const nebulaB = isLight
     ? "radial-gradient(circle, rgba(232,108,118,0.14), transparent 70%)"
-    : "radial-gradient(circle, rgba(60,150,230,0.16), transparent 70%)";
+    : "radial-gradient(circle, rgba(56,189,248,0.18), transparent 70%)";
 
   // Light: warm "dawn over Mediterranean" sky — taupe top fading into peach and a
   // slightly REDDER apricot at the horizon, blending into the warm amber ground.
@@ -119,7 +119,7 @@ const Hero = () => {
         style={{
           width: "260vw",
           height: "260vw",
-          top: "62vh",
+          top: "58vh",
           left: "50%",
           marginLeft: "-130vw",
           ...planetStyle,
@@ -134,8 +134,8 @@ const Hero = () => {
         style={{
           background: isLight
             ? "radial-gradient(55% 42% at 50% 60%, rgba(255,198,150,0.55) 0%, rgba(255,198,150,0.22) 32%, rgba(255,198,150,0.08) 55%, rgba(255,198,150,0) 80%)"
-            : "radial-gradient(55% 42% at 50% 58%, rgba(95,150,235,0.40) 0%, rgba(70,120,210,0.20) 32%, rgba(40,70,150,0.08) 55%, rgba(20,40,90,0) 80%)",
-          filter: "blur(18px)",
+            : "radial-gradient(60% 45% at 50% 55%, rgba(139,92,246,0.30) 0%, rgba(56,189,248,0.18) 28%, rgba(99,102,241,0.08) 50%, rgba(6,6,8,0) 75%)",
+          filter: "blur(22px)",
         }}
       />
 
@@ -162,11 +162,11 @@ const Hero = () => {
         </h1>
 
         {/* Bottom spacer */}
-        <div className="flex-[1.5]" />
+        <div className="flex-[0.8]" />
 
         <a
           href="#contattaci"
-          className="hero-mobile-cta mb-[env(safe-area-inset-bottom,2rem)] inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-[13.5px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
+          className="hero-mobile-cta mb-24 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-[13.5px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/15"
         >
           <PenLine size={14} className="opacity-90" />
           {c.hero.mobileCta}
